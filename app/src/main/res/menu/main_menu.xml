@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <group android:id="@+id/tableActiveOrdersMenuGroup">
+        <item
+            android:id="@+id/tableOrdersMenuItem"
+            android:title="@string/orders"
+            app:showAsAction="ifRoom" />
+    </group>
+
+    <group android:id="@+id/changeMergeTableMenuGroup">
+        <item
+            android:id="@+id/changeTableMenuItem"
+            android:title="@string/change"
+            app:showAsAction="ifRoom" />
+
+        <item
+            android:id="@+id/mergeTableMenuItem"
+            android:title="@string/merge"
+            app:showAsAction="ifRoom" />
+    </group>
+
+</menu>

@@ -1,0 +1,7 @@
+package com.hamrobill.utils
+
+const val FRAGMENT_CONTAINER_WIDTH_LIMIT = 2300
+const val DIALOG_WIDTH_LIMIT = 2000
+const val RECYCLER_VIEW_WIDTH_LIMIT = 2500
+const val DIALOG_WIDTH_RATIO_BIG = 0.65
+const val DIALOG_WIDTH_RATIO_SMALL = 0.80
