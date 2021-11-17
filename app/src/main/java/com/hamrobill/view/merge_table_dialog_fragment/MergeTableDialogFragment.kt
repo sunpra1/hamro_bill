@@ -1,4 +1,4 @@
-package com.hamrobill.view.change_table_dialog_fragment
+package com.hamrobill.view.merge_table_dialog_fragment
 
 import android.app.Dialog
 import android.os.Bundle
@@ -11,35 +11,33 @@ import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatDialogFragment
 import com.hamrobill.R
 import com.hamrobill.data.pojo.Table
-import com.hamrobill.databinding.FragmentChangeTableDialogBinding
+import com.hamrobill.databinding.FragmentMergeTableDialogBinding
 import com.hamrobill.utils.DIALOG_WIDTH_LIMIT
 import com.hamrobill.utils.DIALOG_WIDTH_RATIO_BIG
 import com.hamrobill.utils.DIALOG_WIDTH_RATIO_SMALL
 import com.hamrobill.utils.windowWidth
 
-class ChangeTableDialogFragment private constructor() : AppCompatDialogFragment(),
+class MergeTableDialogFragment private constructor() : AppCompatDialogFragment(),
     AdapterView.OnItemSelectedListener, View.OnClickListener {
 
-    private lateinit var mBinding: FragmentChangeTableDialogBinding
+    private lateinit var mBinding: FragmentMergeTableDialogBinding
     private var mSelectedTable: Table? = null
     private var mBookedTables: ArrayList<Table> = ArrayList()
-    private var mNotBookedTables: ArrayList<Table> = ArrayList()
-    private lateinit var mTableChangeListener: TableChangeListener
+    private lateinit var mTableMergeListener: TableMergeListener
 
     companion object {
         @JvmStatic
         fun getInstance(
-            tableChangeListener: TableChangeListener,
+            tableMergeListener: TableMergeListener,
             tables: ArrayList<Table>,
             selectedTable: Table?
-        ): ChangeTableDialogFragment {
-            return ChangeTableDialogFragment().apply {
+        ): MergeTableDialogFragment {
+            return MergeTableDialogFragment().apply {
                 tables.forEach {
                     if (it.isBooked && mBookedTables.indexOfFirst { table -> table.tableID == it.tableID } == -1)
                         mBookedTables.add(it)
-                    else mNotBookedTables.add(it)
                 }
-                mTableChangeListener = tableChangeListener
+                mTableMergeListener = tableMergeListener
                 mSelectedTable = selectedTable
             }
         }
@@ -49,7 +47,7 @@ class ChangeTableDialogFragment private constructor() : AppCompatDialogFragment(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        mBinding = FragmentChangeTableDialogBinding.inflate(layoutInflater)
+        mBinding = FragmentMergeTableDialogBinding.inflate(layoutInflater)
         return mBinding.root
     }
 
@@ -60,7 +58,7 @@ class ChangeTableDialogFragment private constructor() : AppCompatDialogFragment(
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val dialog = super.onCreateDialog(savedInstanceState).apply {
-            setTitle(getString(R.string.change_table))
+            setTitle(getString(R.string.merge_table))
         }
         return dialog
     }
@@ -80,12 +78,6 @@ class ChangeTableDialogFragment private constructor() : AppCompatDialogFragment(
                     it.add(table.tableName)
                 }
             }
-        val notBookedTables = arrayListOf("SELECT TABLE")
-            .also {
-                mNotBookedTables.forEach { table ->
-                    it.add(table.tableName)
-                }
-            }
         val bookedTablesAdapter = object : ArrayAdapter<String>(
             requireContext(),
             R.layout.support_simple_spinner_dropdown_item,
@@ -100,27 +92,14 @@ class ChangeTableDialogFragment private constructor() : AppCompatDialogFragment(
 
             override fun areAllItemsEnabled(): Boolean = false
         }
-        val notBookedTablesAdapter = object : ArrayAdapter<String>(
-            requireContext(),
-            R.layout.support_simple_spinner_dropdown_item,
-            notBookedTables
-        ) {
-            override fun isEnabled(position: Int): Boolean {
-                return when (position) {
-                    0 -> false
-                    else -> super.isEnabled(position)
-                }
-            }
 
-            override fun areAllItemsEnabled(): Boolean = false
-        }
         mBinding.currentTableSpn.apply {
-            onItemSelectedListener = this@ChangeTableDialogFragment
+            onItemSelectedListener = this@MergeTableDialogFragment
             this.adapter = bookedTablesAdapter
         }
         mBinding.destinationTableSpn.apply {
-            onItemSelectedListener = this@ChangeTableDialogFragment
-            this.adapter = notBookedTablesAdapter
+            onItemSelectedListener = this@MergeTableDialogFragment
+            this.adapter = bookedTablesAdapter
         }
         mSelectedTable?.let { selectedTable ->
             mBinding.currentTableSpn.setSelection(
@@ -146,17 +125,15 @@ class ChangeTableDialogFragment private constructor() : AppCompatDialogFragment(
         }
     }
 
-    override fun onNothingSelected(parent: AdapterView<*>?) {
-
-    }
+    override fun onNothingSelected(parent: AdapterView<*>?) {}
 
     override fun onClick(view: View?) {
         if (view != null) {
             when (view.id) {
                 mBinding.okButton.id -> if (validate()) {
-                    mTableChangeListener.onTableChanged(
+                    mTableMergeListener.onTableMerged(
                         mBookedTables[mBinding.currentTableSpn.selectedItemPosition - 1],
-                        mNotBookedTables[mBinding.destinationTableSpn.selectedItemPosition - 1]
+                        mBookedTables[mBinding.destinationTableSpn.selectedItemPosition - 1]
                     )
                     dismiss()
                 }
@@ -197,6 +174,13 @@ class ChangeTableDialogFragment private constructor() : AppCompatDialogFragment(
                 }
                 false
             }
+            mBinding.currentTableSpn.selectedItemPosition -> {
+                mBinding.destinationTableTil.apply {
+                    isErrorEnabled = true
+                    error = "Current and destination tables are same"
+                }
+                false
+            }
             else -> {
                 mBinding.destinationTableTil.isErrorEnabled = false
                 true
@@ -204,7 +188,7 @@ class ChangeTableDialogFragment private constructor() : AppCompatDialogFragment(
         }
     }
 
-    interface TableChangeListener {
-        fun onTableChanged(from: Table, to: Table)
+    interface TableMergeListener {
+        fun onTableMerged(from: Table, to: Table)
     }
 }

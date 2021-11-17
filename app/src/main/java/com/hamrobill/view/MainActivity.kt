@@ -21,6 +21,7 @@ import com.hamrobill.utils.hideProgressDialog
 import com.hamrobill.utils.showProgressDialog
 import com.hamrobill.view.change_table_dialog_fragment.ChangeTableDialogFragment
 import com.hamrobill.view.food_sub_items_fragment.FoodSubItemsFragment
+import com.hamrobill.view.merge_table_dialog_fragment.MergeTableDialogFragment
 import com.hamrobill.view.table_orders_fragment.TableOrdersFragment
 import com.hamrobill.view.tables_fragment.TablesFragment
 import com.hamrobill.view_model.SharedViewModel
@@ -28,7 +29,7 @@ import com.hamrobill.view_model.factory.ViewModelFactory
 import javax.inject.Inject
 
 class MainActivity : AppCompatActivity(), View.OnClickListener, SearchView.OnQueryTextListener,
-    ChangeTableDialogFragment.TableChangeListener {
+    ChangeTableDialogFragment.TableChangeListener, MergeTableDialogFragment.TableMergeListener {
 
     @Inject
     lateinit var factory: ViewModelFactory
@@ -85,6 +86,17 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, SearchView.OnQue
             }
             R.id.changeTableMenuItem -> {
                 ChangeTableDialogFragment.getInstance(
+                    this,
+                    mViewModel.tables.value!!,
+                    mViewModel.selectedTable.value
+                ).apply {
+                    show(supportFragmentManager, tag)
+                }
+                true
+            }
+
+            R.id.mergeTableMenuItem -> {
+                MergeTableDialogFragment.getInstance(
                     this,
                     mViewModel.tables.value!!,
                     mViewModel.selectedTable.value
@@ -230,5 +242,9 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, SearchView.OnQue
 
     override fun onTableChanged(from: Table, to: Table) {
         mViewModel.changeTableNumber(from, to)
+    }
+
+    override fun onTableMerged(from: Table, to: Table) {
+        mViewModel.mergeTable(from, to)
     }
 }

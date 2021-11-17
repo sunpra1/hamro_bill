@@ -392,16 +392,52 @@ class SharedViewModel @Inject constructor(
                         }
                         is RequestStatus.Success -> {
                             _isLoading.value = false
+                            from.apply { isBooked = false }
+                            to.apply { isBooked = true }
                             val fromTableIndex = tables.value!!.indexOf(from)
                             val toTableIndex = tables.value!!.indexOf(to)
                             tables.value?.apply {
                                 set(fromTableIndex, from)
                                 set(toTableIndex, to)
                             }
+                            _selectedTable.value = null
                             _tableItemChanged.value =
-                                TableItemChanged(fromTableIndex, from.apply { isBooked = false })
+                                TableItemChanged(fromTableIndex, from)
                             _tableItemChanged.value =
-                                TableItemChanged(toTableIndex, to.apply { isBooked = true })
+                                TableItemChanged(toTableIndex, to)
+                        }
+                        is RequestStatus.Error -> {
+                            _isLoading.value = false
+                            _errorMessage.value = it.message
+                        }
+                    }
+                }
+        }
+    }
+
+    fun mergeTable(from: Table, to: Table) {
+        viewModelScope.launch {
+            billingRepository.mergeTable(from.tableID, to.tableID)
+                .catch {
+                    _isLoading.value = false
+                    _errorMessage.value = R.string.unable_merge_tables
+                }
+                .collect {
+                    when (it) {
+                        is RequestStatus.Waiting -> {
+                            _isLoading.value = true
+                        }
+                        is RequestStatus.Success -> {
+                            _isLoading.value = false
+                            from.apply { isBooked = false }
+                            val fromTableIndex = tables.value!!.indexOf(from)
+                            tables.value?.apply {
+                                set(fromTableIndex, from)
+                            }
+                            _selectedTable.value = null
+                            _tableItemChanged.value =
+                                TableItemChanged(fromTableIndex, from)
+
                         }
                         is RequestStatus.Error -> {
                             _isLoading.value = false

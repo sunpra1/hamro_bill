@@ -34,4 +34,7 @@ interface HamrobillAPIConsumer {
 
     @POST("api/OrderItem/ChangeTableNumber/{from}/{to}/ChangeTable")
     suspend fun changeTableNumber(@Path("from") from: Int, @Path("to") to: Int): Response<SuccessResponse>
+
+    @POST("api/OrderItem/ChangeTableNumber/{to}/{from}/MargeTable")
+    suspend fun mergeTable(@Path("from") from: Int, @Path("to") to: Int): Response<SuccessResponse>
 }

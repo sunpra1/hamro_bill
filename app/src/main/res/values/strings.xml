@@ -24,6 +24,7 @@
     <string name="unable_fetch_food_sub_items">Unable to fetch food sub items.\nPlease try again later.</string>
     <string name="unable_search_sub_items">Unable to search for food sub items.\nPlease try again later.</string>
     <string name="unable_change_table_number">Unable to change table number.\nPlease try again later.</string>
+    <string name="unable_merge_tables">Unable to merge tables.\nPlease try again later.</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="dummy_food_item">Chicken Sekuwa</string>
     <string name="dummy_price">Rs.250</string>
@@ -66,4 +67,5 @@
     <string name="ok">OK</string>
     <string name="change">CHANGE</string>
     <string name="merge">MERGE</string>
+    <string name="merge_table">MERGE TABLE</string>
 </resources>

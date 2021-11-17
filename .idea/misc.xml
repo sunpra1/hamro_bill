@@ -26,6 +26,7 @@
         <entry key="..\:/Users/Sunil Prasai/AndroidStudioProjects/hamrobill/app/src/main/res/font/playball.xml" value="0.28854166666666664" />
         <entry key="..\:/Users/Sunil Prasai/AndroidStudioProjects/hamrobill/app/src/main/res/font/roboto.xml" value="0.28854166666666664" />
         <entry key="..\:/Users/Sunil Prasai/AndroidStudioProjects/hamrobill/app/src/main/res/layout-sw600dp/activity_main.xml" value="0.264" />
+        <entry key="..\:/Users/Sunil Prasai/AndroidStudioProjects/hamrobill/app/src/main/res/layout-sw600dp/fragment_merge_table_dialog.xml" value="0.10416666666666667" />
         <entry key="..\:/Users/Sunil Prasai/AndroidStudioProjects/hamrobill/app/src/main/res/layout/active_table_order_list_item.xml" value="0.4" />
         <entry key="..\:/Users/Sunil Prasai/AndroidStudioProjects/hamrobill/app/src/main/res/layout/activity_login.xml" value="0.1" />
         <entry key="..\:/Users/Sunil Prasai/AndroidStudioProjects/hamrobill/app/src/main/res/layout/activity_main.xml" value="0.2" />
@@ -35,12 +36,13 @@
         <entry key="..\:/Users/Sunil Prasai/AndroidStudioProjects/hamrobill/app/src/main/res/layout/food_list_item.xml" value="0.3723958333333333" />
         <entry key="..\:/Users/Sunil Prasai/AndroidStudioProjects/hamrobill/app/src/main/res/layout/food_sub_item_list_item.xml" value="0.4" />
         <entry key="..\:/Users/Sunil Prasai/AndroidStudioProjects/hamrobill/app/src/main/res/layout/fragment_active_table_orders.xml" value="0.1" />
-        <entry key="..\:/Users/Sunil Prasai/AndroidStudioProjects/hamrobill/app/src/main/res/layout/fragment_change_table_dialog.xml" value="0.3723958333333333" />
+        <entry key="..\:/Users/Sunil Prasai/AndroidStudioProjects/hamrobill/app/src/main/res/layout/fragment_change_table_dialog.xml" value="0.31693989071038253" />
         <entry key="..\:/Users/Sunil Prasai/AndroidStudioProjects/hamrobill/app/src/main/res/layout/fragment_dashboard.xml" value="0.3723958333333333" />
         <entry key="..\:/Users/Sunil Prasai/AndroidStudioProjects/hamrobill/app/src/main/res/layout/fragment_food_items.xml" value="0.13421052631578947" />
         <entry key="..\:/Users/Sunil Prasai/AndroidStudioProjects/hamrobill/app/src/main/res/layout/fragment_food_sub_item.xml" value="0.25833333333333336" />
         <entry key="..\:/Users/Sunil Prasai/AndroidStudioProjects/hamrobill/app/src/main/res/layout/fragment_food_sub_items.xml" value="0.4" />
         <entry key="..\:/Users/Sunil Prasai/AndroidStudioProjects/hamrobill/app/src/main/res/layout/fragment_home.xml" value="0.25833333333333336" />
+        <entry key="..\:/Users/Sunil Prasai/AndroidStudioProjects/hamrobill/app/src/main/res/layout/fragment_merge_table_dialog.xml" value="0.16799999999999998" />
         <entry key="..\:/Users/Sunil Prasai/AndroidStudioProjects/hamrobill/app/src/main/res/layout/fragment_new_table_orders.xml" value="0.11851851851851852" />
         <entry key="..\:/Users/Sunil Prasai/AndroidStudioProjects/hamrobill/app/src/main/res/layout/fragment_tables.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/Sunil Prasai/AndroidStudioProjects/hamrobill/app/src/main/res/layout/loading.xml" value="0.2" />

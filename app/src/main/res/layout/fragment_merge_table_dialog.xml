@@ -111,7 +111,7 @@
                     android:minWidth="80dp"
                     android:paddingHorizontal="12dp"
                     android:paddingVertical="4dp"
-                    android:text="@string/change"
+                    android:text="@string/merge"
                     android:textAlignment="center"
                     android:textColor="@color/green" />
 
