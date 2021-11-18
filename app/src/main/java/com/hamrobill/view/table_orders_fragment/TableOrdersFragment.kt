@@ -54,12 +54,12 @@ class TableOrdersFragment : BottomSheetDialogFragment(), View.OnClickListener {
                     else (windowWidth * DIALOG_WIDTH_RATIO_SMALL).toInt()
         }
 
-        mBinding.tableName.text = getString(R.string.table_order_title_format, mViewModel.selectedTable.value!!.tableName)
+        mBinding.tableName.text = getString(R.string.table_order_title_format, mViewModel.selectedTable.value!!.tableName,
+                mViewModel.activeTableOrders.value!!.last().billNumber.toString())
         mBinding.btnClose.setOnClickListener(this)
         mBinding.activeTableOrderRV.layoutManager = LinearLayoutManager(requireContext())
         mBinding.activeTableOrderRV.adapter =
                 TableOrderListRecyclerViewAdapter(mViewModel.activeTableOrders.value!!)
-
     }
 
     override fun onAttach(context: Context) {
@@ -77,5 +77,4 @@ class TableOrdersFragment : BottomSheetDialogFragment(), View.OnClickListener {
             }
         }
     }
-
 }

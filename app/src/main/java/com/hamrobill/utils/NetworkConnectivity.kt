@@ -10,9 +10,9 @@ import javax.inject.Inject
 import javax.inject.Named
 
 class NetworkConnectivity @Inject constructor(@Named("Application") context: Context) :
-    LiveData<Boolean>() {
+        LiveData<Boolean>() {
     private val connectivityManager =
-        context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+            context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
     private val networkCallback = object : NetworkCallback() {
         override fun onAvailable(network: Network) {
             super.onAvailable(network)
@@ -39,10 +39,10 @@ class NetworkConnectivity @Inject constructor(@Named("Application") context: Con
         var isConnected = false
         connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
         val capabilities =
-            connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
+                connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
         if (capabilities != null && (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) || capabilities.hasTransport(
-                NetworkCapabilities.TRANSPORT_WIFI
-            ) || capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET))
+                        NetworkCapabilities.TRANSPORT_WIFI
+                ) || capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET))
         ) {
             isConnected = true
         }

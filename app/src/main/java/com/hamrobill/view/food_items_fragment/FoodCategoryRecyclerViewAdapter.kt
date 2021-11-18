@@ -15,10 +15,10 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 class FoodCategoryRecyclerViewAdapter(
-    foodItems: ArrayList<FoodItem>,
-    private val foodRecyclerViewItemClickListener: FoodRecyclerViewAdapter.FoodRecyclerViewItemClickListener
+        foodItems: ArrayList<FoodItem>,
+        private val foodRecyclerViewItemClickListener: FoodRecyclerViewAdapter.FoodRecyclerViewItemClickListener
 ) :
-    RecyclerView.Adapter<FoodCategoryRecyclerViewAdapter.ViewHolder>() {
+        RecyclerView.Adapter<FoodCategoryRecyclerViewAdapter.ViewHolder>() {
 
     private val coffeeFoodItems: ArrayList<FoodItem> = ArrayList()
     private val barFoodItems: ArrayList<FoodItem> = ArrayList()
@@ -54,32 +54,32 @@ class FoodCategoryRecyclerViewAdapter(
             FoodCategory.KITCHEN_ITEM -> kitchenFoodItems
         }
         holder.updateView(
-            category.category.uppercase(Locale.ENGLISH),
-            singleCategoryItem,
-            foodRecyclerViewItemClickListener
+                category.category.uppercase(Locale.ENGLISH),
+                singleCategoryItem,
+                foodRecyclerViewItemClickListener
         )
     }
 
     override fun getItemCount(): Int = categories.size
 
     class ViewHolder(
-        private val view: CategoryListItemBinding,
-        private val context: Context = view.root.context
+            private val view: CategoryListItemBinding,
+            private val context: Context = view.root.context
     ) :
-        RecyclerView.ViewHolder(view.root) {
+            RecyclerView.ViewHolder(view.root) {
         fun updateView(
-            categoryName: String,
-            foodItems: ArrayList<FoodItem>,
-            foodRecyclerViewItemClickListener: FoodRecyclerViewAdapter.FoodRecyclerViewItemClickListener
+                categoryName: String,
+                foodItems: ArrayList<FoodItem>,
+                foodRecyclerViewItemClickListener: FoodRecyclerViewAdapter.FoodRecyclerViewItemClickListener
         ) {
             view.categoryName.text = categoryName
             view.foodItemRV.layoutManager =
-                GridLayoutManager(
-                    context,
-                    if ((context as FragmentActivity).windowWidth() > RECYCLER_VIEW_WIDTH_LIMIT) 5 else 4
-                )
+                    GridLayoutManager(
+                            context,
+                            if ((context as FragmentActivity).windowWidth() > RECYCLER_VIEW_WIDTH_LIMIT) 5 else 4
+                    )
             view.foodItemRV.adapter =
-                FoodRecyclerViewAdapter(foodItems, foodRecyclerViewItemClickListener)
+                    FoodRecyclerViewAdapter(foodItems, foodRecyclerViewItemClickListener)
         }
     }
 }

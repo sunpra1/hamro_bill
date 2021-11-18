@@ -34,8 +34,8 @@ class BillingRepository @Inject constructor(private val apiConsumer: HamrobillAP
             emit(RequestStatus.Success(response.body()))
         } else {
             Log.d(
-                TAG,
-                "getTableActiveOrders: ${response.errorBody()?.byteStream()?.reader()?.readText()}"
+                    TAG,
+                    "getTableActiveOrders: ${response.errorBody()?.byteStream()?.reader()?.readText()}"
             )
             emit(RequestStatus.Error(R.string.unable_fetch_table_orders))
         }
@@ -59,8 +59,8 @@ class BillingRepository @Inject constructor(private val apiConsumer: HamrobillAP
             emit(RequestStatus.Success(response.body()))
         } else {
             Log.d(
-                TAG,
-                "getFoodSubItems: ${response.errorBody()?.byteStream()?.reader()?.readText()}"
+                    TAG,
+                    "getFoodSubItems: ${response.errorBody()?.byteStream()?.reader()?.readText()}"
             )
             emit(RequestStatus.Error(R.string.unable_fetch_food_sub_items))
         }
@@ -73,8 +73,8 @@ class BillingRepository @Inject constructor(private val apiConsumer: HamrobillAP
             emit(RequestStatus.Success(response.body()))
         } else {
             Log.d(
-                TAG,
-                "placeTableOrders: ${response.errorBody()?.byteStream()?.reader()?.readText()}"
+                    TAG,
+                    "placeTableOrders: ${response.errorBody()?.byteStream()?.reader()?.readText()}"
             )
             emit(RequestStatus.Error(R.string.unable_place_table_order))
         }
@@ -87,8 +87,8 @@ class BillingRepository @Inject constructor(private val apiConsumer: HamrobillAP
             emit(RequestStatus.Success(response.body()))
         } else {
             Log.d(
-                TAG,
-                "saveTableOrders: ${response.errorBody()?.byteStream()?.reader()?.readText()}"
+                    TAG,
+                    "saveTableOrders: ${response.errorBody()?.byteStream()?.reader()?.readText()}"
             )
             emit(RequestStatus.Error(R.string.unable_save_table_order))
         }
@@ -101,8 +101,8 @@ class BillingRepository @Inject constructor(private val apiConsumer: HamrobillAP
             emit(RequestStatus.Success(response.body()))
         } else {
             Log.d(
-                TAG,
-                "searchSubItems: ${response.errorBody()?.byteStream()?.reader()?.readText()}"
+                    TAG,
+                    "searchSubItems: ${response.errorBody()?.byteStream()?.reader()?.readText()}"
             )
             emit(RequestStatus.Error(R.string.unable_search_sub_items))
         }
@@ -115,8 +115,8 @@ class BillingRepository @Inject constructor(private val apiConsumer: HamrobillAP
             emit(RequestStatus.Success(response.body()))
         } else {
             Log.d(
-                TAG,
-                "changeTableNumber: ${response.errorBody()?.byteStream()?.reader()?.readText()}"
+                    TAG,
+                    "changeTableNumber: ${response.errorBody()?.byteStream()?.reader()?.readText()}"
             )
             emit(RequestStatus.Error(R.string.unable_change_table_number))
         }
@@ -129,8 +129,8 @@ class BillingRepository @Inject constructor(private val apiConsumer: HamrobillAP
             emit(RequestStatus.Success(response.body()))
         } else {
             Log.d(
-                TAG,
-                "mergeTable: ${response.errorBody()?.byteStream()?.reader()?.readText()}"
+                    TAG,
+                    "mergeTable: ${response.errorBody()?.byteStream()?.reader()?.readText()}"
             )
             emit(RequestStatus.Error(R.string.unable_merge_tables))
         }

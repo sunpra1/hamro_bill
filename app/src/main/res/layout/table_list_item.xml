@@ -11,9 +11,9 @@
         android:id="@+id/cardView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="4dp"
         android:layout_marginTop="4dp"
         android:layout_marginBottom="8dp"
-        android:layout_marginHorizontal="4dp"
         android:clickable="true"
         android:focusable="true"
         app:cardCornerRadius="0dp"
@@ -34,17 +34,17 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:textAlignment="center"
                 android:text="C- 2"
+                android:textAlignment="center"
                 android:textSize="@dimen/medium_text_size" />
 
             <LinearLayout
                 android:id="@+id/borderView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
                 android:background="@drawable/grey_border"
-                android:padding="8dp"
-                android:layout_gravity="center_horizontal">
+                android:padding="8dp">
 
 
                 <TextView
@@ -52,9 +52,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
+                    android:text="[5]"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/medium_text_size"
-                    android:text="[5]" />
+                    android:textSize="@dimen/medium_text_size" />
 
                 <View
                     android:layout_width="1dp"
@@ -67,10 +67,10 @@
                     android:id="@+id/customerOccupancy"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/medium_text_size"
                     android:layout_gravity="center_horizontal"
-                    android:text="[5]" />
+                    android:text="[5]"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/medium_text_size" />
 
 
             </LinearLayout>

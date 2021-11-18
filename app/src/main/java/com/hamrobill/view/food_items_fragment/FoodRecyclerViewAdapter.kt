@@ -7,18 +7,18 @@ import com.hamrobill.data.pojo.FoodItem
 import com.hamrobill.databinding.FoodListItemBinding
 
 class FoodRecyclerViewAdapter(
-    private val foodItems: ArrayList<FoodItem>,
-    private val foodRecyclerViewItemClickListener: FoodRecyclerViewItemClickListener
+        private val foodItems: ArrayList<FoodItem>,
+        private val foodRecyclerViewItemClickListener: FoodRecyclerViewItemClickListener
 ) :
-    RecyclerView.Adapter<FoodRecyclerViewAdapter.ViewHolder>() {
+        RecyclerView.Adapter<FoodRecyclerViewAdapter.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(FoodListItemBinding.inflate(LayoutInflater.from(parent.context)))
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.updateView(
-            foodItems[position],
-            foodRecyclerViewItemClickListener
+                foodItems[position],
+                foodRecyclerViewItemClickListener
         )
     }
 
@@ -26,8 +26,8 @@ class FoodRecyclerViewAdapter(
 
     class ViewHolder(private val view: FoodListItemBinding) : RecyclerView.ViewHolder(view.root) {
         fun updateView(
-            foodItem: FoodItem,
-            foodRecyclerViewItemClickListener: FoodRecyclerViewItemClickListener
+                foodItem: FoodItem,
+                foodRecyclerViewItemClickListener: FoodRecyclerViewItemClickListener
         ) {
             view.foodName.text = foodItem.itemName
             view.cardView.setOnClickListener {

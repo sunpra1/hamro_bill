@@ -8,7 +8,7 @@ interface HamrobillAPIConsumer {
     @FormUrlEncoded
     @POST("Token")
     suspend fun get(
-        @FieldMap body: HashMap<String, Any>
+            @FieldMap body: HashMap<String, Any>
     ): Response<LoginResponse>
 
     @GET("api/SetupTable/GetTableList")

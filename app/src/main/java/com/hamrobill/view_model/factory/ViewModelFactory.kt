@@ -13,29 +13,28 @@ import javax.inject.Singleton
 
 @Singleton
 class ViewModelFactory @Inject constructor(
-    private val networkConnectivity: NetworkConnectivity,
-    private val authRepository: AuthRepository,
-    private val billingRepository: BillingRepository,
-    private val sharedPreferenceStorage: SharedPreferenceStorage
+        private val networkConnectivity: NetworkConnectivity,
+        private val authRepository: AuthRepository,
+        private val billingRepository: BillingRepository,
+        private val sharedPreferenceStorage: SharedPreferenceStorage
 ) :
-    ViewModelProvider.Factory {
+        ViewModelProvider.Factory {
 
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         return when {
             modelClass == LoginActivityViewModel::class.java && modelClass.isAssignableFrom(
-                LoginActivityViewModel::class.java
+                    LoginActivityViewModel::class.java
             ) -> LoginActivityViewModel(
-                sharedPreferenceStorage,
-                networkConnectivity,
-                authRepository
+                    sharedPreferenceStorage,
+                    networkConnectivity,
+                    authRepository
             ) as T
             modelClass == SharedViewModel::class.java && modelClass.isAssignableFrom(
-                SharedViewModel::class.java
+                    SharedViewModel::class.java
             ) -> SharedViewModel(
-                sharedPreferenceStorage,
-                networkConnectivity,
-                billingRepository
+                    networkConnectivity,
+                    billingRepository
             ) as T
             else -> throw IllegalArgumentException("Unable to construct ${modelClass.simpleName}")
         }

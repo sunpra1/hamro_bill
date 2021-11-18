@@ -18,7 +18,7 @@ import com.hamrobill.utils.DIALOG_WIDTH_RATIO_SMALL
 import com.hamrobill.utils.windowWidth
 
 class ChangeTableDialogFragment private constructor() : AppCompatDialogFragment(),
-    AdapterView.OnItemSelectedListener, View.OnClickListener {
+        AdapterView.OnItemSelectedListener, View.OnClickListener {
 
     private lateinit var mBinding: FragmentChangeTableDialogBinding
     private var mSelectedTable: Table? = null
@@ -29,14 +29,13 @@ class ChangeTableDialogFragment private constructor() : AppCompatDialogFragment(
     companion object {
         @JvmStatic
         fun getInstance(
-            tableChangeListener: TableChangeListener,
-            tables: ArrayList<Table>,
-            selectedTable: Table?
+                tableChangeListener: TableChangeListener,
+                tables: ArrayList<Table>,
+                selectedTable: Table?
         ): ChangeTableDialogFragment {
             return ChangeTableDialogFragment().apply {
                 tables.forEach {
-                    if (it.isBooked && mBookedTables.indexOfFirst { table -> table.tableID == it.tableID } == -1)
-                        mBookedTables.add(it)
+                    if (it.isBooked) mBookedTables.add(it)
                     else mNotBookedTables.add(it)
                 }
                 mTableChangeListener = tableChangeListener
@@ -46,8 +45,8 @@ class ChangeTableDialogFragment private constructor() : AppCompatDialogFragment(
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+            inflater: LayoutInflater, container: ViewGroup?,
+            savedInstanceState: Bundle?
     ): View {
         mBinding = FragmentChangeTableDialogBinding.inflate(layoutInflater)
         return mBinding.root
@@ -69,27 +68,27 @@ class ChangeTableDialogFragment private constructor() : AppCompatDialogFragment(
         val windowWidth = requireActivity().windowWidth()
         dialog?.setCancelable(false)
         dialog?.window?.setLayout(
-            if (windowWidth > DIALOG_WIDTH_LIMIT) (windowWidth * DIALOG_WIDTH_RATIO_BIG).toInt()
-            else (windowWidth * DIALOG_WIDTH_RATIO_SMALL).toInt(),
-            LinearLayout.LayoutParams.WRAP_CONTENT
+                if (windowWidth > DIALOG_WIDTH_LIMIT) (windowWidth * DIALOG_WIDTH_RATIO_BIG).toInt()
+                else (windowWidth * DIALOG_WIDTH_RATIO_SMALL).toInt(),
+                LinearLayout.LayoutParams.WRAP_CONTENT
         )
 
         val bookedTables = arrayListOf("SELECT TABLE")
-            .also {
-                mBookedTables.forEach { table ->
-                    it.add(table.tableName)
+                .also {
+                    mBookedTables.forEach { table ->
+                        it.add(table.tableName)
+                    }
                 }
-            }
         val notBookedTables = arrayListOf("SELECT TABLE")
-            .also {
-                mNotBookedTables.forEach { table ->
-                    it.add(table.tableName)
+                .also {
+                    mNotBookedTables.forEach { table ->
+                        it.add(table.tableName)
+                    }
                 }
-            }
         val bookedTablesAdapter = object : ArrayAdapter<String>(
-            requireContext(),
-            R.layout.support_simple_spinner_dropdown_item,
-            bookedTables
+                requireContext(),
+                R.layout.support_simple_spinner_dropdown_item,
+                bookedTables
         ) {
             override fun isEnabled(position: Int): Boolean {
                 return when (position) {
@@ -101,9 +100,9 @@ class ChangeTableDialogFragment private constructor() : AppCompatDialogFragment(
             override fun areAllItemsEnabled(): Boolean = false
         }
         val notBookedTablesAdapter = object : ArrayAdapter<String>(
-            requireContext(),
-            R.layout.support_simple_spinner_dropdown_item,
-            notBookedTables
+                requireContext(),
+                R.layout.support_simple_spinner_dropdown_item,
+                notBookedTables
         ) {
             override fun isEnabled(position: Int): Boolean {
                 return when (position) {
@@ -124,9 +123,9 @@ class ChangeTableDialogFragment private constructor() : AppCompatDialogFragment(
         }
         mSelectedTable?.let { selectedTable ->
             mBinding.currentTableSpn.setSelection(
-                mBookedTables.indexOf(
-                    selectedTable
-                ) + 1
+                    mBookedTables.indexOf(
+                            selectedTable
+                    ) + 1
             )
         }
         mBinding.cancelButton.setOnClickListener(this)
@@ -141,7 +140,7 @@ class ChangeTableDialogFragment private constructor() : AppCompatDialogFragment(
                         mBinding.currentTableTil.isErrorEnabled = false
                 }
                 mBinding.destinationTableSpn.id -> if (position > 0) mBinding.destinationTableTil.isErrorEnabled =
-                    false
+                        false
             }
         }
     }
@@ -155,8 +154,8 @@ class ChangeTableDialogFragment private constructor() : AppCompatDialogFragment(
             when (view.id) {
                 mBinding.okButton.id -> if (validate()) {
                     mTableChangeListener.onTableChanged(
-                        mBookedTables[mBinding.currentTableSpn.selectedItemPosition - 1],
-                        mNotBookedTables[mBinding.destinationTableSpn.selectedItemPosition - 1]
+                            mBookedTables[mBinding.currentTableSpn.selectedItemPosition - 1],
+                            mNotBookedTables[mBinding.destinationTableSpn.selectedItemPosition - 1]
                     )
                     dismiss()
                 }

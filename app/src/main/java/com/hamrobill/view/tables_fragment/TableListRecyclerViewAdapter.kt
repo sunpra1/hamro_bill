@@ -10,17 +10,17 @@ import com.hamrobill.databinding.TableListItemBinding
 import com.hamrobill.model.TableItemChanged
 
 class TableListRecyclerViewAdapter(
-    private var tableData: ArrayList<Table>,
-    private val tableItemClickListener: TableItemClickListener
+        private var tableData: ArrayList<Table>,
+        private val tableItemClickListener: TableItemClickListener
 ) :
-    RecyclerView.Adapter<TableListRecyclerViewAdapter.ViewHolder>() {
+        RecyclerView.Adapter<TableListRecyclerViewAdapter.ViewHolder>() {
 
     var selection = -1
         set(value) {
             val previousSelection = field
             field = value
             if (previousSelection > -1 && previousSelection != field) notifyItemChanged(
-                previousSelection
+                    previousSelection
             )
             notifyItemChanged(field)
         }
@@ -42,28 +42,28 @@ class TableListRecyclerViewAdapter(
     }
 
     class ViewHolder(
-        private val view: TableListItemBinding,
-        private val context: Context = view.root.context
+            private val view: TableListItemBinding,
+            private val context: Context = view.root.context
     ) : RecyclerView.ViewHolder(view.root) {
         fun updateView(
-            tableData: Table,
-            selection: Int,
-            tableItemClickListener: TableItemClickListener
+                tableData: Table,
+                selection: Int,
+                tableItemClickListener: TableItemClickListener
         ) {
             view.cardView.setOnClickListener {
                 tableItemClickListener.onTableItemClick(
-                    tableData,
-                    adapterPosition
+                        tableData,
+                        adapterPosition
                 )
             }
             view.tableName.text = tableData.tableName
             view.tableCapacity.text = context.getString(
-                R.string.format_capacity_or_occupied,
-                tableData.maxSites.toString()
+                    R.string.format_capacity_or_occupied,
+                    tableData.maxSites.toString()
             )
             view.customerOccupancy.text = context.getString(
-                R.string.format_capacity_or_occupied,
-                tableData.customerCount.toString()
+                    R.string.format_capacity_or_occupied,
+                    tableData.customerCount.toString()
             )
 
             when {
@@ -82,7 +82,7 @@ class TableListRecyclerViewAdapter(
                     view.customerOccupancy.setTextColor(context.getColor(R.color.white))
                 }
                 selection > -1 && selection == adapterPosition -> {
-                    view.cardView.setBackgroundColor(context.getColor(R.color.dark_500))
+                    view.cardView.setBackgroundColor(context.getColor(R.color.blue))
                     view.borderView.setBackgroundResource(R.drawable.white_border)
                     view.tableName.setTextColor(context.getColor(R.color.white))
                     view.tableCapacity.setTextColor(context.getColor(R.color.white))

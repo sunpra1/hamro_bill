@@ -185,7 +185,6 @@
         </LinearLayout>
 
         <androidx.appcompat.widget.SearchView
-            android:theme="@style/Theme.Hamrobill.SearchView"
             android:id="@+id/searchBtn"
             android:layout_width="wrap_content"
             android:layout_height="32dp"
@@ -195,13 +194,14 @@
             android:layout_marginEnd="12dp"
             android:background="@color/white"
             android:backgroundTint="@color/dark_500"
-            android:visibility="gone"
             android:elevation="100dp"
             android:minWidth="32dp"
-            app:searchHintIcon="@drawable/search_white_18"
-            app:searchIcon="@drawable/search_white_18"
+            android:theme="@style/Theme.Hamrobill.SearchView"
+            android:visibility="gone"
             app:closeIcon="@drawable/close_white_18"
-            app:queryHint="@string/search_food_item" />
+            app:queryHint="@string/search_food_item"
+            app:searchHintIcon="@drawable/search_white_18"
+            app:searchIcon="@drawable/search_white_18" />
 
     </RelativeLayout>
 

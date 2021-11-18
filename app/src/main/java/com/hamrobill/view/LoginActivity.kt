@@ -14,6 +14,8 @@ import com.hamrobill.R
 import com.hamrobill.data.pojo.LoginRequest
 import com.hamrobill.databinding.ActivityLoginBinding
 import com.hamrobill.utils.hideKeyboard
+import com.hamrobill.utils.hideProgressDialog
+import com.hamrobill.utils.showProgressDialog
 import com.hamrobill.utils.vibrate
 import com.hamrobill.view_model.LoginActivityViewModel
 import com.hamrobill.view_model.factory.ViewModelFactory
@@ -29,7 +31,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener, View.OnFocusCha
 
     override fun onCreate(savedInstanceState: Bundle?) {
         (application as HamrobillApp).applicationComponent.getActivityComponentFactory()
-            .create(baseContext).inject(this)
+                .create(baseContext).inject(this)
         super.onCreate(savedInstanceState)
         mBinding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(mBinding.root)
@@ -43,7 +45,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener, View.OnFocusCha
 
     private fun setupObservers() {
         mViewModel.isLoading.observe(this) {
-            mBinding.progressBar.root.visibility = if(it) View.VISIBLE else View.GONE
+            if (it) showProgressDialog() else hideProgressDialog()
         }
         mViewModel.errorMessage.observe(this) {
             val message = when (it) {
@@ -52,25 +54,25 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener, View.OnFocusCha
                 else -> getString(R.string.something_went_wrong)
             }
             AlertDialog.Builder(this)
-                .setMessage(message)
-                .setTitle("INFORMATION")
-                .setIcon(R.drawable.information_24)
-                .setCancelable(false)
-                .setPositiveButton("OK") { dialog, _ ->
-                    dialog.dismiss()
-                }
-                .show()
+                    .setMessage(message)
+                    .setTitle("INFORMATION")
+                    .setIcon(R.drawable.information_24)
+                    .setCancelable(false)
+                    .setPositiveButton("OK") { dialog, _ ->
+                        dialog.dismiss()
+                    }
+                    .show()
         }
         mViewModel.isNetworkAvailable.observe(this) {
             if (!mPreviousConnectivityStatus)
                 Handler(Looper.getMainLooper()).postDelayed({
                     mBinding.netWorkConnectivity.root.visibility =
-                        if (it) View.GONE else View.VISIBLE
+                            if (it) View.GONE else View.VISIBLE
                 }, 1000)
             else
                 mBinding.netWorkConnectivity.root.visibility = if (it) View.GONE else View.VISIBLE
             mBinding.netWorkConnectivity.networkStatus.text =
-                if (it) getString(R.string.connected) else getString(R.string.no_internet)
+                    if (it) getString(R.string.connected) else getString(R.string.no_internet)
             mBinding.netWorkConnectivity.networkStatus.setTextColor(getColor(if (it) R.color.green else R.color.red))
             mBinding.loginBtn.isEnabled = it
             mPreviousConnectivityStatus = it
@@ -95,10 +97,10 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener, View.OnFocusCha
                     if (validate()) {
                         hideKeyboard()
                         mViewModel.loginUser(
-                            LoginRequest(
-                                mBinding.emailEt.text.toString(),
-                                mBinding.passwordEt.text.toString()
-                            ).getHashMap()
+                                LoginRequest(
+                                        mBinding.emailEt.text.toString(),
+                                        mBinding.passwordEt.text.toString()
+                                ).getHashMap()
                         )
                     }
                 }
@@ -117,8 +119,8 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener, View.OnFocusCha
     }
 
     private fun validateEmail(
-        shouldUpdateView: Boolean = true,
-        shouldVibrateView: Boolean = true
+            shouldUpdateView: Boolean = true,
+            shouldVibrateView: Boolean = true
     ): Boolean {
         val value = mBinding.emailEt.text.toString()
         val errorMessage: String? = when {
@@ -137,8 +139,8 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener, View.OnFocusCha
     }
 
     private fun validatePassword(
-        shouldUpdateView: Boolean = true,
-        shouldVibrateView: Boolean = true
+            shouldUpdateView: Boolean = true,
+            shouldVibrateView: Boolean = true
     ): Boolean {
         val value = mBinding.passwordEt.text.toString()
         val errorMessage: String? = when {

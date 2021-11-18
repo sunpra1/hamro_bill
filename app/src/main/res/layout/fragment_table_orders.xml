@@ -49,64 +49,64 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="8dp"
-                android:layout_marginVertical="16dp">
+                android:layout_marginVertical="16dp"
+                android:padding="8dp">
 
                 <TextView
                     android:id="@+id/srNO"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/black"
                     android:layout_weight="0.5"
                     android:gravity="center_vertical|center_horizontal"
-                    android:text="@string/sn" />
+                    android:text="@string/sn"
+                    android:textColor="@color/black" />
 
                 <TextView
                     android:id="@+id/foodName"
                     android:layout_width="0dp"
-                    android:text="@string/name"
-                    android:textColor="@color/black"
                     android:layout_height="wrap_content"
+                    android:layout_weight="3"
                     android:gravity="center_vertical|center_horizontal"
-                    android:layout_weight="3" />
+                    android:text="@string/name"
+                    android:textColor="@color/black" />
 
                 <TextView
                     android:id="@+id/qty"
                     android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:text="@string/qty"
-                    android:textColor="@color/black"
-                    android:gravity="center_vertical|center_horizontal"
                     android:layout_height="wrap_content"
-                    android:paddingHorizontal="4dp" />
+                    android:layout_weight="1"
+                    android:gravity="center_vertical|center_horizontal"
+                    android:paddingHorizontal="4dp"
+                    android:text="@string/qty"
+                    android:textColor="@color/black" />
 
                 <TextView
                     android:id="@+id/price"
                     android:layout_width="0dp"
-                    android:text="@string/price"
-                    android:textColor="@color/black"
-                    android:gravity="center_vertical|center_horizontal"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="4dp"
-                    android:layout_weight="1.5" />
+                    android:layout_weight="1.5"
+                    android:gravity="center_vertical|center_horizontal"
+                    android:text="@string/price"
+                    android:textColor="@color/black" />
 
                 <TextView
                     android:id="@+id/totalPrice"
                     android:layout_width="0dp"
-                    android:text="@string/total"
-                    android:textColor="@color/black"
-                    android:gravity="center_vertical|center_horizontal"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1.5" />
+                    android:layout_weight="1.5"
+                    android:gravity="center_vertical|center_horizontal"
+                    android:text="@string/total"
+                    android:textColor="@color/black" />
 
                 <TextView
                     android:id="@+id/status"
                     android:layout_width="0dp"
-                    android:text="@string/isNew"
-                    android:textColor="@color/black"
-                    android:gravity="center_vertical|center_horizontal"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1" />
+                    android:layout_weight="1"
+                    android:gravity="center_vertical|center_horizontal"
+                    android:text="@string/isNew"
+                    android:textColor="@color/black" />
 
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>

@@ -85,10 +85,10 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:hint="@string/quantity"
-                            android:text="@string/one"
                             android:imeOptions="actionNext"
+                            android:inputType="numberDecimal"
                             android:nextFocusDown="@id/orderByTil"
-                            android:inputType="numberDecimal" />
+                            android:text="@string/one" />
 
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -108,10 +108,10 @@
                             android:id="@+id/orderByEt"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:imeOptions="actionNext"
-                            android:nextFocusDown="@id/remarksTil"
                             android:hint="@string/priority"
-                            android:inputType="number" />
+                            android:imeOptions="actionNext"
+                            android:inputType="number"
+                            android:nextFocusDown="@id/remarksTil" />
 
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -130,8 +130,8 @@
                             android:id="@+id/remarksEt"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:imeOptions="actionDone"
                             android:hint="@string/remarks"
+                            android:imeOptions="actionDone"
                             android:inputType="text" />
 
                     </com.google.android.material.textfield.TextInputLayout>

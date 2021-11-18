@@ -18,11 +18,6 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <include
-        android:id="@+id/progress_bar"
-        layout="@layout/loading"
-        android:visibility="gone" />
-
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/loginCardView"
         android:layout_width="match_parent"

@@ -15,22 +15,22 @@ import javax.inject.Inject
 class SplashActivity : AppCompatActivity() {
 
     @Inject
-    lateinit var sharedPreferenceStorage: SharedPreferenceStorage
+    lateinit var mSharedPreferenceStorage: SharedPreferenceStorage
 
     override fun onCreate(savedInstanceState: Bundle?) {
         (application as HamrobillApp).applicationComponent.getActivityComponentFactory()
                 .create(baseContext).inject(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
-       Handler(Looper.getMainLooper()).postDelayed({
-           val tokenExpiryTime = sharedPreferenceStorage.tokenExpiresAt
-           val intent: Intent = if (tokenExpiryTime != null && tokenExpiryTime.getCalenderDate() > Calendar.getInstance()) {
-               Intent(this, MainActivity::class.java)
-           }else{
-               Intent(this, LoginActivity::class.java)
-           }
-           startActivity(intent)
-           finish()
-       }, 1500)
+        Handler(Looper.getMainLooper()).postDelayed({
+            val tokenExpiryTime = mSharedPreferenceStorage.tokenExpiresAt
+            val intent: Intent = if (tokenExpiryTime != null && tokenExpiryTime.getCalenderDate() > Calendar.getInstance()) {
+                Intent(this, MainActivity::class.java)
+            } else {
+                Intent(this, LoginActivity::class.java)
+            }
+            startActivity(intent)
+            finish()
+        }, 1500)
     }
 }

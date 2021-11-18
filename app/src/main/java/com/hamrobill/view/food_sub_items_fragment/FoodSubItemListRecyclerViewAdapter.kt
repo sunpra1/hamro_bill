@@ -10,15 +10,15 @@ import com.hamrobill.data.pojo.FoodSubItem
 import com.hamrobill.databinding.FoodSubItemListItemBinding
 
 class FoodSubItemListRecyclerViewAdapter(
-    private val foodSubItems: ArrayList<FoodSubItem>,
-    private val foodSubItemOnClickListener: FoodSubItemOnClickListener
+        private val foodSubItems: ArrayList<FoodSubItem>,
+        private val foodSubItemOnClickListener: FoodSubItemOnClickListener
 ) :
-    RecyclerView.Adapter<FoodSubItemListRecyclerViewAdapter.ViewHolder>() {
+        RecyclerView.Adapter<FoodSubItemListRecyclerViewAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
-            FoodSubItemListItemBinding.inflate(LayoutInflater.from(parent.context)),
-            foodSubItemOnClickListener
+                FoodSubItemListItemBinding.inflate(LayoutInflater.from(parent.context)),
+                foodSubItemOnClickListener
         )
     }
 
@@ -29,33 +29,33 @@ class FoodSubItemListRecyclerViewAdapter(
     override fun getItemCount(): Int = foodSubItems.size
 
     class ViewHolder(
-        private val view: FoodSubItemListItemBinding,
-        private val foodSbItemOnClickListener: FoodSubItemOnClickListener,
-        private val context: Context = view.root.context
+            private val view: FoodSubItemListItemBinding,
+            private val foodSbItemOnClickListener: FoodSubItemOnClickListener,
+            private val context: Context = view.root.context
     ) : RecyclerView.ViewHolder(view.root) {
         fun updateView(foodSubItem: FoodSubItem) {
             view.foodSubItemName.text = foodSubItem.subItemName
             view.foodSubItemPrice.text = context.getString(R.string.price_format)
-                .format(context.getString(R.string.currency), foodSubItem.subItemPrice)
+                    .format(context.getString(R.string.currency), foodSubItem.subItemPrice)
             view.foodSubItemName.setOnClickListener {
                 foodSbItemOnClickListener.onFoodSubItemClicked(foodSubItem, adapterPosition)
             }
             val onKeyListener = View.OnKeyListener { _, _, _ ->
                 val quantity =
-                    if (view.quantityEt.text.isNullOrBlank()) 0f else view.quantityEt.text.toString()
-                        .toFloat()
+                        if (view.quantityEt.text.isNullOrBlank()) 0f else view.quantityEt.text.toString()
+                                .toFloat()
                 val priority =
-                    if (view.orderByEt.text.isNullOrBlank()) null else view.orderByEt.text.toString()
-                        .toInt()
+                        if (view.orderByEt.text.isNullOrBlank()) null else view.orderByEt.text.toString()
+                                .toInt()
                 val remarks =
-                    if (view.remarksEt.text.isNullOrBlank()) null else view.remarksEt.text.toString()
+                        if (view.remarksEt.text.isNullOrBlank()) null else view.remarksEt.text.toString()
                 view.foodSubItemName.isChecked = quantity > 0
                 foodSbItemOnClickListener.onFoodSubItemEdited(
-                    foodSubItem,
-                    quantity,
-                    priority,
-                    remarks,
-                    adapterPosition
+                        foodSubItem,
+                        quantity,
+                        priority,
+                        remarks,
+                        adapterPosition
                 )
                 false
             }
@@ -68,11 +68,11 @@ class FoodSubItemListRecyclerViewAdapter(
     interface FoodSubItemOnClickListener {
         fun onFoodSubItemClicked(foodSubItem: FoodSubItem, position: Int)
         fun onFoodSubItemEdited(
-            foodSubItem: FoodSubItem,
-            quantity: Float,
-            priority: Int?,
-            remarks: String?,
-            position: Int
+                foodSubItem: FoodSubItem,
+                quantity: Float,
+                priority: Int?,
+                remarks: String?,
+                position: Int
         )
     }
 }

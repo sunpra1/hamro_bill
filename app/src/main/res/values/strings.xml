@@ -75,7 +75,7 @@
     <string name="total">TOTAL</string>
     <string name="dummy_table_name">TABLE C-10 [ORDERS]</string>
     <string name="isNew">IS NEW</string>
-    <string name="table_order_title_format">TABLE [%s]: [ORDERS]</string>
+    <string name="table_order_title_format">TABLE [%s] ORDERS: [BILL NO: %s]</string>
     <string name="splash_screen_image">Splash screen image</string>
     <string name="app_slogan">For Managing Table Orders</string>
 </resources>

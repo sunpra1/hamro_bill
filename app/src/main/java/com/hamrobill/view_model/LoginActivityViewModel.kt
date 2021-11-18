@@ -17,9 +17,9 @@ import javax.inject.Inject
 
 @ActivityScope
 class LoginActivityViewModel @Inject constructor(
-    private val sharedPrefs: SharedPreferenceStorage,
-    networkConnectivity: NetworkConnectivity,
-    private val authRepository: AuthRepository
+        private val sharedPrefs: SharedPreferenceStorage,
+        networkConnectivity: NetworkConnectivity,
+        private val authRepository: AuthRepository
 ) : ViewModel() {
     private val _isLoading: MutableLiveData<Boolean> = MutableLiveData()
     val isLoading: LiveData<Boolean> = _isLoading
@@ -37,29 +37,29 @@ class LoginActivityViewModel @Inject constructor(
     fun loginUser(loginBody: HashMap<String, Any>) {
         if (_isNetworkAvailable.value == true) viewModelScope.launch {
             authRepository.login(loginBody)
-                .catch {
-                    _isLoading.value = false
-                    _errorMessage.value = R.string.something_went_wrong
-                }
-                .collect {
-                    when (it) {
-                        is RequestStatus.Waiting -> {
-                            _isLoading.value = true
-                        }
-                        is RequestStatus.Success -> {
-                            _isLoading.value = false
-                            it.data?.let { data ->
-                                sharedPrefs.token = data.accessToken
-                                sharedPrefs.tokenExpiresAt = data.expiresAt
+                    .catch {
+                        _isLoading.value = false
+                        _errorMessage.value = R.string.something_went_wrong
+                    }
+                    .collect {
+                        when (it) {
+                            is RequestStatus.Waiting -> {
+                                _isLoading.value = true
                             }
-                            _isLoginSuccess.value = true
-                        }
-                        is RequestStatus.Error -> {
-                            _isLoading.value = false
-                            _errorMessage.value = it.message
+                            is RequestStatus.Success -> {
+                                _isLoading.value = false
+                                it.data?.let { data ->
+                                    sharedPrefs.token = data.accessToken
+                                    sharedPrefs.tokenExpiresAt = data.expiresAt
+                                }
+                                _isLoginSuccess.value = true
+                            }
+                            is RequestStatus.Error -> {
+                                _isLoading.value = false
+                                _errorMessage.value = it.message
+                            }
                         }
                     }
-                }
         }
     }
 }
