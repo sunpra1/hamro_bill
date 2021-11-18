@@ -15,8 +15,6 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.FragmentActivity
 import com.hamrobill.R
-import org.json.JSONException
-import org.json.JSONObject
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -93,4 +91,10 @@ fun Calendar.getISOFormattedStringDate(): String {
 fun Calendar.getFormattedStringDate(format:String = DEFAULT_OUTPUT_FORMAT): String {
     return SimpleDateFormat(format, Locale.US)
         .format(Calendar.getInstance().let { time })
+}
+
+fun String.getCalenderDate(inputFormat: String = "EEE, dd MMM yyyy HH:mm:ss zzzz"): Calendar {
+    val dateFormat = SimpleDateFormat(inputFormat, Locale.ENGLISH)
+    val date = dateFormat.parse(this)
+    return Calendar.getInstance().apply { time = date }
 }

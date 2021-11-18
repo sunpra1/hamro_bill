@@ -39,7 +39,6 @@
     <string name="one">1</string>
     <string name="no_table_selected">No table selected</string>
     <string name="unable_fetch_table_orders">Unable to fetch table orders.\nPlease try again later.</string>
-    <string name="calculation_format">%s %s * %s %s</string>
     <string name="unable_place_table_order">Unable to place table order.\nPlease try again.</string>
     <string name="unable_save_table_order">Unable to save table order.\nPlease try again.</string>
     <string name="place_order">PLACE ORDER</string>
@@ -68,4 +67,15 @@
     <string name="change">CHANGE</string>
     <string name="merge">MERGE</string>
     <string name="merge_table">MERGE TABLE</string>
+    <string name="order_status">Food sub item order status</string>
+    <string name="sn">SN</string>
+    <string name="name">NAME</string>
+    <string name="qty">QTY</string>
+    <string name="price">PRICE</string>
+    <string name="total">TOTAL</string>
+    <string name="dummy_table_name">TABLE C-10 [ORDERS]</string>
+    <string name="isNew">IS NEW</string>
+    <string name="table_order_title_format">TABLE [%s]: [ORDERS]</string>
+    <string name="splash_screen_image">Splash screen image</string>
+    <string name="app_slogan">For Managing Table Orders</string>
 </resources>

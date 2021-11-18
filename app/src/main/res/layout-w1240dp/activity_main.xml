@@ -210,9 +210,9 @@
             android:visibility="gone"
             android:elevation="100dp"
             android:minWidth="52dp"
-            app:searchHintIcon="@drawable/search"
-            app:searchIcon="@drawable/search"
-            app:closeIcon="@drawable/close_white"
+            app:searchHintIcon="@drawable/search_white_24"
+            app:searchIcon="@drawable/search_white_24"
+            app:closeIcon="@drawable/close_white_24"
             app:queryHint="@string/search_food_item" />
 
     </RelativeLayout>

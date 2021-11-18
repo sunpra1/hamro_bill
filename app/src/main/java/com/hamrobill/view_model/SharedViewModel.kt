@@ -400,7 +400,7 @@ class SharedViewModel @Inject constructor(
                                 set(fromTableIndex, from)
                                 set(toTableIndex, to)
                             }
-                            _selectedTable.value = null
+                            _selectedTable.value = to
                             _tableItemChanged.value =
                                 TableItemChanged(fromTableIndex, from)
                             _tableItemChanged.value =
@@ -434,7 +434,7 @@ class SharedViewModel @Inject constructor(
                             tables.value?.apply {
                                 set(fromTableIndex, from)
                             }
-                            _selectedTable.value = null
+                            _selectedTable.value = to
                             _tableItemChanged.value =
                                 TableItemChanged(fromTableIndex, from)
 

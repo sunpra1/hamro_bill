@@ -21,7 +21,7 @@ import com.hamrobill.view_model.factory.ViewModelFactory
 import javax.inject.Inject
 
 class TablesFragment : Fragment(),
-    TableListRecyclerViewAdapter.TableItemClickListener {
+        TableListRecyclerViewAdapter.TableItemClickListener {
     @Inject
     lateinit var mViewModelFactory: ViewModelFactory
     private lateinit var mViewModel: SharedViewModel
@@ -30,13 +30,13 @@ class TablesFragment : Fragment(),
     private var mIsFoodItemsFragmentAttached = false
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+            inflater: LayoutInflater,
+            container: ViewGroup?,
+            savedInstanceState: Bundle?
     ): View {
         setHasOptionsMenu(true)
         mViewModel =
-            ViewModelProvider(requireActivity(), mViewModelFactory).get(SharedViewModel::class.java)
+                ViewModelProvider(requireActivity(), mViewModelFactory).get(SharedViewModel::class.java)
         mBinding = FragmentTablesBinding.inflate(inflater, container, false)
 
         setupObservers()
@@ -52,43 +52,49 @@ class TablesFragment : Fragment(),
             requireActivity().invalidateOptionsMenu()
             mRecyclerViewAdapter = TableListRecyclerViewAdapter(it, this)
             mBinding.tableRV.layoutManager =
-                GridLayoutManager(
-                    context,
-                    if (requireActivity().windowWidth() > RECYCLER_VIEW_WIDTH_LIMIT) 3 else 2
-                )
+                    GridLayoutManager(
+                            context,
+                            if (requireActivity().windowWidth() > RECYCLER_VIEW_WIDTH_LIMIT) 3 else 2
+                    )
             mBinding.tableRV.swapAdapter(mRecyclerViewAdapter, true)
 
             if (!mIsFoodItemsFragmentAttached) {
                 mIsFoodItemsFragmentAttached = true
                 requireActivity().supportFragmentManager.beginTransaction()
-                    .replace(R.id.fragmentContainerTwo, FoodItemsFragment())
-                    .commit()
+                        .replace(R.id.fragmentContainerTwo, FoodItemsFragment())
+                        .commit()
             }
         }
         mViewModel.tableItemChanged.observe(requireActivity()) {
             mRecyclerViewAdapter.tableItemChanged(it)
         }
+        mViewModel.selectedTable.observe(requireActivity()) {
+            if (it != null) {
+                val position = mViewModel.tables.value!!.indexOf(it)
+                mRecyclerViewAdapter.selection = position
+                (requireActivity() as MainActivity).supportActionBar?.title =
+                        getString(R.string.selected_table_format, it.tableName)
+                mViewModel.getTableActiveOrders()
+            } else {
+                mRecyclerViewAdapter.selection = -1
+                (requireActivity() as MainActivity).supportActionBar?.title =
+                        getString(R.string.not_table_selected)
+                mViewModel.setActiveTableOrders(null)
+            }
+        }
     }
 
     override fun onAttach(context: Context) {
         (requireActivity().application as HamrobillApp).applicationComponent.getActivityComponentFactory()
-            .create(requireActivity()).getFragmentSubComponent().inject(this)
+                .create(requireActivity()).getFragmentSubComponent().inject(this)
         super.onAttach(context)
     }
 
     override fun onTableItemClick(table: Table, position: Int) {
         if (mViewModel.selectedTable.value != null && mViewModel.selectedTable.value!!.tableID == table.tableID) {
-            mRecyclerViewAdapter.selection = -1
             mViewModel.setSelectedTable(null)
-            mViewModel.setActiveTableOrders(null)
-            (requireActivity() as MainActivity).supportActionBar?.title =
-                getString(R.string.not_table_selected)
         } else {
-            mRecyclerViewAdapter.selection = position
             mViewModel.setSelectedTable(table)
-            mViewModel.getTableActiveOrders()
-            (requireActivity() as MainActivity).supportActionBar?.title =
-                getString(R.string.selected_table_format, table.tableName)
         }
     }
 }

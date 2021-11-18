@@ -1,21 +1,35 @@
 package com.hamrobill.view
 
+import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import androidx.appcompat.app.AppCompatActivity
 import com.hamrobill.HamrobillApp
 import com.hamrobill.R
-import com.hamrobill.view_model.factory.ViewModelFactory
+import com.hamrobill.utils.SharedPreferenceStorage
+import com.hamrobill.utils.getCalenderDate
+import java.util.*
 import javax.inject.Inject
 
 class SplashActivity : AppCompatActivity() {
 
     @Inject
-    lateinit var viewModelFactory: ViewModelFactory
+    lateinit var sharedPreferenceStorage: SharedPreferenceStorage
 
     override fun onCreate(savedInstanceState: Bundle?) {
         (application as HamrobillApp).applicationComponent.getActivityComponentFactory()
-            .create(baseContext).inject(this)
+                .create(baseContext).inject(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
+       Handler(Looper.getMainLooper()).postDelayed({
+           val tokenExpiryTime = sharedPreferenceStorage.tokenExpiresAt
+           val intent: Intent = if (tokenExpiryTime != null && tokenExpiryTime.getCalenderDate() > Calendar.getInstance()) {
+               Intent(this, MainActivity::class.java)
+           }else{
+               Intent(this, LoginActivity::class.java)
+           }
+           startActivity(intent)
+       }, 1500)
     }
 }

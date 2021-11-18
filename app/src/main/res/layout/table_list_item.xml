@@ -36,7 +36,7 @@
                 android:layout_gravity="center_horizontal"
                 android:textAlignment="center"
                 android:text="C- 2"
-                android:textSize="20sp" />
+                android:textSize="@dimen/medium_text_size" />
 
             <LinearLayout
                 android:id="@+id/borderView"
@@ -49,10 +49,11 @@
 
                 <TextView
                     android:id="@+id/tableCapacity"
-                    style="@style/TextAppearance.AppCompat.SearchResult.Subtitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/medium_text_size"
                     android:text="[5]" />
 
                 <View
@@ -64,9 +65,10 @@
 
                 <TextView
                     android:id="@+id/customerOccupancy"
-                    style="@style/TextAppearance.AppCompat.SearchResult.Subtitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/medium_text_size"
                     android:layout_gravity="center_horizontal"
                     android:text="[5]" />
 
