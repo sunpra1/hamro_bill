@@ -82,7 +82,7 @@ class TableListRecyclerViewAdapter(
                     view.customerOccupancy.setTextColor(context.getColor(R.color.white))
                 }
                 selection > -1 && selection == adapterPosition -> {
-                    view.cardView.setBackgroundColor(context.getColor(R.color.purple_500))
+                    view.cardView.setBackgroundColor(context.getColor(R.color.dark_500))
                     view.borderView.setBackgroundResource(R.drawable.white_border)
                     view.tableName.setTextColor(context.getColor(R.color.white))
                     view.tableCapacity.setTextColor(context.getColor(R.color.white))

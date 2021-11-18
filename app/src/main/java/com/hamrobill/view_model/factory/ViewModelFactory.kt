@@ -8,7 +8,6 @@ import com.hamrobill.utils.NetworkConnectivity
 import com.hamrobill.utils.SharedPreferenceStorage
 import com.hamrobill.view_model.LoginActivityViewModel
 import com.hamrobill.view_model.SharedViewModel
-import com.hamrobill.view_model.SplashActivityViewModel
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -34,13 +33,6 @@ class ViewModelFactory @Inject constructor(
             modelClass == SharedViewModel::class.java && modelClass.isAssignableFrom(
                 SharedViewModel::class.java
             ) -> SharedViewModel(
-                sharedPreferenceStorage,
-                networkConnectivity,
-                billingRepository
-            ) as T
-            modelClass == SplashActivityViewModel::class.java && modelClass.isAssignableFrom(
-                SplashActivityViewModel::class.java
-            ) -> SplashActivityViewModel(
                 sharedPreferenceStorage,
                 networkConnectivity,
                 billingRepository

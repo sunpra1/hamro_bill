@@ -19,7 +19,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/dummy_table_name"
-            android:textColor="@color/purple_500"
+            android:textColor="@color/dark_500"
             android:textSize="25sp" />
 
         <ImageView
