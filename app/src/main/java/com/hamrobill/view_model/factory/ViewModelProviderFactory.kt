@@ -36,8 +36,4 @@ class ViewModelProviderFactory @Inject constructor(private val creators: Map<Cla
             throw RuntimeException(e)
         }
     }
-
-    companion object {
-        private const val TAG = "ViewModelProviderFactor"
-    }
 }
