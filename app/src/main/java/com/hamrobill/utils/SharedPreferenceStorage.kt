@@ -16,12 +16,12 @@ class SharedPreferenceStorage @Inject constructor(@Named("Application") context:
     var token: String? = null
         get() = sharedPreferences.getString(TOKEN_VALUE, null)?.let { "Bearer $it" }
         set(value) = sharedPreferences.edit().putString(TOKEN_VALUE, value).apply()
-                .also { field = value }
+            .also { field = value }
 
     var tokenExpiresAt: String? = null
         get() = sharedPreferences.getString(TOKEN_EXPIRES_AT, null)
         set(value) = sharedPreferences.edit().putString(TOKEN_EXPIRES_AT, value).apply()
-                .also { field = value }
+            .also { field = value }
 
 
 }

@@ -33,10 +33,10 @@ fun View.vibrate() {
     val vibrator = context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
         vibrator.vibrate(
-                VibrationEffect.createOneShot(
-                        350,
-                        VibrationEffect.DEFAULT_AMPLITUDE
-                )
+            VibrationEffect.createOneShot(
+                350,
+                VibrationEffect.DEFAULT_AMPLITUDE
+            )
         )
     }
 
@@ -51,7 +51,9 @@ fun FragmentActivity.showToast(message: String, length: Int = Toast.LENGTH_LONG)
 }
 
 fun Context.isTablet(): Boolean = resources.getBoolean(R.bool.isTablet)
-fun Context.isLandScape(): Boolean = resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
+fun Context.isLandScape(): Boolean =
+    resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
+
 fun FragmentActivity.windowWidth(): Int {
     val displayRectangle = Rect()
     window.decorView.getWindowVisibleDisplayFrame(displayRectangle)
@@ -69,14 +71,14 @@ private var progressDialog: AlertDialog? = null
 fun FragmentActivity.showProgressDialog() {
     val view = layoutInflater.inflate(R.layout.progress_dialog, null)
     progressDialog = AlertDialog.Builder(this)
-            .setView(view)
-            .setCancelable(false)
-            .create()
+        .setView(view)
+        .setCancelable(false)
+        .create()
     progressDialog?.show()
     //Dialog window is set only after it is shown
     progressDialog?.window?.setLayout(
-            500,
-            LinearLayout.LayoutParams.WRAP_CONTENT
+        500,
+        LinearLayout.LayoutParams.WRAP_CONTENT
     )
 }
 
@@ -86,12 +88,12 @@ fun hideProgressDialog() {
 
 fun Calendar.getISOFormattedStringDate(): String {
     return SimpleDateFormat(DEFAULT_INPUT_FORMAT, Locale.US)
-            .format(Calendar.getInstance().let { time })
+        .format(Calendar.getInstance().let { time })
 }
 
 fun Calendar.getFormattedStringDate(format: String = DEFAULT_OUTPUT_FORMAT): String {
     return SimpleDateFormat(format, Locale.US)
-            .format(Calendar.getInstance().let { time })
+        .format(Calendar.getInstance().let { time })
 }
 
 fun String.getCalenderDate(inputFormat: String = "EEE, dd MMM yyyy HH:mm:ss zzzz"): Calendar {

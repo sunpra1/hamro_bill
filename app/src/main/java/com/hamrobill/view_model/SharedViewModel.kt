@@ -7,22 +7,21 @@ import androidx.lifecycle.viewModelScope
 import com.hamrobill.R
 import com.hamrobill.data.pojo.*
 import com.hamrobill.data.repository.BillingRepository
-import com.hamrobill.di.scope.FragmentScope
+import com.hamrobill.di.scope.ActivityScope
 import com.hamrobill.model.FoodCategory
 import com.hamrobill.model.OrderItem
 import com.hamrobill.model.TableItemChanged
 import com.hamrobill.utils.NetworkConnectivity
 import com.hamrobill.utils.RequestStatus
-import com.hamrobill.utils.SharedPreferenceStorage
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-@FragmentScope
+@ActivityScope
 class SharedViewModel @Inject constructor(
-        networkConnectivity: NetworkConnectivity,
-        private val billingRepository: BillingRepository
+    networkConnectivity: NetworkConnectivity,
+    private val billingRepository: BillingRepository
 ) : ViewModel() {
     private val _isLoading: MutableLiveData<Boolean> = MutableLiveData()
     val isLoading: LiveData<Boolean> = _isLoading
@@ -89,11 +88,11 @@ class SharedViewModel @Inject constructor(
 
     fun addNewOrder(foodSubItem: FoodSubItem) {
         val foodItem =
-                selectedFoodItem.value
-                        ?: foodItems.value!!.first { it.itemId == foodSubItem.itemId }
+            selectedFoodItem.value
+                ?: foodItems.value!!.first { it.itemId == foodSubItem.itemId }
         val index =
-                tableOrders.value?.indexOfFirst { it.table.tableID == selectedTable.value!!.tableID && it.foodItem.itemId == foodItem.itemId && it.foodSubItem.subItemId == foodSubItem.subItemId }
-                        ?: -1
+            tableOrders.value?.indexOfFirst { it.table.tableID == selectedTable.value!!.tableID && it.foodItem.itemId == foodItem.itemId && it.foodSubItem.subItemId == foodSubItem.subItemId }
+                ?: -1
         if (index > -1) {
             _tableOrders.value = tableOrders.value?.apply {
                 removeAt(index)
@@ -111,24 +110,24 @@ class SharedViewModel @Inject constructor(
     }
 
     fun editOrder(
-            foodSubItem: FoodSubItem,
-            quantity: Float = 1f,
-            priority: Int? = null,
-            remarks: String? = null
+        foodSubItem: FoodSubItem,
+        quantity: Float = 1f,
+        priority: Int? = null,
+        remarks: String? = null
     ) {
         val foodItem =
-                selectedFoodItem.value
-                        ?: foodItems.value!!.first { it.itemId == foodSubItem.itemId }
+            selectedFoodItem.value
+                ?: foodItems.value!!.first { it.itemId == foodSubItem.itemId }
         val index =
-                tableOrders.value?.indexOfFirst { it.table.tableID == selectedTable.value!!.tableID && it.foodItem.itemId == foodItem.itemId && it.foodSubItem.subItemId == foodSubItem.subItemId }
-                        ?: -1
+            tableOrders.value?.indexOfFirst { it.table.tableID == selectedTable.value!!.tableID && it.foodItem.itemId == foodItem.itemId && it.foodSubItem.subItemId == foodSubItem.subItemId }
+                ?: -1
         val orderItem = OrderItem(
-                selectedTable.value!!,
-                foodItem,
-                foodSubItem,
-                quantity,
-                priority,
-                remarks
+            selectedTable.value!!,
+            foodItem,
+            foodSubItem,
+            quantity,
+            priority,
+            remarks
         )
         if (index > 0 && quantity < 1)
             _tableOrders.value = tableOrders.value?.apply {
@@ -148,75 +147,76 @@ class SharedViewModel @Inject constructor(
     fun getTables() {
         viewModelScope.launch {
             billingRepository.getTables()
-                    .catch {
-                        _isLoading.value = false
-                        _errorMessage.value = R.string.unable_fetch_tables
-                    }
-                    .collect {
-                        when (it) {
-                            is RequestStatus.Waiting -> {
-                                _isLoading.value = true
-                            }
-                            is RequestStatus.Success -> {
-                                _isLoading.value = false
-                                _tables.value = it.data?.data?.distinctBy { t -> t.tableID } as ArrayList<Table>
-                            }
-                            is RequestStatus.Error -> {
-                                _isLoading.value = false
-                                _errorMessage.value = it.message
-                            }
+                .catch {
+                    _isLoading.value = false
+                    _errorMessage.value = R.string.unable_fetch_tables
+                }
+                .collect {
+                    when (it) {
+                        is RequestStatus.Waiting -> {
+                            _isLoading.value = true
+                        }
+                        is RequestStatus.Success -> {
+                            _isLoading.value = false
+                            _tables.value =
+                                it.data?.data?.distinctBy { t -> t.tableID } as ArrayList<Table>
+                        }
+                        is RequestStatus.Error -> {
+                            _isLoading.value = false
+                            _errorMessage.value = it.message
                         }
                     }
+                }
         }
     }
 
     fun getTableActiveOrders() {
         viewModelScope.launch {
             billingRepository.getTableActiveOrders(selectedTable.value!!.tableID)
-                    .catch {
-                        _isLoading.value = false
-                        _errorMessage.value = R.string.unable_fetch_tables
-                    }
-                    .collect {
-                        when (it) {
-                            is RequestStatus.Waiting -> {
-                                _isLoading.value = true
-                            }
-                            is RequestStatus.Success -> {
-                                _isLoading.value = false
-                                _activeTableOrders.value = it.data?.data
-                            }
-                            is RequestStatus.Error -> {
-                                _isLoading.value = false
-                                _errorMessage.value = it.message
-                            }
+                .catch {
+                    _isLoading.value = false
+                    _errorMessage.value = R.string.unable_fetch_tables
+                }
+                .collect {
+                    when (it) {
+                        is RequestStatus.Waiting -> {
+                            _isLoading.value = true
+                        }
+                        is RequestStatus.Success -> {
+                            _isLoading.value = false
+                            _activeTableOrders.value = it.data?.data
+                        }
+                        is RequestStatus.Error -> {
+                            _isLoading.value = false
+                            _errorMessage.value = it.message
                         }
                     }
+                }
         }
     }
 
     fun getFoodItems() {
         viewModelScope.launch {
             billingRepository.getFoodItems()
-                    .catch {
-                        _isLoading.value = false
-                        _errorMessage.value = R.string.unable_fetch_food_items
-                    }
-                    .collect {
-                        when (it) {
-                            is RequestStatus.Waiting -> {
-                                _isLoading.value = true
-                            }
-                            is RequestStatus.Success -> {
-                                _isLoading.value = false
-                                _foodItems.value = it.data?.data
-                            }
-                            is RequestStatus.Error -> {
-                                _isLoading.value = false
-                                _errorMessage.value = it.message
-                            }
+                .catch {
+                    _isLoading.value = false
+                    _errorMessage.value = R.string.unable_fetch_food_items
+                }
+                .collect {
+                    when (it) {
+                        is RequestStatus.Waiting -> {
+                            _isLoading.value = true
+                        }
+                        is RequestStatus.Success -> {
+                            _isLoading.value = false
+                            _foodItems.value = it.data?.data
+                        }
+                        is RequestStatus.Error -> {
+                            _isLoading.value = false
+                            _errorMessage.value = it.message
                         }
                     }
+                }
         }
     }
 
@@ -224,25 +224,25 @@ class SharedViewModel @Inject constructor(
         selectedFoodItem.value?.let { foodItem ->
             viewModelScope.launch {
                 billingRepository.getFoodSubItems(foodItem.itemId)
-                        .catch {
-                            _isLoading.value = false
-                            _errorMessage.value = R.string.unable_fetch_food_sub_items
-                        }
-                        .collect {
-                            when (it) {
-                                is RequestStatus.Waiting -> {
-                                    _isLoading.value = true
-                                }
-                                is RequestStatus.Success -> {
-                                    _isLoading.value = false
-                                    _foodSubItems.value = it.data?.data
-                                }
-                                is RequestStatus.Error -> {
-                                    _isLoading.value = false
-                                    _errorMessage.value = it.message
-                                }
+                    .catch {
+                        _isLoading.value = false
+                        _errorMessage.value = R.string.unable_fetch_food_sub_items
+                    }
+                    .collect {
+                        when (it) {
+                            is RequestStatus.Waiting -> {
+                                _isLoading.value = true
+                            }
+                            is RequestStatus.Success -> {
+                                _isLoading.value = false
+                                _foodSubItems.value = it.data?.data
+                            }
+                            is RequestStatus.Error -> {
+                                _isLoading.value = false
+                                _errorMessage.value = it.message
                             }
                         }
+                    }
             }
         }
     }
@@ -251,47 +251,47 @@ class SharedViewModel @Inject constructor(
         val table = selectedTable.value!!
         val index = tables.value!!.indexOf(table)
         val orderItems = tableOrders.value!!
-                .map {
-                    PlaceOrderItem(
-                            table.tableID,
-                            it.foodSubItem.subItemId,
-                            it.foodSubItem.subItemPrice,
-                            it.quantity,
-                            it.quantity * it.foodSubItem.subItemPrice,
-                            it.foodItem.itemId,
-                            0f
-                    )
-                } as ArrayList
+            .map {
+                PlaceOrderItem(
+                    table.tableID,
+                    it.foodSubItem.subItemId,
+                    it.foodSubItem.subItemPrice,
+                    it.quantity,
+                    it.quantity * it.foodSubItem.subItemPrice,
+                    it.foodItem.itemId,
+                    0f
+                )
+            } as ArrayList
         val placeOrderRequest = PlaceOrderRequest(table.tableID, orderItems)
 
         viewModelScope.launch {
             billingRepository.placeTableOrders(placeOrderRequest)
-                    .catch {
-                        _isLoading.value = false
-                        _errorMessage.value = R.string.unable_place_table_order
-                    }
-                    .collect {
-                        when (it) {
-                            is RequestStatus.Waiting -> {
-                                _isLoading.value = true
+                .catch {
+                    _isLoading.value = false
+                    _errorMessage.value = R.string.unable_place_table_order
+                }
+                .collect {
+                    when (it) {
+                        is RequestStatus.Waiting -> {
+                            _isLoading.value = true
+                        }
+                        is RequestStatus.Success -> {
+                            _isLoading.value = false
+                            tables.value!!.apply {
+                                set(index, table.apply { isBooked = true })
                             }
-                            is RequestStatus.Success -> {
-                                _isLoading.value = false
-                                tables.value!!.apply {
-                                    set(index, table.apply { isBooked = true })
-                                }
-                                _tableItemChanged.value = TableItemChanged(index, table)
-                                _selectedFoodItem.value = null
-                                _foodSubItems.value = null
-                                _isOrderPlaced.value = true
-                                getTableActiveOrders()
-                            }
-                            is RequestStatus.Error -> {
-                                _isLoading.value = false
-                                _errorMessage.value = it.message
-                            }
+                            _tableItemChanged.value = TableItemChanged(index, table)
+                            _selectedFoodItem.value = null
+                            _foodSubItems.value = null
+                            _isOrderPlaced.value = true
+                            getTableActiveOrders()
+                        }
+                        is RequestStatus.Error -> {
+                            _isLoading.value = false
+                            _errorMessage.value = it.message
                         }
                     }
+                }
         }
     }
 
@@ -309,46 +309,46 @@ class SharedViewModel @Inject constructor(
             }
             val saveOrderItems = orderItems.map {
                 SaveOrderRequest.SaveOrderItem(
-                        tableId = selectedTable.value!!.tableID,
-                        subItemId = it.subItemId,
-                        itemId = it.itemId,
-                        subItemName = it.subItemName,
-                        quantity = it.quantity,
-                        remarks = it.remarks
+                    tableId = selectedTable.value!!.tableID,
+                    subItemId = it.subItemId,
+                    itemId = it.itemId,
+                    subItemName = it.subItemName,
+                    quantity = it.quantity,
+                    remarks = it.remarks
                 )
             } as ArrayList
             val saveOrderRequestBody = SaveOrderRequest(
-                    tableId = selectedTable.value!!.tableID,
-                    printTitle = foodCategory.category.uppercase(),
-                    tableName = selectedTable.value!!.tableName,
-                    billNumber = orderItems.last().billNumber,
-                    orderItemList = saveOrderItems
+                tableId = selectedTable.value!!.tableID,
+                printTitle = foodCategory.category.uppercase(),
+                tableName = selectedTable.value!!.tableName,
+                billNumber = orderItems.last().billNumber,
+                orderItemList = saveOrderItems
             )
 
             viewModelScope.launch {
                 billingRepository.saveTableOrders(saveOrderRequestBody)
-                        .catch {
-                            _isLoading.value = false
-                            _errorMessage.value = R.string.unable_save_table_order
-                        }
-                        .collect {
-                            when (it) {
-                                is RequestStatus.Waiting -> {
-                                    _isLoading.value = true
-                                }
-                                is RequestStatus.Success -> {
-                                    _isLoading.value = false
-                                    _activeTableOrders.value = activeTableOrders.value?.map { item ->
-                                        if (orderItems.contains(item)) item.isOrder = false
-                                        item
-                                    } as ArrayList<ActiveOrderItem>
-                                }
-                                is RequestStatus.Error -> {
-                                    _isLoading.value = false
-                                    _errorMessage.value = it.message
-                                }
+                    .catch {
+                        _isLoading.value = false
+                        _errorMessage.value = R.string.unable_save_table_order
+                    }
+                    .collect {
+                        when (it) {
+                            is RequestStatus.Waiting -> {
+                                _isLoading.value = true
+                            }
+                            is RequestStatus.Success -> {
+                                _isLoading.value = false
+                                _activeTableOrders.value = activeTableOrders.value?.map { item ->
+                                    if (orderItems.contains(item)) item.isOrder = false
+                                    item
+                                } as ArrayList<ActiveOrderItem>
+                            }
+                            is RequestStatus.Error -> {
+                                _isLoading.value = false
+                                _errorMessage.value = it.message
                             }
                         }
+                    }
             }
         }
     }
@@ -356,95 +356,95 @@ class SharedViewModel @Inject constructor(
     fun searchSubItems(searchTerm: String) {
         viewModelScope.launch {
             billingRepository.searchSubItems(searchTerm)
-                    .catch {
-                        _isLoading.value = false
-                        _errorMessage.value = R.string.unable_search_sub_items
-                    }
-                    .collect {
-                        when (it) {
-                            is RequestStatus.Waiting -> {
-                                _isLoading.value = true
-                            }
-                            is RequestStatus.Success -> {
-                                _isLoading.value = false
-                                _searchResult.value = it.data?.data
-                            }
-                            is RequestStatus.Error -> {
-                                _isLoading.value = false
-                                _errorMessage.value = it.message
-                            }
+                .catch {
+                    _isLoading.value = false
+                    _errorMessage.value = R.string.unable_search_sub_items
+                }
+                .collect {
+                    when (it) {
+                        is RequestStatus.Waiting -> {
+                            _isLoading.value = true
+                        }
+                        is RequestStatus.Success -> {
+                            _isLoading.value = false
+                            _searchResult.value = it.data?.data
+                        }
+                        is RequestStatus.Error -> {
+                            _isLoading.value = false
+                            _errorMessage.value = it.message
                         }
                     }
+                }
         }
     }
 
     fun changeTableNumber(from: Table, to: Table) {
         viewModelScope.launch {
             billingRepository.changeTableNumber(from.tableID, to.tableID)
-                    .catch {
-                        _isLoading.value = false
-                        _errorMessage.value = R.string.unable_change_table_number
-                    }
-                    .collect {
-                        when (it) {
-                            is RequestStatus.Waiting -> {
-                                _isLoading.value = true
+                .catch {
+                    _isLoading.value = false
+                    _errorMessage.value = R.string.unable_change_table_number
+                }
+                .collect {
+                    when (it) {
+                        is RequestStatus.Waiting -> {
+                            _isLoading.value = true
+                        }
+                        is RequestStatus.Success -> {
+                            _isLoading.value = false
+                            from.apply { isBooked = false }
+                            to.apply { isBooked = true }
+                            val fromTableIndex = tables.value!!.indexOf(from)
+                            val toTableIndex = tables.value!!.indexOf(to)
+                            tables.value?.apply {
+                                set(fromTableIndex, from)
+                                set(toTableIndex, to)
                             }
-                            is RequestStatus.Success -> {
-                                _isLoading.value = false
-                                from.apply { isBooked = false }
-                                to.apply { isBooked = true }
-                                val fromTableIndex = tables.value!!.indexOf(from)
-                                val toTableIndex = tables.value!!.indexOf(to)
-                                tables.value?.apply {
-                                    set(fromTableIndex, from)
-                                    set(toTableIndex, to)
-                                }
-                                _selectedTable.value = to
-                                _tableItemChanged.value =
-                                        TableItemChanged(fromTableIndex, from)
-                                _tableItemChanged.value =
-                                        TableItemChanged(toTableIndex, to)
-                            }
-                            is RequestStatus.Error -> {
-                                _isLoading.value = false
-                                _errorMessage.value = it.message
-                            }
+                            _selectedTable.value = to
+                            _tableItemChanged.value =
+                                TableItemChanged(fromTableIndex, from)
+                            _tableItemChanged.value =
+                                TableItemChanged(toTableIndex, to)
+                        }
+                        is RequestStatus.Error -> {
+                            _isLoading.value = false
+                            _errorMessage.value = it.message
                         }
                     }
+                }
         }
     }
 
     fun mergeTable(from: Table, to: Table) {
         viewModelScope.launch {
             billingRepository.mergeTable(from.tableID, to.tableID)
-                    .catch {
-                        _isLoading.value = false
-                        _errorMessage.value = R.string.unable_merge_tables
-                    }
-                    .collect {
-                        when (it) {
-                            is RequestStatus.Waiting -> {
-                                _isLoading.value = true
+                .catch {
+                    _isLoading.value = false
+                    _errorMessage.value = R.string.unable_merge_tables
+                }
+                .collect {
+                    when (it) {
+                        is RequestStatus.Waiting -> {
+                            _isLoading.value = true
+                        }
+                        is RequestStatus.Success -> {
+                            _isLoading.value = false
+                            from.apply { isBooked = false }
+                            val fromTableIndex = tables.value!!.indexOf(from)
+                            tables.value?.apply {
+                                set(fromTableIndex, from)
                             }
-                            is RequestStatus.Success -> {
-                                _isLoading.value = false
-                                from.apply { isBooked = false }
-                                val fromTableIndex = tables.value!!.indexOf(from)
-                                tables.value?.apply {
-                                    set(fromTableIndex, from)
-                                }
-                                _selectedTable.value = to
-                                _tableItemChanged.value =
-                                        TableItemChanged(fromTableIndex, from)
+                            _selectedTable.value = to
+                            _tableItemChanged.value =
+                                TableItemChanged(fromTableIndex, from)
 
-                            }
-                            is RequestStatus.Error -> {
-                                _isLoading.value = false
-                                _errorMessage.value = it.message
-                            }
+                        }
+                        is RequestStatus.Error -> {
+                            _isLoading.value = false
+                            _errorMessage.value = it.message
                         }
                     }
+                }
         }
     }
 }

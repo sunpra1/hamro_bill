@@ -25,14 +25,13 @@ import com.hamrobill.view.merge_table_dialog_fragment.MergeTableDialogFragment
 import com.hamrobill.view.table_orders_fragment.TableOrdersFragment
 import com.hamrobill.view.tables_fragment.TablesFragment
 import com.hamrobill.view_model.SharedViewModel
-import com.hamrobill.view_model.factory.ViewModelFactory
 import javax.inject.Inject
 
 class MainActivity : AppCompatActivity(), View.OnClickListener, SearchView.OnQueryTextListener,
-        ChangeTableDialogFragment.TableChangeListener, MergeTableDialogFragment.TableMergeListener {
+    ChangeTableDialogFragment.TableChangeListener, MergeTableDialogFragment.TableMergeListener {
 
     @Inject
-    lateinit var factory: ViewModelFactory
+    lateinit var factory: ViewModelProvider.Factory
     private lateinit var mBinding: ActivityMainBinding
     private var mPreviousConnectivityStatus = true
     private lateinit var mViewModel: SharedViewModel
@@ -40,7 +39,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, SearchView.OnQue
 
     override fun onCreate(savedInstanceState: Bundle?) {
         (application as HamrobillApp).applicationComponent.getActivityComponentFactory()
-                .create(baseContext).inject(this)
+            .create(baseContext).inject(this)
         super.onCreate(savedInstanceState)
         mBinding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(mBinding.root)
@@ -62,17 +61,17 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, SearchView.OnQue
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(
-                R.menu.main_menu,
-                menu
+            R.menu.main_menu,
+            menu
         )
         menu?.setGroupVisible(
-                R.id.tableActiveOrdersMenuGroup,
-                mViewModel.activeTableOrders.value != null && mViewModel.activeTableOrders.value!!.isNotEmpty()
+            R.id.tableActiveOrdersMenuGroup,
+            mViewModel.activeTableOrders.value != null && mViewModel.activeTableOrders.value!!.isNotEmpty()
         )
 
         menu?.setGroupVisible(
-                R.id.changeMergeTableMenuGroup,
-                mViewModel.hasActiveTableOrders()
+            R.id.changeMergeTableMenuGroup,
+            mViewModel.hasActiveTableOrders()
         )
 
         return super.onCreateOptionsMenu(menu)
@@ -86,9 +85,9 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, SearchView.OnQue
             }
             R.id.changeTableMenuItem -> {
                 ChangeTableDialogFragment.getInstance(
-                        this,
-                        mViewModel.tables.value!!,
-                        mViewModel.selectedTable.value
+                    this,
+                    mViewModel.tables.value!!,
+                    mViewModel.selectedTable.value
                 ).apply {
                     show(supportFragmentManager, tag)
                 }
@@ -97,9 +96,9 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, SearchView.OnQue
 
             R.id.mergeTableMenuItem -> {
                 MergeTableDialogFragment.getInstance(
-                        this,
-                        mViewModel.tables.value!!,
-                        mViewModel.selectedTable.value
+                    this,
+                    mViewModel.tables.value!!,
+                    mViewModel.selectedTable.value
                 ).apply {
                     show(supportFragmentManager, tag)
                 }
@@ -131,14 +130,14 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, SearchView.OnQue
 
             alertDialog?.let { dialog -> if (dialog.isShowing) dialog.dismiss() }
             alertDialog = AlertDialog.Builder(this)
-                    .setMessage(message)
-                    .setTitle("INFORMATION")
-                    .setIcon(R.drawable.information_24)
-                    .setCancelable(false)
-                    .setPositiveButton("OK") { dialog, _ ->
-                        dialog.dismiss()
-                    }
-                    .show()
+                .setMessage(message)
+                .setTitle("INFORMATION")
+                .setIcon(R.drawable.information_24)
+                .setCancelable(false)
+                .setPositiveButton("OK") { dialog, _ ->
+                    dialog.dismiss()
+                }
+                .show()
         }
         mViewModel.activeTableOrders.observe(this) {
             val kitchenActiveOrdersItem = ArrayList<ActiveOrderItem>()
@@ -151,13 +150,13 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, SearchView.OnQue
                     when {
                         orderItem.isBar && orderItem.isOrder -> barActiveOrdersItem.add(orderItem)
                         orderItem.isCoffee && orderItem.isOrder -> coffeeActiveOrdersItem.add(
-                                orderItem
+                            orderItem
                         )
                         orderItem.isExtraColumn && orderItem.isOrder -> sekuwaActiveOrdersItem.add(
-                                orderItem
+                            orderItem
                         )
                         !orderItem.isCoffee && !orderItem.isExtraColumn && !orderItem.isBar && orderItem.isOrder -> kitchenActiveOrdersItem.add(
-                                orderItem
+                            orderItem
                         )
                     }
                 }
@@ -182,9 +181,9 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, SearchView.OnQue
         mViewModel.searchResult.observe(this) {
             if (!it.isNullOrEmpty()) {
                 FoodSubItemsFragment.getInstance(SubItemType.FOOD_ITEM_SEARCH_RESULT)
-                        .also { fragment ->
-                            fragment.show(supportFragmentManager, fragment.tag)
-                        }
+                    .also { fragment ->
+                        fragment.show(supportFragmentManager, fragment.tag)
+                    }
             }
         }
         mViewModel.selectedTable.observe(this) {
@@ -194,21 +193,21 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, SearchView.OnQue
 
     private fun attachFragment() {
         supportFragmentManager.beginTransaction()
-                .replace(mBinding.fragmentContainerOne.id, TablesFragment()).commit()
+            .replace(mBinding.fragmentContainerOne.id, TablesFragment()).commit()
     }
 
     fun displayConnectivityMessage(isConnected: Boolean) {
         if (!mPreviousConnectivityStatus)
             Handler(Looper.getMainLooper()).postDelayed({
                 mBinding.netWorkConnectivity.root.visibility =
-                        if (isConnected) View.GONE else View.VISIBLE
+                    if (isConnected) View.GONE else View.VISIBLE
             }, 1000)
         else
             mBinding.netWorkConnectivity.root.visibility =
-                    if (isConnected) View.GONE else View.VISIBLE
+                if (isConnected) View.GONE else View.VISIBLE
 
         mBinding.netWorkConnectivity.networkStatus.text =
-                if (isConnected) getString(R.string.connected) else getString(R.string.no_internet)
+            if (isConnected) getString(R.string.connected) else getString(R.string.no_internet)
         mBinding.netWorkConnectivity.networkStatus.setTextColor(getColor(if (isConnected) R.color.green else R.color.red))
         mPreviousConnectivityStatus = isConnected
     }

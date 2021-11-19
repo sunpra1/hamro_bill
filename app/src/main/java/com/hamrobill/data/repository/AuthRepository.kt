@@ -21,13 +21,13 @@ class AuthRepository @Inject constructor(private val hamrobillAPIConsumer: Hamro
             emit(RequestStatus.Success(response.body()))
         } else {
             Log.d(
-                    TAG,
-                    "login: ${response.errorBody()?.byteStream()?.reader()?.readText()}"
+                TAG,
+                "login: ${response.errorBody()?.byteStream()?.reader()?.readText()}"
             )
             emit(
-                    RequestStatus.Error(
-                            R.string.unable_to_verify_credential
-                    )
+                RequestStatus.Error(
+                    R.string.unable_to_verify_credential
+                )
             )
         }
     }

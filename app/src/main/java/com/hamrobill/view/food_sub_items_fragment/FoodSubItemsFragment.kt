@@ -17,11 +17,11 @@ import com.hamrobill.databinding.FragmentFoodSubItemsBinding
 import com.hamrobill.model.SubItemType
 import com.hamrobill.utils.*
 import com.hamrobill.view_model.SharedViewModel
-import com.hamrobill.view_model.factory.ViewModelFactory
 import javax.inject.Inject
 
-class FoodSubItemsFragment private constructor() : BottomSheetDialogFragment(), View.OnClickListener,
-        FoodSubItemListRecyclerViewAdapter.FoodSubItemOnClickListener {
+class FoodSubItemsFragment private constructor() : BottomSheetDialogFragment(),
+    View.OnClickListener,
+    FoodSubItemListRecyclerViewAdapter.FoodSubItemOnClickListener {
     private lateinit var mSubItemType: SubItemType
 
     companion object {
@@ -34,18 +34,18 @@ class FoodSubItemsFragment private constructor() : BottomSheetDialogFragment(), 
     }
 
     @Inject
-    lateinit var mViewModelFactory: ViewModelFactory
+    lateinit var mViewModelFactory: ViewModelProvider.Factory
     private lateinit var mViewModel: SharedViewModel
     private lateinit var mBinding: FragmentFoodSubItemsBinding
     private var mBottomSheet: BottomSheetDialog? = null
 
     override fun onCreateView(
-            inflater: LayoutInflater, container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View {
         mBinding = FragmentFoodSubItemsBinding.inflate(inflater)
         mViewModel =
-                ViewModelProvider(requireActivity(), mViewModelFactory).get(SharedViewModel::class.java)
+            ViewModelProvider(requireActivity(), mViewModelFactory).get(SharedViewModel::class.java)
         return mBinding.root
     }
 
@@ -83,38 +83,38 @@ class FoodSubItemsFragment private constructor() : BottomSheetDialogFragment(), 
         mBottomSheet?.apply {
             behavior.peekHeight = windowHeight
             behavior.maxWidth =
-                    if (windowWidth > DIALOG_WIDTH_LIMIT) (windowWidth * DIALOG_WIDTH_RATIO_BIG).toInt()
-                    else (windowWidth * DIALOG_WIDTH_RATIO_SMALL).toInt()
+                if (windowWidth > DIALOG_WIDTH_LIMIT) (windowWidth * DIALOG_WIDTH_RATIO_BIG).toInt()
+                else (windowWidth * DIALOG_WIDTH_RATIO_SMALL).toInt()
             mBinding.root.layoutParams.width =
-                    if (windowWidth > DIALOG_WIDTH_LIMIT) (windowWidth * DIALOG_WIDTH_RATIO_BIG).toInt()
-                    else (windowWidth * DIALOG_WIDTH_RATIO_SMALL).toInt()
+                if (windowWidth > DIALOG_WIDTH_LIMIT) (windowWidth * DIALOG_WIDTH_RATIO_BIG).toInt()
+                else (windowWidth * DIALOG_WIDTH_RATIO_SMALL).toInt()
         }
 
         mBinding.foodItemName.text = getString(
-                R.string.bn_food_sub_item_title_format,
-                mViewModel.selectedTable.value!!.tableName,
-                when (mSubItemType) {
-                    SubItemType.FOOD_ITEM_SEARCH_RESULT -> getString(R.string.search_result)
-                    SubItemType.FOOD_ITEM_SUB_TYPES -> mViewModel.selectedFoodItem.value!!.itemName.uppercase()
-                }
+            R.string.bn_food_sub_item_title_format,
+            mViewModel.selectedTable.value!!.tableName,
+            when (mSubItemType) {
+                SubItemType.FOOD_ITEM_SEARCH_RESULT -> getString(R.string.search_result)
+                SubItemType.FOOD_ITEM_SUB_TYPES -> mViewModel.selectedFoodItem.value!!.itemName.uppercase()
+            }
 
         )
         mBinding.btnClose.setOnClickListener(this)
         mBinding.btnSave.setOnClickListener(this)
         mBinding.tableOrderItemsRV.layoutManager = LinearLayoutManager(requireContext())
         mBinding.tableOrderItemsRV.adapter =
-                FoodSubItemListRecyclerViewAdapter(
-                        when (mSubItemType) {
-                            SubItemType.FOOD_ITEM_SEARCH_RESULT -> mViewModel.searchResult.value!!
-                            SubItemType.FOOD_ITEM_SUB_TYPES -> mViewModel.foodSubItems.value!!
-                        },
-                        this
-                )
+            FoodSubItemListRecyclerViewAdapter(
+                when (mSubItemType) {
+                    SubItemType.FOOD_ITEM_SEARCH_RESULT -> mViewModel.searchResult.value!!
+                    SubItemType.FOOD_ITEM_SUB_TYPES -> mViewModel.foodSubItems.value!!
+                },
+                this
+            )
     }
 
     override fun onAttach(context: Context) {
         (requireActivity().application as HamrobillApp).applicationComponent.getActivityComponentFactory()
-                .create(requireActivity()).getFragmentSubComponent().inject(this)
+            .create(requireActivity()).getFragmentSubComponent().inject(this)
         super.onAttach(context)
     }
 
@@ -137,11 +137,11 @@ class FoodSubItemsFragment private constructor() : BottomSheetDialogFragment(), 
     }
 
     override fun onFoodSubItemEdited(
-            foodSubItem: FoodSubItem,
-            quantity: Float,
-            priority: Int?,
-            remarks: String?,
-            position: Int
+        foodSubItem: FoodSubItem,
+        quantity: Float,
+        priority: Int?,
+        remarks: String?,
+        position: Int
     ) {
         mViewModel.editOrder(foodSubItem, quantity, priority, remarks)
     }

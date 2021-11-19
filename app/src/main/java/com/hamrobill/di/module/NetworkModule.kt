@@ -27,42 +27,42 @@ class NetworkModule {
     @Singleton
     @Provides
     fun providesNetworkInterceptor(sharedPreferenceStorage: SharedPreferenceStorage): Interceptor =
-            Interceptor { chain ->
-                val request = chain.request()
-                val newRequest = request.newBuilder()
-                        .header("authorization", sharedPreferenceStorage.token ?: "")
-                        .build()
-                chain.proceed(newRequest)
-            }
+        Interceptor { chain ->
+            val request = chain.request()
+            val newRequest = request.newBuilder()
+                .header("authorization", sharedPreferenceStorage.token ?: "")
+                .build()
+            chain.proceed(newRequest)
+        }
 
     @Singleton
     @Provides
     fun providesOkhttpClient(
-            httpLoggingInterceptor: HttpLoggingInterceptor,
-            networkInterceptor: Interceptor
+        httpLoggingInterceptor: HttpLoggingInterceptor,
+        networkInterceptor: Interceptor
     ): OkHttpClient {
         return OkHttpClient.Builder()
-                .addNetworkInterceptor(networkInterceptor)
-                .addInterceptor(httpLoggingInterceptor)
-                .connectTimeout(20, TimeUnit.SECONDS)
-                .readTimeout(20, TimeUnit.SECONDS)
-                .writeTimeout(20, TimeUnit.SECONDS)
-                .build()
+            .addNetworkInterceptor(networkInterceptor)
+            .addInterceptor(httpLoggingInterceptor)
+            .connectTimeout(20, TimeUnit.SECONDS)
+            .readTimeout(20, TimeUnit.SECONDS)
+            .writeTimeout(20, TimeUnit.SECONDS)
+            .build()
     }
 
     @Singleton
     @Provides
     fun providesRetrofitBuilder(client: OkHttpClient): Retrofit {
         return Retrofit.Builder()
-                .client(client)
-                .addConverterFactory(GsonConverterFactory.create())
-                .baseUrl(BuildConfig.API_BASE_URL)
-                .build()
+            .client(client)
+            .addConverterFactory(GsonConverterFactory.create())
+            .baseUrl(BuildConfig.API_BASE_URL)
+            .build()
     }
 
     @Singleton
     @Provides
     fun providesHamrobillApiConsumer(retrofit: Retrofit): HamrobillAPIConsumer =
-            retrofit.create(HamrobillAPIConsumer::class.java)
+        retrofit.create(HamrobillAPIConsumer::class.java)
 
 }

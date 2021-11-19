@@ -8,7 +8,7 @@ interface HamrobillAPIConsumer {
     @FormUrlEncoded
     @POST("Token")
     suspend fun get(
-            @FieldMap body: HashMap<String, Any>
+        @FieldMap body: HashMap<String, Any>
     ): Response<LoginResponse>
 
     @GET("api/SetupTable/GetTableList")
@@ -33,7 +33,10 @@ interface HamrobillAPIConsumer {
     suspend fun searchSubItems(@Path("searchTerm") searchTerm: String): Response<GetFoodSubItemResponse>
 
     @POST("api/OrderItem/ChangeTableNumber/{from}/{to}/ChangeTable")
-    suspend fun changeTableNumber(@Path("from") from: Int, @Path("to") to: Int): Response<SuccessResponse>
+    suspend fun changeTableNumber(
+        @Path("from") from: Int,
+        @Path("to") to: Int
+    ): Response<SuccessResponse>
 
     @POST("api/OrderItem/ChangeTableNumber/{to}/{from}/MargeTable")
     suspend fun mergeTable(@Path("from") from: Int, @Path("to") to: Int): Response<SuccessResponse>

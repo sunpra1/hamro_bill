@@ -17,26 +17,25 @@ import com.hamrobill.utils.windowWidth
 import com.hamrobill.view.MainActivity
 import com.hamrobill.view.food_items_fragment.FoodItemsFragment
 import com.hamrobill.view_model.SharedViewModel
-import com.hamrobill.view_model.factory.ViewModelFactory
 import javax.inject.Inject
 
 class TablesFragment : Fragment(),
-        TableListRecyclerViewAdapter.TableItemClickListener {
+    TableListRecyclerViewAdapter.TableItemClickListener {
     @Inject
-    lateinit var mViewModelFactory: ViewModelFactory
+    lateinit var mViewModelFactory: ViewModelProvider.Factory
     private lateinit var mViewModel: SharedViewModel
     private lateinit var mBinding: FragmentTablesBinding
     private lateinit var mRecyclerViewAdapter: TableListRecyclerViewAdapter
     private var mIsFoodItemsFragmentAttached = false
 
     override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View {
         setHasOptionsMenu(true)
         mViewModel =
-                ViewModelProvider(requireActivity(), mViewModelFactory).get(SharedViewModel::class.java)
+            ViewModelProvider(requireActivity(), mViewModelFactory).get(SharedViewModel::class.java)
         mBinding = FragmentTablesBinding.inflate(inflater, container, false)
 
         setupObservers()
@@ -52,17 +51,17 @@ class TablesFragment : Fragment(),
             requireActivity().invalidateOptionsMenu()
             mRecyclerViewAdapter = TableListRecyclerViewAdapter(it, this)
             mBinding.tableRV.layoutManager =
-                    GridLayoutManager(
-                            context,
-                            if (requireActivity().windowWidth() > RECYCLER_VIEW_WIDTH_LIMIT) 3 else 2
-                    )
+                GridLayoutManager(
+                    context,
+                    if (requireActivity().windowWidth() > RECYCLER_VIEW_WIDTH_LIMIT) 3 else 2
+                )
             mBinding.tableRV.swapAdapter(mRecyclerViewAdapter, true)
 
             if (!mIsFoodItemsFragmentAttached) {
                 mIsFoodItemsFragmentAttached = true
                 requireActivity().supportFragmentManager.beginTransaction()
-                        .replace(R.id.fragmentContainerTwo, FoodItemsFragment())
-                        .commit()
+                    .replace(R.id.fragmentContainerTwo, FoodItemsFragment())
+                    .commit()
             }
         }
         mViewModel.tableItemChanged.observe(requireActivity()) {
@@ -73,12 +72,12 @@ class TablesFragment : Fragment(),
                 val position = mViewModel.tables.value!!.indexOf(it)
                 mRecyclerViewAdapter.selection = position
                 (requireActivity() as MainActivity).supportActionBar?.title =
-                        getString(R.string.selected_table_format, it.tableName)
+                    getString(R.string.selected_table_format, it.tableName)
                 mViewModel.getTableActiveOrders()
             } else {
                 mRecyclerViewAdapter.selection = -1
                 (requireActivity() as MainActivity).supportActionBar?.title =
-                        getString(R.string.not_table_selected)
+                    getString(R.string.not_table_selected)
                 mViewModel.setActiveTableOrders(null)
             }
         }
@@ -86,7 +85,7 @@ class TablesFragment : Fragment(),
 
     override fun onAttach(context: Context) {
         (requireActivity().application as HamrobillApp).applicationComponent.getActivityComponentFactory()
-                .create(requireActivity()).getFragmentSubComponent().inject(this)
+            .create(requireActivity()).getFragmentSubComponent().inject(this)
         super.onAttach(context)
     }
 

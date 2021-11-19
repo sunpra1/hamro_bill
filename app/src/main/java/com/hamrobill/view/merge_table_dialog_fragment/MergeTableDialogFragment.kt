@@ -18,7 +18,7 @@ import com.hamrobill.utils.DIALOG_WIDTH_RATIO_SMALL
 import com.hamrobill.utils.windowWidth
 
 class MergeTableDialogFragment private constructor() : AppCompatDialogFragment(),
-        AdapterView.OnItemSelectedListener, View.OnClickListener {
+    AdapterView.OnItemSelectedListener, View.OnClickListener {
 
     private lateinit var mBinding: FragmentMergeTableDialogBinding
     private var mSelectedTable: Table? = null
@@ -28,9 +28,9 @@ class MergeTableDialogFragment private constructor() : AppCompatDialogFragment()
     companion object {
         @JvmStatic
         fun getInstance(
-                tableMergeListener: TableMergeListener,
-                tables: ArrayList<Table>,
-                selectedTable: Table?
+            tableMergeListener: TableMergeListener,
+            tables: ArrayList<Table>,
+            selectedTable: Table?
         ): MergeTableDialogFragment {
             return MergeTableDialogFragment().apply {
                 mBookedTables = tables.filter { it.isBooked } as ArrayList<Table>
@@ -41,8 +41,8 @@ class MergeTableDialogFragment private constructor() : AppCompatDialogFragment()
     }
 
     override fun onCreateView(
-            inflater: LayoutInflater, container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View {
         mBinding = FragmentMergeTableDialogBinding.inflate(layoutInflater)
         return mBinding.root
@@ -64,21 +64,21 @@ class MergeTableDialogFragment private constructor() : AppCompatDialogFragment()
         val windowWidth = requireActivity().windowWidth()
         dialog?.setCancelable(false)
         dialog?.window?.setLayout(
-                if (windowWidth > DIALOG_WIDTH_LIMIT) (windowWidth * DIALOG_WIDTH_RATIO_BIG).toInt()
-                else (windowWidth * DIALOG_WIDTH_RATIO_SMALL).toInt(),
-                LinearLayout.LayoutParams.WRAP_CONTENT
+            if (windowWidth > DIALOG_WIDTH_LIMIT) (windowWidth * DIALOG_WIDTH_RATIO_BIG).toInt()
+            else (windowWidth * DIALOG_WIDTH_RATIO_SMALL).toInt(),
+            LinearLayout.LayoutParams.WRAP_CONTENT
         )
 
         val bookedTables = arrayListOf("SELECT TABLE")
-                .also {
-                    mBookedTables.forEach { table ->
-                        it.add(table.tableName)
-                    }
+            .also {
+                mBookedTables.forEach { table ->
+                    it.add(table.tableName)
                 }
+            }
         val bookedTablesAdapter = object : ArrayAdapter<String>(
-                requireContext(),
-                R.layout.support_simple_spinner_dropdown_item,
-                bookedTables
+            requireContext(),
+            R.layout.support_simple_spinner_dropdown_item,
+            bookedTables
         ) {
             override fun isEnabled(position: Int): Boolean {
                 return when (position) {
@@ -100,9 +100,9 @@ class MergeTableDialogFragment private constructor() : AppCompatDialogFragment()
         }
         mSelectedTable?.let { selectedTable ->
             mBinding.currentTableSpn.setSelection(
-                    mBookedTables.indexOf(
-                            selectedTable
-                    ) + 1
+                mBookedTables.indexOf(
+                    selectedTable
+                ) + 1
             )
         }
         mBinding.cancelButton.setOnClickListener(this)
@@ -117,7 +117,7 @@ class MergeTableDialogFragment private constructor() : AppCompatDialogFragment()
                         mBinding.currentTableTil.isErrorEnabled = false
                 }
                 mBinding.destinationTableSpn.id -> if (position > 0) mBinding.destinationTableTil.isErrorEnabled =
-                        false
+                    false
             }
         }
     }
@@ -129,8 +129,8 @@ class MergeTableDialogFragment private constructor() : AppCompatDialogFragment()
             when (view.id) {
                 mBinding.okButton.id -> if (validate()) {
                     mTableMergeListener.onTableMerged(
-                            mBookedTables[mBinding.currentTableSpn.selectedItemPosition - 1],
-                            mBookedTables[mBinding.destinationTableSpn.selectedItemPosition - 1]
+                        mBookedTables[mBinding.currentTableSpn.selectedItemPosition - 1],
+                        mBookedTables[mBinding.destinationTableSpn.selectedItemPosition - 1]
                     )
                     dismiss()
                 }

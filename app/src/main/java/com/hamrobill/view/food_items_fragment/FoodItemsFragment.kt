@@ -16,24 +16,23 @@ import com.hamrobill.model.SubItemType
 import com.hamrobill.utils.showToast
 import com.hamrobill.view.food_sub_items_fragment.FoodSubItemsFragment
 import com.hamrobill.view_model.SharedViewModel
-import com.hamrobill.view_model.factory.ViewModelFactory
 import javax.inject.Inject
 
 class FoodItemsFragment : Fragment(),
-        FoodRecyclerViewAdapter.FoodRecyclerViewItemClickListener {
+    FoodRecyclerViewAdapter.FoodRecyclerViewItemClickListener {
 
     @Inject
-    lateinit var mViewModelFactory: ViewModelFactory
+    lateinit var mViewModelFactory: ViewModelProvider.Factory
     private lateinit var mViewModel: SharedViewModel
     private lateinit var mBinding: FragmentFoodItemsBinding
 
     override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View {
         mViewModel =
-                ViewModelProvider(requireActivity(), mViewModelFactory).get(SharedViewModel::class.java)
+            ViewModelProvider(requireActivity(), mViewModelFactory).get(SharedViewModel::class.java)
         mBinding = FragmentFoodItemsBinding.inflate(inflater, container, false)
         setupObservers()
         mViewModel.getFoodItems()
@@ -56,7 +55,7 @@ class FoodItemsFragment : Fragment(),
 
     override fun onAttach(context: Context) {
         (requireActivity().application as HamrobillApp).applicationComponent.getActivityComponentFactory()
-                .create(requireActivity()).getFragmentSubComponent().inject(this)
+            .create(requireActivity()).getFragmentSubComponent().inject(this)
         super.onAttach(context)
     }
 
