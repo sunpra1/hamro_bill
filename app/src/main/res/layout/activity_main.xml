@@ -47,7 +47,9 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="4dp"
                         android:drawablePadding="4dp"
-                        android:textAlignment="center"
+                        android:text="@string/kot"
+                        android:gravity="center_vertical|center_horizontal"
+                        android:textColor="@color/black"
                         app:drawableStartCompat="@drawable/silverware_fork_knife" />
 
                     <TextView
@@ -85,7 +87,9 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="4dp"
                         android:drawablePadding="4dp"
-                        android:textAlignment="center"
+                        android:gravity="center_vertical|center_horizontal"
+                        android:textColor="@color/black"
+                        android:text="@string/bot"
                         app:drawableStartCompat="@drawable/liquor" />
 
                     <TextView
@@ -124,7 +128,9 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="4dp"
                         android:drawablePadding="4dp"
-                        android:textAlignment="center"
+                        android:text="@string/coffee"
+                        android:gravity="center_vertical|center_horizontal"
+                        android:textColor="@color/black"
                         app:drawableStartCompat="@drawable/coffee" />
 
                     <TextView
@@ -163,7 +169,9 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="4dp"
                         android:drawablePadding="4dp"
-                        android:textAlignment="center"
+                        android:gravity="center_vertical|center_horizontal"
+                        android:textColor="@color/black"
+                        android:text="@string/sekuwa"
                         app:drawableStartCompat="@drawable/grill" />
 
 
