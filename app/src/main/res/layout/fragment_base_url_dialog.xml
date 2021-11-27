@@ -74,7 +74,7 @@
                     android:id="@+id/localEndPointEt"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/local_base_url"
+                    android:hint="@string/local_print_base_url"
                     android:inputType="text"
                     android:padding="12dp" />
 

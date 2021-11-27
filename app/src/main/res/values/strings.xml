@@ -80,6 +80,6 @@
     <string name="app_slogan">For Managing Table Orders</string>
     <string name="provide_base_urls">PROVIDE BASE URLS</string>
     <string name="remote_base_url">REMOTE BASE URL</string>
-    <string name="local_base_url">LOCAL BASE URL</string>
+    <string name="local_print_base_url">LOCAL PRINT BASE URL</string>
     <string name="print_server_error">Print request was unsuccessful.</string>
 </resources>

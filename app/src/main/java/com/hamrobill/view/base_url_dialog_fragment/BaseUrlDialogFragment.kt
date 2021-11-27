@@ -61,7 +61,7 @@ class BaseUrlDialogFragment private constructor(): AppCompatDialogFragment(), Vi
     private fun validateLocalBaseUrl() = if (mBinding.localEndPointEt.text.isNullOrEmpty()) {
         mBinding.localEndPointTil.apply {
             isErrorEnabled = true
-            error = "Remote base url is required."
+            error = "Local print base url is required."
         }
         false
     }  else true
