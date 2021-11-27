@@ -3,6 +3,7 @@ package com.hamrobill.data.repository
 import android.util.Log
 import com.hamrobill.R
 import com.hamrobill.data.api.HamrobillAPIConsumer
+import com.hamrobill.data.api.PrintApiConsumer
 import com.hamrobill.data.pojo.PlaceOrderRequest
 import com.hamrobill.data.pojo.SaveOrderRequest
 import com.hamrobill.utils.RequestStatus
@@ -11,14 +12,14 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class BillingRepository @Inject constructor(private val apiConsumer: HamrobillAPIConsumer) {
+class BillingRepository @Inject constructor(private val hamroBillAPIConsumer: HamrobillAPIConsumer, private val printAPIConsumer: PrintApiConsumer) {
     companion object {
         private const val TAG = "BillingRepository"
     }
 
     fun getTables() = flow {
         emit(RequestStatus.Waiting)
-        val response = apiConsumer.getTableList()
+        val response = hamroBillAPIConsumer.getTableList()
         if (response.isSuccessful) {
             emit(RequestStatus.Success(response.body()))
         } else {
@@ -29,7 +30,7 @@ class BillingRepository @Inject constructor(private val apiConsumer: HamrobillAP
 
     fun getTableActiveOrders(tableId: Int) = flow {
         emit(RequestStatus.Waiting)
-        val response = apiConsumer.getTableActiveOrders(tableId)
+        val response = hamroBillAPIConsumer.getTableActiveOrders(tableId)
         if (response.isSuccessful) {
             emit(RequestStatus.Success(response.body()))
         } else {
@@ -43,7 +44,7 @@ class BillingRepository @Inject constructor(private val apiConsumer: HamrobillAP
 
     fun getFoodItems() = flow {
         emit(RequestStatus.Waiting)
-        val response = apiConsumer.getFoodItems()
+        val response = hamroBillAPIConsumer.getFoodItems()
         if (response.isSuccessful) {
             emit(RequestStatus.Success(response.body()))
         } else {
@@ -54,7 +55,7 @@ class BillingRepository @Inject constructor(private val apiConsumer: HamrobillAP
 
     fun getFoodSubItems(foodItemId: Int) = flow {
         emit(RequestStatus.Waiting)
-        val response = apiConsumer.getFoodSubItems(foodItemId)
+        val response = hamroBillAPIConsumer.getFoodSubItems(foodItemId)
         if (response.isSuccessful) {
             emit(RequestStatus.Success(response.body()))
         } else {
@@ -68,7 +69,7 @@ class BillingRepository @Inject constructor(private val apiConsumer: HamrobillAP
 
     fun placeTableOrders(placeOrderRequest: PlaceOrderRequest) = flow {
         emit(RequestStatus.Waiting)
-        val response = apiConsumer.placeTableOrders(placeOrderRequest)
+        val response = hamroBillAPIConsumer.placeTableOrders(placeOrderRequest)
         if (response.isSuccessful) {
             emit(RequestStatus.Success(response.body()))
         } else {
@@ -82,21 +83,30 @@ class BillingRepository @Inject constructor(private val apiConsumer: HamrobillAP
 
     fun saveTableOrders(saveOrderRequest: SaveOrderRequest) = flow {
         emit(RequestStatus.Waiting)
-        val response = apiConsumer.saveTableOrders(saveOrderRequest)
-        if (response.isSuccessful) {
-            emit(RequestStatus.Success(response.body()))
-        } else {
+        val printResponse = printAPIConsumer.saveTableOrders(saveOrderRequest)
+        if(printResponse.isSuccessful){
+            val response = hamroBillAPIConsumer.saveTableOrders(saveOrderRequest)
+            if (response.isSuccessful) {
+                emit(RequestStatus.Success(response.body()))
+            } else {
+                Log.d(
+                    TAG,
+                    "saveTableOrders: ${response.errorBody()?.byteStream()?.reader()?.readText()}"
+                )
+                emit(RequestStatus.Error(R.string.unable_save_table_order))
+            }
+        }else{
             Log.d(
                 TAG,
-                "saveTableOrders: ${response.errorBody()?.byteStream()?.reader()?.readText()}"
+                "saveTableOrders: ${printResponse.errorBody()?.byteStream()?.reader()?.readText()}"
             )
-            emit(RequestStatus.Error(R.string.unable_save_table_order))
+            emit(RequestStatus.Error(R.string.print_server_error))
         }
     }
 
     fun searchSubItems(searchTerm: String) = flow {
         emit(RequestStatus.Waiting)
-        val response = apiConsumer.searchSubItems(searchTerm)
+        val response = hamroBillAPIConsumer.searchSubItems(searchTerm)
         if (response.isSuccessful) {
             emit(RequestStatus.Success(response.body()))
         } else {
@@ -110,7 +120,7 @@ class BillingRepository @Inject constructor(private val apiConsumer: HamrobillAP
 
     fun changeTableNumber(from: Int, to: Int) = flow {
         emit(RequestStatus.Waiting)
-        val response = apiConsumer.changeTableNumber(from, to)
+        val response = hamroBillAPIConsumer.changeTableNumber(from, to)
         if (response.isSuccessful) {
             emit(RequestStatus.Success(response.body()))
         } else {
@@ -124,7 +134,7 @@ class BillingRepository @Inject constructor(private val apiConsumer: HamrobillAP
 
     fun mergeTable(from: Int, to: Int) = flow {
         emit(RequestStatus.Waiting)
-        val response = apiConsumer.mergeTable(from, to)
+        val response = hamroBillAPIConsumer.mergeTable(from, to)
         if (response.isSuccessful) {
             emit(RequestStatus.Success(response.body()))
         } else {

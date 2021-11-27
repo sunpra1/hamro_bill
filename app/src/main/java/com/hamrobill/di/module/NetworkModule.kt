@@ -2,6 +2,9 @@ package com.hamrobill.di.module
 
 import com.hamrobill.BuildConfig
 import com.hamrobill.data.api.HamrobillAPIConsumer
+import com.hamrobill.data.api.PrintApiConsumer
+import com.hamrobill.di.anotation.RetrofitWithLocalEndPoint
+import com.hamrobill.di.anotation.RetrofitWithRemoteEndPoint
 import com.hamrobill.utils.SharedPreferenceStorage
 import dagger.Module
 import dagger.Provides
@@ -52,17 +55,34 @@ class NetworkModule {
 
     @Singleton
     @Provides
-    fun providesRetrofitBuilder(client: OkHttpClient): Retrofit {
+    @RetrofitWithRemoteEndPoint
+    fun providesRetrofitWithRemoteEndPoint(client: OkHttpClient, sharedPreferenceStorage: SharedPreferenceStorage): Retrofit {
         return Retrofit.Builder()
             .client(client)
             .addConverterFactory(GsonConverterFactory.create())
-            .baseUrl(BuildConfig.API_BASE_URL)
+            .baseUrl(sharedPreferenceStorage.remoteBaseUrl)
             .build()
     }
 
     @Singleton
     @Provides
-    fun providesHamrobillApiConsumer(retrofit: Retrofit): HamrobillAPIConsumer =
+    @RetrofitWithLocalEndPoint
+    fun providesRetrofitWithRemoteLocalEndPoint(client: OkHttpClient, sharedPreferenceStorage: SharedPreferenceStorage): Retrofit {
+        return Retrofit.Builder()
+            .client(client)
+            .addConverterFactory(GsonConverterFactory.create())
+            .baseUrl(sharedPreferenceStorage.localBaseUrl)
+            .build()
+    }
+
+    @Singleton
+    @Provides
+    fun providesHamrobillApiConsumer(@RetrofitWithRemoteEndPoint retrofit: Retrofit): HamrobillAPIConsumer =
         retrofit.create(HamrobillAPIConsumer::class.java)
+
+    @Singleton
+    @Provides
+    fun providesPrintApiConsumer(@RetrofitWithLocalEndPoint retrofit: Retrofit): PrintApiConsumer =
+        retrofit.create(PrintApiConsumer::class.java)
 
 }

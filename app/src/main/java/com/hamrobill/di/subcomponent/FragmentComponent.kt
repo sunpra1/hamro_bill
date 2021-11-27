@@ -1,6 +1,7 @@
 package com.hamrobill.di.subcomponent
 
 import com.hamrobill.di.scope.FragmentScope
+import com.hamrobill.view.base_url_dialog_fragment.BaseUrlDialogFragment
 import com.hamrobill.view.change_table_dialog_fragment.ChangeTableDialogFragment
 import com.hamrobill.view.food_items_fragment.FoodItemsFragment
 import com.hamrobill.view.food_sub_items_fragment.FoodSubItemsFragment

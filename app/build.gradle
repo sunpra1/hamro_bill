@@ -21,12 +21,10 @@ android {
             minifyEnabled false
             applicationIdSuffix ".debug"
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            buildConfigField "String", "API_BASE_URL", "\"https://api.hamrobill.com/\""
         }
         release {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            buildConfigField "String", "API_BASE_URL", "\"hhttps://api.hamrobill.com/\""
         }
     }
     compileOptions {

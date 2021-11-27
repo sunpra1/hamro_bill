@@ -9,10 +9,13 @@ import com.hamrobill.HamrobillApp
 import com.hamrobill.R
 import com.hamrobill.utils.SharedPreferenceStorage
 import com.hamrobill.utils.getCalenderDate
+import com.hamrobill.utils.hideProgressDialog
+import com.hamrobill.utils.showProgressDialog
+import com.hamrobill.view.base_url_dialog_fragment.BaseUrlDialogFragment
 import java.util.*
 import javax.inject.Inject
 
-class SplashActivity : AppCompatActivity() {
+class SplashActivity : AppCompatActivity(), BaseUrlDialogFragment.UrlUpdateListener {
 
     @Inject
     lateinit var mSharedPreferenceStorage: SharedPreferenceStorage
@@ -22,16 +25,33 @@ class SplashActivity : AppCompatActivity() {
             .create(baseContext).inject(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
-        Handler(Looper.getMainLooper()).postDelayed({
-            val tokenExpiryTime = mSharedPreferenceStorage.tokenExpiresAt
-            val intent: Intent =
-                if (tokenExpiryTime != null && tokenExpiryTime.getCalenderDate() > Calendar.getInstance()) {
-                    Intent(this, MainActivity::class.java)
-                } else {
-                    Intent(this, LoginActivity::class.java)
-                }
-            startActivity(intent)
-            finish()
-        }, 1500)
+        determineRouting()
+
+    }
+
+    private fun determineRouting() {
+        if(mSharedPreferenceStorage.remoteBaseUrl.isNullOrEmpty() || mSharedPreferenceStorage.remoteBaseUrl.isNullOrEmpty()){
+            BaseUrlDialogFragment.getInstance(mSharedPreferenceStorage, this).apply {
+                show(supportFragmentManager, tag)
+            }
+        }else{
+            Handler(Looper.getMainLooper()).postDelayed({
+                val tokenExpiryTime = mSharedPreferenceStorage.tokenExpiresAt
+                val intent: Intent =
+                    if (tokenExpiryTime != null && tokenExpiryTime.getCalenderDate() > Calendar.getInstance()) {
+                        Intent(this, MainActivity::class.java)
+                    } else {
+                        Intent(this, LoginActivity::class.java)
+                    }
+                hideProgressDialog()
+                startActivity(intent)
+                finish()
+            }, 1500)
+        }
+    }
+
+    override fun onUrlUpdated() {
+        showProgressDialog()
+        determineRouting()
     }
 }
