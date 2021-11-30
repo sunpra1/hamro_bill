@@ -178,7 +178,6 @@
                         android:textSize="20sp"
                         app:drawableStartCompat="@drawable/grill" />
 
-
                     <TextView
                         android:id="@+id/sekuwaCount"
                         android:layout_width="36dp"
