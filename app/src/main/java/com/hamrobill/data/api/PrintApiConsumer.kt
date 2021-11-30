@@ -7,6 +7,6 @@ import retrofit2.http.Body
 import retrofit2.http.POST
 
 interface PrintApiConsumer {
-    @POST("print")
+    @POST
     suspend fun saveTableOrders(@Body body: SaveOrderRequest): Response<String>
 }
