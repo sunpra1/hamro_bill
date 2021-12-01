@@ -69,13 +69,10 @@ class TablesFragment : Fragment(),
         }
         mViewModel.selectedTable.observe(requireActivity()) {
             if (it != null) {
-                val position = mViewModel.tables.value!!.indexOf(it)
-                mRecyclerViewAdapter.selection = position
                 (requireActivity() as MainActivity).supportActionBar?.title =
                     getString(R.string.selected_table_format, it.tableName)
                 mViewModel.getTableActiveOrders()
             } else {
-                mRecyclerViewAdapter.selection = -1
                 (requireActivity() as MainActivity).supportActionBar?.title =
                     getString(R.string.not_table_selected)
                 mViewModel.setActiveTableOrders(null)
@@ -90,7 +87,7 @@ class TablesFragment : Fragment(),
     }
 
     override fun onTableItemClick(table: Table, position: Int) {
-        if (mViewModel.selectedTable.value != null && mViewModel.selectedTable.value!!.tableID == table.tableID) {
+        if (mViewModel.selectedTable.value == table) {
             mViewModel.setSelectedTable(null)
         } else {
             mViewModel.setSelectedTable(table)

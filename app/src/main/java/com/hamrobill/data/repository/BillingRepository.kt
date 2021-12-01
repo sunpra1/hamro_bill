@@ -4,6 +4,7 @@ import android.util.Log
 import com.hamrobill.R
 import com.hamrobill.data.api.HamrobillAPIConsumer
 import com.hamrobill.data.api.PrintApiConsumer
+import com.hamrobill.data.pojo.CancelOrderBody
 import com.hamrobill.data.pojo.PlaceOrderRequest
 import com.hamrobill.data.pojo.SaveOrderRequest
 import com.hamrobill.utils.RequestStatus
@@ -100,7 +101,30 @@ class BillingRepository @Inject constructor(private val hamroBillAPIConsumer: Ha
                 TAG,
                 "saveTableOrders: ${printResponse.errorBody()?.byteStream()?.reader()?.readText()}"
             )
-            emit(RequestStatus.Error(R.string.print_server_error))
+            emit(RequestStatus.Error(printResponse.errorBody()?.byteStream()?.reader()?.readText() ?: R.string.print_server_error))
+        }
+    }
+
+    fun cancelTableOrder(saveOrderRequest: SaveOrderRequest, cancelOrderBody: CancelOrderBody) = flow {
+        emit(RequestStatus.Waiting)
+        val printResponse = printAPIConsumer.saveTableOrders(saveOrderRequest)
+        if(printResponse.isSuccessful){
+            val response = hamroBillAPIConsumer.cancelOrder(cancelOrderBody)
+            if (response.isSuccessful) {
+                emit(RequestStatus.Success(response.body()))
+            } else {
+                Log.d(
+                    TAG,
+                    "saveTableOrders: ${response.errorBody()?.byteStream()?.reader()?.readText()}"
+                )
+                emit(RequestStatus.Error(R.string.unable_save_table_order))
+            }
+        }else{
+            Log.d(
+                TAG,
+                "saveTableOrders: ${printResponse.errorBody()?.byteStream()?.reader()?.readText()}"
+            )
+            emit(RequestStatus.Error(printResponse.errorBody()?.byteStream()?.reader()?.readText() ?: R.string.print_server_error))
         }
     }
 

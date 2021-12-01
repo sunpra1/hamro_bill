@@ -11,12 +11,14 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.hamrobill.HamrobillApp
 import com.hamrobill.R
+import com.hamrobill.data.pojo.ActiveOrderItem
 import com.hamrobill.databinding.FragmentTableOrdersBinding
 import com.hamrobill.utils.*
 import com.hamrobill.view_model.SharedViewModel
 import javax.inject.Inject
 
-class TableOrdersFragment : BottomSheetDialogFragment(), View.OnClickListener {
+class TableOrdersFragment : BottomSheetDialogFragment(), View.OnClickListener,
+    TableOrderListRecyclerViewAdapter.OnTableOrderListItemCheckedListener {
     @Inject
     lateinit var mViewModelFactory: ViewModelProvider.Factory
     private lateinit var mViewModel: SharedViewModel
@@ -36,6 +38,27 @@ class TableOrdersFragment : BottomSheetDialogFragment(), View.OnClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initializeViews()
+        setupObservers()
+    }
+
+    private fun setupObservers() {
+        mViewModel.cancelOrderItem.observe(requireActivity()) {
+            if (it != null) {
+                mBinding.remarksEt.isEnabled = true
+                mBinding.btnCancel.visibility = View.VISIBLE
+            } else {
+                mBinding.remarksEt.isEnabled = false
+                mBinding.btnCancel.visibility = View.GONE
+            }
+        }
+
+        mViewModel.activeTableOrders.observe(requireActivity()) {
+            mBinding.activeTableOrderRV.swapAdapter(
+                TableOrderListRecyclerViewAdapter(it, this),
+                true
+            )
+
+        }
     }
 
     private fun initializeViews() {
@@ -58,9 +81,9 @@ class TableOrdersFragment : BottomSheetDialogFragment(), View.OnClickListener {
             mViewModel.activeTableOrders.value!!.last().billNumber.toString()
         )
         mBinding.btnClose.setOnClickListener(this)
+        mBinding.btnCancel.setOnClickListener(this)
         mBinding.activeTableOrderRV.layoutManager = LinearLayoutManager(requireContext())
-        mBinding.activeTableOrderRV.adapter =
-            TableOrderListRecyclerViewAdapter(mViewModel.activeTableOrders.value!!)
+
     }
 
     override fun onAttach(context: Context) {
@@ -75,7 +98,14 @@ class TableOrdersFragment : BottomSheetDialogFragment(), View.OnClickListener {
                 mBinding.btnClose.id -> {
                     dismiss()
                 }
+                mBinding.btnCancel.id -> {
+
+                }
             }
         }
+    }
+
+    override fun onTableOrderListItemChecked(activeOrderItem: ActiveOrderItem, position: Int) {
+        mViewModel.setCancelOrderItem(activeOrderItem)
     }
 }

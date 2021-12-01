@@ -10,7 +10,6 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="4dp"
         android:gravity="center_vertical">
 
         <TextView
@@ -22,6 +21,17 @@
             android:textColor="@color/dark_500"
             android:textSize="25sp" />
 
+        <TextView
+            android:id="@+id/btnCancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="8dp"
+            android:gravity="center_vertical"
+            android:text="@string/cancel"
+            android:textColor="@color/red"
+            android:textSize="18sp"
+            android:visibility="gone" />
+
         <ImageView
             android:id="@+id/btnClose"
             android:layout_width="wrap_content"
@@ -30,10 +40,32 @@
 
     </LinearLayout>
 
-    <RelativeLayout
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/remarksTil"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp">
+        android:layout_marginHorizontal="4dp"
+        android:layout_marginVertical="12dp"
+        app:boxCornerRadiusBottomEnd="0dp"
+        app:boxCornerRadiusBottomStart="0dp"
+        app:boxCornerRadiusTopEnd="0dp"
+        app:boxCornerRadiusTopStart="0dp">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/remarksEt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/remarks"
+            android:inputType="text"
+            android:enabled="false"
+            android:padding="12dp" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/cardView"
@@ -56,6 +88,7 @@
                     android:id="@+id/srNO"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical|center_horizontal"
                     android:layout_weight="0.5"
                     android:gravity="center_vertical|center_horizontal"
                     android:text="@string/sn"
@@ -65,6 +98,7 @@
                     android:id="@+id/foodName"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical|center_horizontal"
                     android:layout_weight="3"
                     android:gravity="center_vertical|center_horizontal"
                     android:text="@string/name"
@@ -74,6 +108,7 @@
                     android:id="@+id/qty"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical|center_horizontal"
                     android:layout_weight="1"
                     android:gravity="center_vertical|center_horizontal"
                     android:paddingHorizontal="4dp"
@@ -84,6 +119,7 @@
                     android:id="@+id/price"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical|center_horizontal"
                     android:layout_marginHorizontal="4dp"
                     android:layout_weight="1.5"
                     android:gravity="center_vertical|center_horizontal"
@@ -94,6 +130,7 @@
                     android:id="@+id/totalPrice"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical|center_horizontal"
                     android:layout_weight="1.5"
                     android:gravity="center_vertical|center_horizontal"
                     android:text="@string/total"
@@ -103,10 +140,19 @@
                     android:id="@+id/status"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical|center_horizontal"
                     android:layout_weight="1"
                     android:gravity="center_vertical|center_horizontal"
                     android:text="@string/isNew"
                     android:textColor="@color/black" />
+
+                <View
+                    android:id="@+id/action"
+                    android:layout_width="0dp"
+                    android:layout_height="15dp"
+                    android:layout_gravity="center_vertical|center_horizontal"
+                    android:layout_weight="0.5"
+                    android:gravity="center_vertical|center_horizontal" />
 
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>

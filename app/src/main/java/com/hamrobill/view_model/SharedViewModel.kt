@@ -62,6 +62,9 @@ class SharedViewModel @Inject constructor(
     private val _searchResult: MutableLiveData<ArrayList<FoodSubItem>> = MutableLiveData()
     val searchResult: LiveData<ArrayList<FoodSubItem>> = _searchResult
 
+    private val _cancelOrderItem: MutableLiveData<ActiveOrderItem> = MutableLiveData()
+    val cancelOrderItem: LiveData<ActiveOrderItem> = _cancelOrderItem
+
     init {
         networkConnectivity.observeForever { _isNetworkAvailable.value = it }
     }
@@ -80,6 +83,14 @@ class SharedViewModel @Inject constructor(
 
     fun setIsOrderPlaced(isPlaced: Boolean) {
         _isOrderPlaced.value = isPlaced
+    }
+
+    fun setCancelOrderItem(activeOrderItem: ActiveOrderItem) {
+        if (cancelOrderItem.value == activeOrderItem) {
+            _cancelOrderItem.value = null
+        } else {
+            _cancelOrderItem.value = activeOrderItem
+        }
     }
 
     fun hasActiveTableOrders(): Boolean {
@@ -129,11 +140,11 @@ class SharedViewModel @Inject constructor(
             priority,
             remarks
         )
-        if (index > 0 && quantity < 1)
+        if (index > -1 && quantity < 1)
             _tableOrders.value = tableOrders.value?.apply {
                 removeAt(index)
             }
-        if (index > -1) {
+        else if (index > -1) {
             _tableOrders.value = tableOrders.value?.apply {
                 set(index, orderItem)
             }
@@ -307,6 +318,14 @@ class SharedViewModel @Inject constructor(
                 FoodCategory.COFFEE_ITEM -> activeTableOrders.value!!.filter { it.isCoffee && it.isOrder }
                 FoodCategory.KITCHEN_ITEM -> activeTableOrders.value!!.filter { !it.isCoffee && !it.isExtraColumn && !it.isBar && it.isOrder }
             }
+
+            val printTitle = when (foodCategory) {
+                FoodCategory.SEKUWA_ITEM -> "SEKUWA"
+                FoodCategory.BAR_ITEM -> "BOT"
+                FoodCategory.COFFEE_ITEM -> "COFFEE"
+                FoodCategory.KITCHEN_ITEM -> "KOT"
+            }
+
             val saveOrderItems = orderItems.map {
                 SaveOrderRequest.SaveOrderItem(
                     tableId = selectedTable.value!!.tableID,
@@ -319,7 +338,7 @@ class SharedViewModel @Inject constructor(
             } as ArrayList
             val saveOrderRequestBody = SaveOrderRequest(
                 tableId = selectedTable.value!!.tableID,
-                printTitle = foodCategory.category.uppercase(),
+                printTitle = printTitle,
                 tableName = selectedTable.value!!.tableName,
                 billNumber = orderItems.last().billNumber,
                 orderItemList = saveOrderItems
@@ -342,6 +361,68 @@ class SharedViewModel @Inject constructor(
                                     if (orderItems.contains(item)) item.isOrder = false
                                     item
                                 } as ArrayList<ActiveOrderItem>
+                            }
+                            is RequestStatus.Error -> {
+                                _isLoading.value = false
+                                _errorMessage.value = it.message
+                            }
+                        }
+                    }
+            }
+        }
+    }
+
+    fun cancelTableOrder(remarks: String) {
+        if (cancelOrderItem.value != null) {
+            val printTitle = when {
+                cancelOrderItem.value!!.isExtraColumn -> "SEKUWA"
+                cancelOrderItem.value!!.isBar -> "BOT"
+                cancelOrderItem.value!!.isCoffee -> "COFFEE"
+                else -> "KOT"
+            }
+
+            val item = SaveOrderRequest.SaveOrderItem(
+                tableId = selectedTable.value!!.tableID,
+                subItemId = cancelOrderItem.value!!.subItemId,
+                itemId = cancelOrderItem.value!!.itemId,
+                subItemName = cancelOrderItem.value!!.subItemName,
+                quantity = cancelOrderItem.value!!.quantity,
+                remarks = cancelOrderItem.value!!.remarks
+            )
+
+            val saveOrderRequestBody = SaveOrderRequest(
+                tableId = selectedTable.value!!.tableID,
+                printTitle = printTitle,
+                tableName = selectedTable.value!!.tableName,
+                billNumber = cancelOrderItem.value!!.billNumber,
+                orderItemList = ArrayList<SaveOrderRequest.SaveOrderItem>().apply { add(item) }
+            )
+
+            val cancelOrderBody = CancelOrderBody(
+                tableId = selectedTable.value!!.tableID,
+                orderItemId = cancelOrderItem.value!!.itemId,
+                remarks = remarks
+            )
+
+            viewModelScope.launch {
+                billingRepository.cancelTableOrder(saveOrderRequestBody, cancelOrderBody)
+                    .catch {
+                        _isLoading.value = false
+                        _errorMessage.value = R.string.unable_save_table_order
+                    }
+                    .collect {
+                        when (it) {
+                            is RequestStatus.Waiting -> {
+                                _isLoading.value = true
+                            }
+                            is RequestStatus.Success -> {
+                                _isLoading.value = false
+                                val list = ArrayList<ActiveOrderItem>()
+                                activeTableOrders.value!!.forEach { order ->
+                                    if (cancelOrderItem.value!! == order && order.quantity > 1f)
+                                        list.add(order.apply { quantity -= 1 })
+                                }
+                                _activeTableOrders.value = list
                             }
                             is RequestStatus.Error -> {
                                 _isLoading.value = false

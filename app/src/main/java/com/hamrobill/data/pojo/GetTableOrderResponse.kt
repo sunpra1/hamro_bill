@@ -42,7 +42,7 @@ data class ActiveOrderItem(
     @SerializedName("OrderItemPOSId") val orderItemPOSId: Int?,
     @SerializedName("PrintDate") val printDate: String?,
     @SerializedName("PrintTitle") val printTitle: String?,
-    @SerializedName("Quantity") val quantity: Float,
+    @SerializedName("Quantity") var quantity: Float,
     @SerializedName("Remarks") val remarks: String?,
     @SerializedName("RoomCategoryId") val roomCategoryId: Int?,
     @SerializedName("StartTime") val startTime: String?,

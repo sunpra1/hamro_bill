@@ -18,10 +18,9 @@ class TableListRecyclerViewAdapter(
     var selection = -1
         set(value) {
             val previousSelection = field
-            field = value
-            if (previousSelection > -1 && previousSelection != field) notifyItemChanged(
-                previousSelection
-            )
+            field = if(previousSelection == value) -1 else value
+            if (previousSelection > -1 && previousSelection != field)
+                notifyItemChanged(previousSelection)
             notifyItemChanged(field)
         }
 
@@ -31,7 +30,7 @@ class TableListRecyclerViewAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.updateView(tableData[position], selection, tableItemClickListener)
+        holder.updateView(tableData[position], tableItemClickListener)
     }
 
     override fun getItemCount() = tableData.size
@@ -41,16 +40,16 @@ class TableListRecyclerViewAdapter(
         notifyItemChanged(tableItemChanged.updatedTableItemPosition)
     }
 
-    class ViewHolder(
+    inner class ViewHolder(
         private val view: TableListItemBinding,
         private val context: Context = view.root.context
     ) : RecyclerView.ViewHolder(view.root) {
         fun updateView(
             tableData: Table,
-            selection: Int,
             tableItemClickListener: TableItemClickListener
         ) {
             view.cardView.setOnClickListener {
+                selection = adapterPosition
                 tableItemClickListener.onTableItemClick(
                     tableData,
                     adapterPosition

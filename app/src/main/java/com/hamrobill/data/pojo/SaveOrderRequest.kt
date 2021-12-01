@@ -23,7 +23,8 @@ data class SaveOrderRequest(
     @SerializedName("TableName") val tableName: String,
     @SerializedName("BillNumber") val billNumber: Int,
     @SerializedName("isCheckOutTable") val isCheckOutTable: Boolean = false,
-    @SerializedName("IsPrintByCode") val isPrintByCode: Boolean = true
+    @SerializedName("IsPrintByCode") val isPrintByCode: Boolean = true,
+    @SerializedName("IsDelete") val isDelete: Boolean = false,
 ) {
     data class SaveOrderItem(
         @SerializedName("TableId") val tableId: Int,
