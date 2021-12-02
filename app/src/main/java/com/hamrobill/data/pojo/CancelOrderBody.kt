@@ -8,5 +8,5 @@ data class CancelOrderBody(
     @SerializedName("OrderItemId")
     val orderItemId: Int,
     @SerializedName("Remarks")
-    val remarks: String
+    val remarks: String?
 )

@@ -6,6 +6,7 @@ import android.os.Looper
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
@@ -20,6 +21,7 @@ import com.hamrobill.model.SubItemType
 import com.hamrobill.utils.hideProgressDialog
 import com.hamrobill.utils.showProgressDialog
 import com.hamrobill.view.change_table_dialog_fragment.ChangeTableDialogFragment
+import com.hamrobill.view.delete_order_dialog_fragment.DeleteOrderDialogFragment
 import com.hamrobill.view.food_sub_items_fragment.FoodSubItemsFragment
 import com.hamrobill.view.merge_table_dialog_fragment.MergeTableDialogFragment
 import com.hamrobill.view.table_orders_fragment.TableOrdersFragment
@@ -88,9 +90,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, SearchView.OnQue
                     this,
                     mViewModel.tables.value!!,
                     mViewModel.selectedTable.value
-                ).apply {
-                    show(supportFragmentManager, tag)
-                }
+                ).showNow(supportFragmentManager, ChangeTableDialogFragment::class.java.simpleName)
                 true
             }
 
@@ -99,9 +99,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, SearchView.OnQue
                     this,
                     mViewModel.tables.value!!,
                     mViewModel.selectedTable.value
-                ).apply {
-                    show(supportFragmentManager, tag)
-                }
+                ).showNow(supportFragmentManager, MergeTableDialogFragment::class.java.simpleName)
                 true
             }
             else -> super.onOptionsItemSelected(item)
@@ -109,9 +107,10 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, SearchView.OnQue
     }
 
     private fun displayTableOrders() {
-        TableOrdersFragment().also {
-            it.show(supportFragmentManager, it.tag)
-        }
+        TableOrdersFragment().showNow(
+            supportFragmentManager,
+            TableOrdersFragment::class.java.simpleName
+        )
     }
 
     private fun setupObservers() {
@@ -181,9 +180,9 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, SearchView.OnQue
         mViewModel.searchResult.observe(this) {
             if (!it.isNullOrEmpty()) {
                 FoodSubItemsFragment.getInstance(SubItemType.FOOD_ITEM_SEARCH_RESULT)
-                    .also { fragment ->
-                        fragment.show(supportFragmentManager, fragment.tag)
-                    }
+                    .showNow(supportFragmentManager, FoodSubItemsFragment::class.java.simpleName)
+            } else {
+                Toast.makeText(this, "No Items Found", Toast.LENGTH_LONG).show()
             }
         }
         mViewModel.selectedTable.observe(this) {

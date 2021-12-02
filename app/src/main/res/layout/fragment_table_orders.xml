@@ -21,17 +21,6 @@
             android:textColor="@color/dark_500"
             android:textSize="25sp" />
 
-        <TextView
-            android:id="@+id/btnCancel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="8dp"
-            android:gravity="center_vertical"
-            android:text="@string/cancel"
-            android:textColor="@color/red"
-            android:textSize="18sp"
-            android:visibility="gone" />
-
         <ImageView
             android:id="@+id/btnClose"
             android:layout_width="wrap_content"
@@ -39,29 +28,6 @@
             android:src="@drawable/close_circle" />
 
     </LinearLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/remarksTil"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="4dp"
-        android:layout_marginVertical="12dp"
-        app:boxCornerRadiusBottomEnd="0dp"
-        app:boxCornerRadiusBottomStart="0dp"
-        app:boxCornerRadiusTopEnd="0dp"
-        app:boxCornerRadiusTopStart="0dp">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/remarksEt"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/remarks"
-            android:inputType="text"
-            android:enabled="false"
-            android:padding="12dp" />
-
-    </com.google.android.material.textfield.TextInputLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"

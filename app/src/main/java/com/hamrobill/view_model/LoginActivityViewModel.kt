@@ -51,6 +51,7 @@ class LoginActivityViewModel @Inject constructor(
                             it.data?.let { data ->
                                 sharedPrefs.token = data.accessToken
                                 sharedPrefs.tokenExpiresAt = data.expiresAt
+                                sharedPrefs.loggedUserName = data.userName
                             }
                             _isLoginSuccess.value = true
                         }

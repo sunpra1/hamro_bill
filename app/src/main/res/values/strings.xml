@@ -85,4 +85,5 @@
     <string name="print_server_error">Print request was unsuccessful.</string>
     <string name="cancel_order">CANCEL ORDER</string>
     <string name="cancel_order_format">Do you want to cancel item %s?</string>
+    <string name="delete">DELETE</string>
 </resources>

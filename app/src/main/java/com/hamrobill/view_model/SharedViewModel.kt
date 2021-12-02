@@ -13,6 +13,7 @@ import com.hamrobill.model.OrderItem
 import com.hamrobill.model.TableItemChanged
 import com.hamrobill.utils.NetworkConnectivity
 import com.hamrobill.utils.RequestStatus
+import com.hamrobill.utils.SharedPreferenceStorage
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -21,7 +22,8 @@ import javax.inject.Inject
 @ActivityScope
 class SharedViewModel @Inject constructor(
     networkConnectivity: NetworkConnectivity,
-    private val billingRepository: BillingRepository
+    private val billingRepository: BillingRepository,
+    private val sharedPreferenceStorage: SharedPreferenceStorage
 ) : ViewModel() {
     private val _isLoading: MutableLiveData<Boolean> = MutableLiveData()
     val isLoading: LiveData<Boolean> = _isLoading
@@ -276,7 +278,11 @@ class SharedViewModel @Inject constructor(
                     0f
                 )
             } as ArrayList
-        val placeOrderRequest = PlaceOrderRequest(table.tableID, orderItems)
+        val placeOrderRequest = PlaceOrderRequest(
+            table.tableID,
+            orderItems,
+            orderBy = sharedPreferenceStorage.loggedUserName ?: ""
+        )
 
         viewModelScope.launch {
             billingRepository.placeTableOrders(placeOrderRequest)
@@ -375,7 +381,7 @@ class SharedViewModel @Inject constructor(
         }
     }
 
-    fun cancelTableOrder(remarks: String) {
+    fun cancelTableOrder(remarks: String?) {
         if (cancelOrderItem.value != null) {
             val printTitle = when {
                 cancelOrderItem.value!!.isExtraColumn -> "SEKUWA"
@@ -390,7 +396,7 @@ class SharedViewModel @Inject constructor(
                 itemId = cancelOrderItem.value!!.itemId,
                 subItemName = cancelOrderItem.value!!.subItemName,
                 quantity = cancelOrderItem.value!!.quantity,
-                remarks = cancelOrderItem.value!!.remarks
+                remarks = cancelOrderItem.value!!.remarks,
             )
 
             val saveOrderRequestBody = SaveOrderRequest(
@@ -398,7 +404,8 @@ class SharedViewModel @Inject constructor(
                 printTitle = printTitle,
                 tableName = selectedTable.value!!.tableName,
                 billNumber = cancelOrderItem.value!!.billNumber,
-                orderItemList = ArrayList<SaveOrderRequest.SaveOrderItem>().apply { add(item) }
+                orderItemList = ArrayList<SaveOrderRequest.SaveOrderItem>().apply { add(item) },
+                isDelete = true
             )
 
             val cancelOrderBody = CancelOrderBody(
