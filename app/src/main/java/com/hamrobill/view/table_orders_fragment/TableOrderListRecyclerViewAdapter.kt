@@ -57,13 +57,14 @@ class TableOrderListRecyclerViewAdapter(
                 selection = adapterPosition
                 onTableOrderListItemCheckedListener.onTableOrderListItemChecked(
                     activeOrderItem,
-                    adapterPosition
+                    adapterPosition,
+                    view.deleteCheckBox.isChecked
                 )
             }
         }
     }
 
     interface OnTableOrderListItemCheckedListener {
-        fun onTableOrderListItemChecked(activeOrderItem: ActiveOrderItem, position: Int)
+        fun onTableOrderListItemChecked(activeOrderItem: ActiveOrderItem, position: Int, isChecked: Boolean)
     }
 }

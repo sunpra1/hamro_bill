@@ -90,7 +90,7 @@ class SharedViewModel @Inject constructor(
         _isOrderPlaced.value = isPlaced
     }
 
-    fun setCancelOrderItem(activeOrderItem: ActiveOrderItem) {
+    fun setCancelOrderItem(activeOrderItem: ActiveOrderItem?) {
         if (cancelOrderItem.value == activeOrderItem) {
             _cancelOrderItem.value = null
         } else {

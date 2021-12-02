@@ -20,16 +20,19 @@ class DeleteOrderDialogFragment private constructor() : AppCompatDialogFragment(
 
     private lateinit var mBinding: FragmentDeleteOrderDialogBinding
     private lateinit var mActiveOrderItem: ActiveOrderItem
+    private var mPosition: Int = -1
     private lateinit var mOnOrderDeleteListener: OnOrderDeleteListener
 
     companion object {
         @JvmStatic
         fun getInstance(
             activeOrderItem: ActiveOrderItem,
+            position: Int,
             onOrderDeleteListener: OnOrderDeleteListener
         ): DeleteOrderDialogFragment {
             return DeleteOrderDialogFragment().apply {
                 mActiveOrderItem = activeOrderItem
+                mPosition = position
                 mOnOrderDeleteListener = onOrderDeleteListener
             }
         }
@@ -71,15 +74,19 @@ class DeleteOrderDialogFragment private constructor() : AppCompatDialogFragment(
         if (view != null) {
             when (view.id) {
                 mBinding.deleteBtn.id -> {
-                    mOnOrderDeleteListener.onOrderDeleted(mBinding.remarksEt.text.toString())
+                    mOnOrderDeleteListener.onOrderDeleted(mActiveOrderItem, mPosition, mBinding.remarksEt.text.toString())
                     dismiss()
                 }
-                mBinding.cancelButton.id -> dismiss()
+                mBinding.cancelButton.id -> {
+                    mOnOrderDeleteListener.onDeleteCancelled(mActiveOrderItem, mPosition)
+                    dismiss()
+                }
             }
         }
     }
 
     interface OnOrderDeleteListener {
-        fun onOrderDeleted(remarks: String?)
+        fun onOrderDeleted(activeOrderItem: ActiveOrderItem, position: Int, remarks: String?)
+        fun onDeleteCancelled(activeOrderItem: ActiveOrderItem, position: Int)
     }
 }

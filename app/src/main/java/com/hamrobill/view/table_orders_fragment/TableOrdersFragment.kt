@@ -93,13 +93,24 @@ class TableOrdersFragment : BottomSheetDialogFragment(), View.OnClickListener,
         }
     }
 
-    override fun onTableOrderListItemChecked(activeOrderItem: ActiveOrderItem, position: Int) {
+    override fun onTableOrderListItemChecked(activeOrderItem: ActiveOrderItem, position: Int, isChecked: Boolean) {
         mViewModel.setCancelOrderItem(activeOrderItem)
-        DeleteOrderDialogFragment.getInstance(activeOrderItem, this)
-            .showNow(childFragmentManager, DeleteOrderDialogFragment::class.java.simpleName)
+        if(isChecked){
+            DeleteOrderDialogFragment.getInstance(activeOrderItem, position,this)
+                .showNow(childFragmentManager, DeleteOrderDialogFragment::class.java.simpleName)
+        }
     }
 
-    override fun onOrderDeleted(remarks: String?) {
+    override fun onOrderDeleted(activeOrderItem: ActiveOrderItem, position: Int, remarks: String?) {
+        (mBinding.activeTableOrderRV.adapter as TableOrderListRecyclerViewAdapter).selection = position
         mViewModel.cancelTableOrder(remarks)
+    }
+
+    override fun onDeleteCancelled(
+        activeOrderItem: ActiveOrderItem,
+        position: Int
+    ) {
+        (mBinding.activeTableOrderRV.adapter as TableOrderListRecyclerViewAdapter).selection = position
+        mViewModel.setCancelOrderItem(null)
     }
 }
