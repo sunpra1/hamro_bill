@@ -115,14 +115,14 @@ class BillingRepository @Inject constructor(private val hamroBillAPIConsumer: Ha
             } else {
                 Log.d(
                     TAG,
-                    "saveTableOrders: ${response.errorBody()?.byteStream()?.reader()?.readText()}"
+                    "cancelTableOrder: ${response.errorBody()?.byteStream()?.reader()?.readText()}"
                 )
-                emit(RequestStatus.Error(R.string.unable_save_table_order))
+                emit(RequestStatus.Error(R.string.unable_cancel_table_order))
             }
         }else{
             Log.d(
                 TAG,
-                "saveTableOrders: ${printResponse.errorBody()?.byteStream()?.reader()?.readText()}"
+                "cancelTableOrder: ${printResponse.errorBody()?.byteStream()?.reader()?.readText()}"
             )
             emit(RequestStatus.Error(printResponse.errorBody()?.byteStream()?.reader()?.readText() ?: R.string.print_server_error))
         }

@@ -54,7 +54,13 @@ class TableOrdersFragment : BottomSheetDialogFragment(), View.OnClickListener,
                 TableOrderListRecyclerViewAdapter(it, this),
                 true
             )
+        }
 
+        mViewModel.isCancelComplete.observe(requireActivity()){
+            if(it != null && it){
+                mBinding.remarksEt.text = null
+            }
+            determineCancelBtnVisibility()
         }
     }
 

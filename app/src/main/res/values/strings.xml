@@ -41,6 +41,7 @@
     <string name="unable_fetch_table_orders">Unable to fetch table orders.\nPlease try again later.</string>
     <string name="unable_place_table_order">Unable to place table order.\nPlease try again.</string>
     <string name="unable_save_table_order">Unable to save table order.\nPlease try again.</string>
+    <string name="unable_cancel_table_order">Unable to cancel table order.\nPlease try again.</string>
     <string name="place_order">PLACE ORDER</string>
     <string name="select_table">SELECT TABLE</string>
     <string name="new_orders">NEW ORDER</string>

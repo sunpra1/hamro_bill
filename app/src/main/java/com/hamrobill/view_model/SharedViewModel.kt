@@ -65,6 +65,9 @@ class SharedViewModel @Inject constructor(
     private val _cancelOrderItem: MutableLiveData<ActiveOrderItem> = MutableLiveData()
     val cancelOrderItem: LiveData<ActiveOrderItem> = _cancelOrderItem
 
+    private val _isCancelComplete : MutableLiveData<Boolean> = MutableLiveData()
+    val isCancelComplete: LiveData<Boolean> = _isCancelComplete
+
     init {
         networkConnectivity.observeForever { _isNetworkAvailable.value = it }
     }
@@ -408,7 +411,7 @@ class SharedViewModel @Inject constructor(
                 billingRepository.cancelTableOrder(saveOrderRequestBody, cancelOrderBody)
                     .catch {
                         _isLoading.value = false
-                        _errorMessage.value = R.string.unable_save_table_order
+                        _errorMessage.value = R.string.unable_cancel_table_order
                     }
                     .collect {
                         when (it) {
@@ -421,8 +424,11 @@ class SharedViewModel @Inject constructor(
                                 activeTableOrders.value!!.forEach { order ->
                                     if (cancelOrderItem.value!! == order && order.quantity > 1f)
                                         list.add(order.apply { quantity -= 1 })
+
                                 }
                                 _activeTableOrders.value = list
+                                _cancelOrderItem.value = null
+                                _isCancelComplete.value = true
                             }
                             is RequestStatus.Error -> {
                                 _isLoading.value = false
