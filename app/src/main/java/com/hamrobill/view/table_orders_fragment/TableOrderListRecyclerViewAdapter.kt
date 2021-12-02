@@ -2,7 +2,9 @@ package com.hamrobill.view.table_orders_fragment
 
 import android.content.Context
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.hamrobill.R
 import com.hamrobill.data.pojo.ActiveOrderItem
@@ -49,7 +51,7 @@ class TableOrderListRecyclerViewAdapter(
             view.totalPrice.text =
                 context.getString(R.string.price_format).format("Rs.", activeOrderItem.totalPrice)
             view.status.setImageResource(if (activeOrderItem.isOrder) R.drawable.check_circle_red_18 else R.drawable.check_circle_green_18)
-            view.deleteCheckBox.isEnabled = !activeOrderItem.isOrder
+            view.deleteCheckBox.visibility = if(!activeOrderItem.isOrder) View.VISIBLE else View.INVISIBLE
             view.deleteCheckBox.isChecked = selection == adapterPosition
             view.deleteCheckBox.setOnClickListener {
                 selection = adapterPosition

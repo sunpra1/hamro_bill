@@ -82,4 +82,6 @@
     <string name="remote_base_url">REMOTE BASE URL</string>
     <string name="local_print_base_url">LOCAL PRINT BASE URL</string>
     <string name="print_server_error">Print request was unsuccessful.</string>
+    <string name="cancel_order">CANCEL ORDER</string>
+    <string name="cancel_order_format">Do you want to cancel item %s?</string>
 </resources>
