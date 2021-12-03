@@ -46,10 +46,12 @@ class TableOrdersFragment : BottomSheetDialogFragment(), View.OnClickListener,
     private fun setupObservers() {
         mViewModel.activeTableOrders.observe(requireActivity()) {
             if (!it.isNullOrEmpty()) {
-                mBinding.activeTableOrderRV.swapAdapter(
-                    TableOrderListRecyclerViewAdapter(it, this),
-                    true
-                )
+                if(isAdded) {
+                    mBinding.activeTableOrderRV.swapAdapter(
+                        TableOrderListRecyclerViewAdapter(it, this),
+                        true
+                    )
+                }
             }
         }
     }

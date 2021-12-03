@@ -41,11 +41,13 @@ class FoodItemsFragment : Fragment(),
 
     private fun setupObservers() {
         mViewModel.foodItems.observe(requireActivity()) {
-            mBinding.foodItemsRV.layoutManager = LinearLayoutManager(context)
-            mBinding.foodItemsRV.adapter = FoodCategoryRecyclerViewAdapter(it, this)
+            if(isAdded) {
+                mBinding.foodItemsRV.layoutManager = LinearLayoutManager(context)
+                mBinding.foodItemsRV.adapter = FoodCategoryRecyclerViewAdapter(it, this)
+            }
         }
         mViewModel.foodSubItems.observe(requireActivity()) { foodSubItems ->
-            if (!foodSubItems.isNullOrEmpty()) {
+            if (isAdded && !foodSubItems.isNullOrEmpty()) {
                 FoodSubItemsFragment.getInstance(SubItemType.FOOD_ITEM_SUB_TYPES).also {
                     it.show(childFragmentManager, it.tag)
                 }
