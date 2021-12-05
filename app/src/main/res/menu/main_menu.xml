@@ -2,9 +2,16 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <group android:id="@+id/tableActiveOrdersMenuGroup">
+    <group android:id="@+id/estimatedBillMenuGroup">
         <item
-            android:id="@+id/tableOrdersMenuItem"
+            android:id="@+id/estimatedBillMenuItem"
+            android:title="@string/estimated_bill"
+            app:showAsAction="ifRoom" />
+    </group>
+
+    <group android:id="@+id/cancellableOrdersMenuGroup">
+        <item
+            android:id="@+id/cancellableOrdersMenuItem"
             android:title="@string/orders"
             app:showAsAction="ifRoom" />
     </group>

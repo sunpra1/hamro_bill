@@ -28,8 +28,8 @@ data class SaveOrderRequest(
 ) {
     data class SaveOrderItem(
         @SerializedName("TableId") val tableId: Int,
-        @SerializedName("SubItemId") val subItemId: String?,
-        @SerializedName("ItemId") val itemId: Int,
+        @SerializedName("SubItemId") val subItemId: Int?,
+        @SerializedName("ItemId") val itemId: Int?,
         @SerializedName("SubItemName") val subItemName: String,
         @SerializedName("Quantity") val quantity: Float,
         @SerializedName("Remarks") val remarks: String?

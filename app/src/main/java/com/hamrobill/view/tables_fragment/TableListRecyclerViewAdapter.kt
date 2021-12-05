@@ -18,7 +18,7 @@ class TableListRecyclerViewAdapter(
     var selection = -1
         set(value) {
             val previousSelection = field
-            field = if(previousSelection == value) -1 else value
+            field = if (previousSelection == value) -1 else value
             if (previousSelection > -1 && previousSelection != field)
                 notifyItemChanged(previousSelection)
             notifyItemChanged(field)

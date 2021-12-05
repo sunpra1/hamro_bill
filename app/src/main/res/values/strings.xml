@@ -19,8 +19,9 @@
     <string name="unable_to_verify_credential">Unable to verify the credentials.</string>
     <string name="something_went_wrong">Something went wrong.\nPlease try again later.
     </string>
-    <string name="unable_fetch_tables">Unable to fetch tables.\nPlease try again later.</string>
+    <string name="unable_fetch_tables_and_food_items">Unable to fetch tables and food items.\nPlease try again later.</string>
     <string name="unable_fetch_food_items">Unable to fetch food items.\nPlease try again later.</string>
+    <string name="unable_fetch_cancelable_items">Unable to fetch items list that can be cancelled.\nPlease try again later.</string>
     <string name="unable_fetch_food_sub_items">Unable to fetch food sub items.\nPlease try again later.</string>
     <string name="unable_search_sub_items">Unable to search for food sub items.\nPlease try again later.</string>
     <string name="unable_change_table_number">Unable to change table number.\nPlease try again later.</string>
@@ -39,6 +40,7 @@
     <string name="one">1</string>
     <string name="no_table_selected">No table selected</string>
     <string name="unable_fetch_table_orders">Unable to fetch table orders.\nPlease try again later.</string>
+    <string name="unable_fetch_table_details">Unable to fetch table details.\nPlease try again later.</string>
     <string name="unable_place_table_order">Unable to place table order.\nPlease try again.</string>
     <string name="unable_save_table_order">Unable to save table order.\nPlease try again.</string>
     <string name="unable_cancel_table_order">Unable to cancel table order.\nPlease try again.</string>
@@ -86,4 +88,20 @@
     <string name="cancel_order">CANCEL ORDER</string>
     <string name="cancel_order_format">Do you want to cancel item %s?</string>
     <string name="delete">DELETE</string>
+    <string name="estimated_bill">ESTIMATED BILL</string>
+    <string name="bill_number_format">Bill No: %s</string>
+    <string name="cashier_format">Cashier: %s</string>
+    <string name="date_format">Date: %s</string>
+    <string name="table_number_format">Table No: %s</string>
+    <string name="time_format">Time: %s:%s</string>
+    <string name="item">Item</string>
+    <string name="rate">Rate</string>
+    <string name="bar">Bar</string>
+    <string name="coffee_small">Coffee</string>
+    <string name="sekuwa_small">Sekuwa</string>
+    <string name="dummy_amount">Rs. 2050</string>
+    <string name="amount_format">Rs. %s</string>
+    <string name="estimated_bill_title_format">ESTIMATED BILL OF TABLE %s [BILL NO: %s]</string>
+    <string name="back">BACK</string>
+    <string name="order_has_cancelled">Order has been cancelled.</string>
 </resources>

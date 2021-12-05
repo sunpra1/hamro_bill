@@ -9,7 +9,7 @@ import androidx.appcompat.app.AppCompatDialogFragment
 import com.hamrobill.databinding.FragmentBaseUrlDialogBinding
 import com.hamrobill.utils.SharedPreferenceStorage
 
-class BaseUrlDialogFragment private constructor(): AppCompatDialogFragment(), View.OnClickListener,
+class BaseUrlDialogFragment private constructor() : AppCompatDialogFragment(), View.OnClickListener,
     View.OnFocusChangeListener {
     private lateinit var mSharedPreferenceStorage: SharedPreferenceStorage
     private lateinit var mBinding: FragmentBaseUrlDialogBinding
@@ -64,7 +64,7 @@ class BaseUrlDialogFragment private constructor(): AppCompatDialogFragment(), Vi
             error = "Local print base url is required."
         }
         false
-    }  else true
+    } else true
 
     private fun validate(): Boolean {
         var isValid = true
@@ -104,9 +104,12 @@ class BaseUrlDialogFragment private constructor(): AppCompatDialogFragment(), Vi
         }
     }
 
-    companion object{
+    companion object {
         @JvmStatic
-        fun getInstance(sharedPreferenceStorage: SharedPreferenceStorage, urlUpdateListener: UrlUpdateListener): BaseUrlDialogFragment{
+        fun getInstance(
+            sharedPreferenceStorage: SharedPreferenceStorage,
+            urlUpdateListener: UrlUpdateListener
+        ): BaseUrlDialogFragment {
             return BaseUrlDialogFragment().apply {
                 mSharedPreferenceStorage = sharedPreferenceStorage
                 mUrlUpdateListener = urlUpdateListener
@@ -114,7 +117,7 @@ class BaseUrlDialogFragment private constructor(): AppCompatDialogFragment(), Vi
         }
     }
 
-    interface UrlUpdateListener{
+    interface UrlUpdateListener {
         fun onUrlUpdated()
     }
 }

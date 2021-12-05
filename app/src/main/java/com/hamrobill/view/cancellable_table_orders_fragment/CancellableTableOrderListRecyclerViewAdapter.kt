@@ -1,20 +1,19 @@
-package com.hamrobill.view.table_orders_fragment
+package com.hamrobill.view.cancellable_table_orders_fragment
 
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.hamrobill.R
-import com.hamrobill.data.pojo.ActiveOrderItem
+import com.hamrobill.data.pojo.CancellableOrderItem
 import com.hamrobill.databinding.TableOrderListItemBinding
 
-class TableOrderListRecyclerViewAdapter(
-    private val activeTableOrders: ArrayList<ActiveOrderItem>,
+class CancellableTableOrderListRecyclerViewAdapter(
+    private val activeTableOrders: ArrayList<CancellableOrderItem>,
     private val onTableOrderListItemCheckedListener: OnTableOrderListItemCheckedListener
 ) :
-    RecyclerView.Adapter<TableOrderListRecyclerViewAdapter.ViewHolder>() {
+    RecyclerView.Adapter<CancellableTableOrderListRecyclerViewAdapter.ViewHolder>() {
 
     var selection = -1
         set(value) {
@@ -43,20 +42,22 @@ class TableOrderListRecyclerViewAdapter(
         private val onTableOrderListItemCheckedListener: OnTableOrderListItemCheckedListener,
         private val context: Context = view.root.context
     ) : RecyclerView.ViewHolder(view.root) {
-        fun updateView(activeOrderItem: ActiveOrderItem) {
+        fun updateView(cancellableOrderItem: CancellableOrderItem) {
             view.srNO.text = (adapterPosition + 1).toString()
-            view.foodName.text = activeOrderItem.subItemName
-            view.qty.text = activeOrderItem.quantity.toString()
-            view.price.text = activeOrderItem.subItemPrice.toString()
+            view.foodName.text = cancellableOrderItem.subItemName
+            view.qty.text = cancellableOrderItem.quantity.toString()
+            view.price.text = cancellableOrderItem.subItemPrice.toString()
             view.totalPrice.text =
-                context.getString(R.string.price_format).format("Rs.", activeOrderItem.totalPrice)
-            view.status.setImageResource(if (activeOrderItem.isOrder) R.drawable.check_circle_red_18 else R.drawable.check_circle_green_18)
-            view.deleteCheckBox.visibility = if(!activeOrderItem.isOrder) View.VISIBLE else View.INVISIBLE
+                context.getString(R.string.price_format)
+                    .format("Rs.", cancellableOrderItem.totalPrice)
+            view.status.setImageResource(if (cancellableOrderItem.isOrder) R.drawable.check_circle_red_18 else R.drawable.check_circle_green_18)
+            view.deleteCheckBox.visibility =
+                if (!cancellableOrderItem.isOrder) View.VISIBLE else View.INVISIBLE
             view.deleteCheckBox.isChecked = selection == adapterPosition
             view.deleteCheckBox.setOnClickListener {
                 selection = adapterPosition
                 onTableOrderListItemCheckedListener.onTableOrderListItemChecked(
-                    activeOrderItem,
+                    cancellableOrderItem,
                     adapterPosition,
                     view.deleteCheckBox.isChecked
                 )
@@ -65,6 +66,10 @@ class TableOrderListRecyclerViewAdapter(
     }
 
     interface OnTableOrderListItemCheckedListener {
-        fun onTableOrderListItemChecked(activeOrderItem: ActiveOrderItem, position: Int, isChecked: Boolean)
+        fun onTableOrderListItemChecked(
+            cancellableOrderItem: CancellableOrderItem,
+            position: Int,
+            isChecked: Boolean
+        )
     }
 }

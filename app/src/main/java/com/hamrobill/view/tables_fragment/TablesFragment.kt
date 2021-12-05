@@ -15,7 +15,6 @@ import com.hamrobill.databinding.FragmentTablesBinding
 import com.hamrobill.utils.RECYCLER_VIEW_WIDTH_LIMIT
 import com.hamrobill.utils.windowWidth
 import com.hamrobill.view.MainActivity
-import com.hamrobill.view.food_items_fragment.FoodItemsFragment
 import com.hamrobill.view_model.SharedViewModel
 import javax.inject.Inject
 
@@ -26,7 +25,6 @@ class TablesFragment : Fragment(),
     private lateinit var mViewModel: SharedViewModel
     private lateinit var mBinding: FragmentTablesBinding
     private lateinit var mRecyclerViewAdapter: TableListRecyclerViewAdapter
-    private var mIsFoodItemsFragmentAttached = false
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -39,7 +37,6 @@ class TablesFragment : Fragment(),
         mBinding = FragmentTablesBinding.inflate(inflater, container, false)
 
         setupObservers()
-        mViewModel.getTables()
         return mBinding.root
     }
 
@@ -54,13 +51,6 @@ class TablesFragment : Fragment(),
                         if (requireActivity().windowWidth() > RECYCLER_VIEW_WIDTH_LIMIT) 3 else 2
                     )
                 mBinding.tableRV.swapAdapter(mRecyclerViewAdapter, true)
-
-                if (!mIsFoodItemsFragmentAttached) {
-                    mIsFoodItemsFragmentAttached = true
-                    requireActivity().supportFragmentManager.beginTransaction()
-                        .replace(R.id.fragmentContainerTwo, FoodItemsFragment())
-                        .commit()
-                }
             }
         }
         mViewModel.tableItemChanged.observe(requireActivity()) {
@@ -71,11 +61,12 @@ class TablesFragment : Fragment(),
                 if (it != null) {
                     (requireActivity() as MainActivity).supportActionBar?.title =
                         getString(R.string.selected_table_format, it.tableName)
-                    mViewModel.getTableActiveOrders()
+                    mViewModel.getTableActiveOrdersAndCancelableOrderItems()
                 } else {
                     (requireActivity() as MainActivity).supportActionBar?.title =
                         getString(R.string.not_table_selected)
                     mViewModel.setActiveTableOrders(null)
+                    mViewModel.setCancellableTableOrders(null)
                 }
             }
         }

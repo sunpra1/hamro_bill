@@ -4,28 +4,78 @@ import android.util.Log
 import com.hamrobill.R
 import com.hamrobill.data.api.HamrobillAPIConsumer
 import com.hamrobill.data.api.PrintApiConsumer
-import com.hamrobill.data.pojo.CancelOrderBody
-import com.hamrobill.data.pojo.PlaceOrderRequest
-import com.hamrobill.data.pojo.SaveOrderRequest
+import com.hamrobill.data.pojo.*
 import com.hamrobill.utils.RequestStatus
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class BillingRepository @Inject constructor(private val hamroBillAPIConsumer: HamrobillAPIConsumer, private val printAPIConsumer: PrintApiConsumer) {
+class BillingRepository @Inject constructor(
+    private val hamroBillAPIConsumer: HamrobillAPIConsumer,
+    private val printAPIConsumer: PrintApiConsumer
+) {
     companion object {
         private const val TAG = "BillingRepository"
     }
 
-    fun getTables() = flow {
+    fun getTablesAndFoodItems() = flow {
         emit(RequestStatus.Waiting)
-        val response = hamroBillAPIConsumer.getTableList()
-        if (response.isSuccessful) {
-            emit(RequestStatus.Success(response.body()))
+        val getTablesResponse = hamroBillAPIConsumer.getTableList()
+        val getFoodItemsResponse = hamroBillAPIConsumer.getFoodItems()
+        if (getTablesResponse.isSuccessful && getFoodItemsResponse.isSuccessful) {
+            emit(
+                RequestStatus.Success(
+                    OnLoadData(
+                        tables = getTablesResponse.body(),
+                        foodItems = getFoodItemsResponse.body()
+                    )
+                )
+            )
         } else {
-            Log.d(TAG, "getTables: ${response.errorBody()?.byteStream()?.reader()?.readText()}")
-            emit(RequestStatus.Error(R.string.unable_fetch_tables))
+            Log.d(
+                TAG,
+                "getTablesResponse: ${
+                    getTablesResponse.errorBody()?.byteStream()?.reader()?.readText()
+                }"
+            )
+            Log.d(
+                TAG,
+                "getFoodItemsResponse: ${
+                    getFoodItemsResponse.errorBody()?.byteStream()?.reader()?.readText()
+                }"
+            )
+            emit(RequestStatus.Error(R.string.unable_fetch_tables_and_food_items))
+        }
+    }
+
+    fun getTableActiveOrdersAndCancelableOrderItems(tableId: Int) = flow {
+        emit(RequestStatus.Waiting)
+        val tableActiveOrderResponse = hamroBillAPIConsumer.getTableActiveOrders(tableId)
+        val cancellableOrderItemResponse = hamroBillAPIConsumer.getCancelableOrderItems(tableId)
+        if (tableActiveOrderResponse.isSuccessful && cancellableOrderItemResponse.isSuccessful) {
+            emit(
+                RequestStatus.Success(
+                    SelectedTableData(
+                        activeTableOrders = tableActiveOrderResponse.body(),
+                        cancellableOrderItems = cancellableOrderItemResponse.body()
+                    )
+                )
+            )
+        } else {
+            Log.d(
+                TAG,
+                "tableActiveOrderResponse: ${
+                    tableActiveOrderResponse.errorBody()?.byteStream()?.reader()?.readText()
+                }"
+            )
+            Log.d(
+                TAG,
+                "cancellableOrderItemResponse: ${
+                    cancellableOrderItemResponse.errorBody()?.byteStream()?.reader()?.readText()
+                }"
+            )
+            emit(RequestStatus.Error(R.string.unable_fetch_table_details))
         }
     }
 
@@ -40,17 +90,6 @@ class BillingRepository @Inject constructor(private val hamroBillAPIConsumer: Ha
                 "getTableActiveOrders: ${response.errorBody()?.byteStream()?.reader()?.readText()}"
             )
             emit(RequestStatus.Error(R.string.unable_fetch_table_orders))
-        }
-    }
-
-    fun getFoodItems() = flow {
-        emit(RequestStatus.Waiting)
-        val response = hamroBillAPIConsumer.getFoodItems()
-        if (response.isSuccessful) {
-            emit(RequestStatus.Success(response.body()))
-        } else {
-            Log.d(TAG, "getFoodItems: ${response.errorBody()?.byteStream()?.reader()?.readText()}")
-            emit(RequestStatus.Error(R.string.unable_fetch_food_items))
         }
     }
 
@@ -85,7 +124,7 @@ class BillingRepository @Inject constructor(private val hamroBillAPIConsumer: Ha
     fun saveTableOrders(saveOrderRequest: SaveOrderRequest) = flow {
         emit(RequestStatus.Waiting)
         val printResponse = printAPIConsumer.saveTableOrders(saveOrderRequest)
-        if(printResponse.isSuccessful){
+        if (printResponse.isSuccessful) {
             val response = hamroBillAPIConsumer.saveTableOrders(saveOrderRequest)
             if (response.isSuccessful) {
                 emit(RequestStatus.Success(response.body()))
@@ -96,37 +135,52 @@ class BillingRepository @Inject constructor(private val hamroBillAPIConsumer: Ha
                 )
                 emit(RequestStatus.Error(R.string.unable_save_table_order))
             }
-        }else{
+        } else {
             Log.d(
                 TAG,
                 "saveTableOrders: ${printResponse.errorBody()?.byteStream()?.reader()?.readText()}"
             )
-            emit(RequestStatus.Error(printResponse.errorBody()?.byteStream()?.reader()?.readText() ?: R.string.print_server_error))
+            emit(
+                RequestStatus.Error(
+                    printResponse.errorBody()?.byteStream()?.reader()?.readText()
+                        ?: R.string.print_server_error
+                )
+            )
         }
     }
 
-    fun cancelTableOrder(saveOrderRequest: SaveOrderRequest, cancelOrderBody: CancelOrderBody) = flow {
-        emit(RequestStatus.Waiting)
-        val printResponse = printAPIConsumer.saveTableOrders(saveOrderRequest)
-        if(printResponse.isSuccessful){
-            val response = hamroBillAPIConsumer.cancelOrder(cancelOrderBody)
-            if (response.isSuccessful) {
-                emit(RequestStatus.Success(response.body()))
+    fun cancelTableOrder(saveOrderRequest: SaveOrderRequest, cancelOrderBody: CancelOrderBody) =
+        flow {
+            emit(RequestStatus.Waiting)
+            val printResponse = printAPIConsumer.saveTableOrders(saveOrderRequest)
+            if (printResponse.isSuccessful) {
+                val response = hamroBillAPIConsumer.cancelOrder(cancelOrderBody)
+                if (response.isSuccessful) {
+                    emit(RequestStatus.Success(response.body()))
+                } else {
+                    Log.d(
+                        TAG,
+                        "cancelTableOrder: ${
+                            response.errorBody()?.byteStream()?.reader()?.readText()
+                        }"
+                    )
+                    emit(RequestStatus.Error(R.string.unable_cancel_table_order))
+                }
             } else {
                 Log.d(
                     TAG,
-                    "cancelTableOrder: ${response.errorBody()?.byteStream()?.reader()?.readText()}"
+                    "cancelTableOrder: ${
+                        printResponse.errorBody()?.byteStream()?.reader()?.readText()
+                    }"
                 )
-                emit(RequestStatus.Error(R.string.unable_cancel_table_order))
+                emit(
+                    RequestStatus.Error(
+                        printResponse.errorBody()?.byteStream()?.reader()?.readText()
+                            ?: R.string.print_server_error
+                    )
+                )
             }
-        }else{
-            Log.d(
-                TAG,
-                "cancelTableOrder: ${printResponse.errorBody()?.byteStream()?.reader()?.readText()}"
-            )
-            emit(RequestStatus.Error(printResponse.errorBody()?.byteStream()?.reader()?.readText() ?: R.string.print_server_error))
         }
-    }
 
     fun searchSubItems(searchTerm: String) = flow {
         emit(RequestStatus.Waiting)

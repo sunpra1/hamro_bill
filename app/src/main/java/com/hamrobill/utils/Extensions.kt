@@ -99,5 +99,5 @@ fun Calendar.getFormattedStringDate(format: String = DEFAULT_OUTPUT_FORMAT): Str
 fun String.getCalenderDate(inputFormat: String = "EEE, dd MMM yyyy HH:mm:ss zzzz"): Calendar {
     val dateFormat = SimpleDateFormat(inputFormat, Locale.ENGLISH)
     val date = dateFormat.parse(this)
-    return Calendar.getInstance().apply { time = date }
+    return Calendar.getInstance().apply { time = date!! }
 }

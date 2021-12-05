@@ -30,11 +30,11 @@ class SplashActivity : AppCompatActivity(), BaseUrlDialogFragment.UrlUpdateListe
     }
 
     private fun determineRouting() {
-        if(mSharedPreferenceStorage.remoteBaseUrl.isNullOrEmpty() || mSharedPreferenceStorage.remoteBaseUrl.isNullOrEmpty()){
+        if (mSharedPreferenceStorage.remoteBaseUrl.isNullOrEmpty() || mSharedPreferenceStorage.remoteBaseUrl.isNullOrEmpty()) {
             BaseUrlDialogFragment.getInstance(mSharedPreferenceStorage, this).apply {
                 show(supportFragmentManager, tag)
             }
-        }else{
+        } else {
             Handler(Looper.getMainLooper()).postDelayed({
                 val tokenExpiryTime = mSharedPreferenceStorage.tokenExpiresAt
                 val intent: Intent =

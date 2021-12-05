@@ -1,4 +1,4 @@
-package com.hamrobill.view.table_orders_fragment
+package com.hamrobill.view.estimated_bill_fragment
 
 import android.content.Context
 import android.os.Bundle
@@ -12,26 +12,28 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.hamrobill.HamrobillApp
 import com.hamrobill.R
 import com.hamrobill.data.pojo.ActiveOrderItem
-import com.hamrobill.databinding.FragmentTableOrdersBinding
+import com.hamrobill.databinding.FragmentEstimatedBillBinding
 import com.hamrobill.utils.*
-import com.hamrobill.view.delete_order_dialog_fragment.DeleteOrderDialogFragment
 import com.hamrobill.view_model.SharedViewModel
+import java.util.*
 import javax.inject.Inject
 
-class TableOrdersFragment : BottomSheetDialogFragment(), View.OnClickListener,
-    TableOrderListRecyclerViewAdapter.OnTableOrderListItemCheckedListener,
-    DeleteOrderDialogFragment.OnOrderDeleteListener {
+class EstimatedBillFragment : BottomSheetDialogFragment(), View.OnClickListener {
     @Inject
     lateinit var mViewModelFactory: ViewModelProvider.Factory
+
+    @Inject
+    lateinit var mSharedPreferenceStorage: SharedPreferenceStorage
     private lateinit var mViewModel: SharedViewModel
-    private lateinit var mBinding: FragmentTableOrdersBinding
+    private lateinit var mBinding: FragmentEstimatedBillBinding
     private var mBottomSheet: BottomSheetDialog? = null
+    private var mTimer: Timer = Timer()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        mBinding = FragmentTableOrdersBinding.inflate(inflater)
+        mBinding = FragmentEstimatedBillBinding.inflate(inflater)
         mViewModel =
             ViewModelProvider(requireActivity(), mViewModelFactory).get(SharedViewModel::class.java)
         return mBinding.root
@@ -46,14 +48,21 @@ class TableOrdersFragment : BottomSheetDialogFragment(), View.OnClickListener,
     private fun setupObservers() {
         mViewModel.activeTableOrders.observe(requireActivity()) {
             if (!it.isNullOrEmpty()) {
-                if(isAdded) {
-                    mBinding.activeTableOrderRV.swapAdapter(
-                        TableOrderListRecyclerViewAdapter(it, this),
+                if (isAdded) {
+                    mBinding.estimatedBillItemsRV.swapAdapter(
+                        EstimatedBillItemRecyclerViewAdapter(it),
                         true
                     )
+                    calculateBillTotal(it)
                 }
             }
         }
+    }
+
+    private fun calculateBillTotal(orderItems: ArrayList<ActiveOrderItem>) {
+        var total = 0.0f
+        orderItems.forEach { total += it.quantity * it.subItemPrice }
+        mBinding.totalAmount.text = getString(R.string.amount_format, total.toString())
     }
 
     private fun initializeViews() {
@@ -71,12 +80,33 @@ class TableOrdersFragment : BottomSheetDialogFragment(), View.OnClickListener,
                 else (windowWidth * DIALOG_WIDTH_RATIO_SMALL).toInt()
         }
 
-        mBinding.tableName.text = getString(
-            R.string.table_order_title_format, mViewModel.selectedTable.value!!.tableName,
+        mBinding.title.text = getString(
+            R.string.estimated_bill_title_format, mViewModel.selectedTable.value!!.tableName,
             mViewModel.activeTableOrders.value!!.last().billNumber.toString()
         )
+        mBinding.billNumber.text = getString(
+            R.string.bill_number_format,
+            mViewModel.activeTableOrders.value!!.last().billNumber.toString()
+        )
+        mBinding.cashierName.text =
+            getString(R.string.cashier_format, mSharedPreferenceStorage.loggedUserName)
+        mBinding.tableNumber.text =
+            getString(R.string.table_number_format, mViewModel.selectedTable.value!!.tableName)
+        val delay = (60 - Calendar.getInstance().get(Calendar.SECOND)).toLong()
+        mTimer.schedule(object : TimerTask() {
+            override fun run() {
+                val calendar = Calendar.getInstance()
+                mBinding.date.text =
+                    getString(R.string.date_format, calendar.getFormattedStringDate())
+                mBinding.time.text = getString(
+                    R.string.time_format,
+                    calendar.get(Calendar.HOUR).toString(),
+                    calendar.get(Calendar.MINUTE).toString()
+                )
+            }
+        }, delay, (60 * 100).toLong())
+        mBinding.estimatedBillItemsRV.layoutManager = LinearLayoutManager(requireContext())
         mBinding.btnClose.setOnClickListener(this)
-        mBinding.activeTableOrderRV.layoutManager = LinearLayoutManager(requireContext())
     }
 
     override fun onAttach(context: Context) {
@@ -95,24 +125,8 @@ class TableOrdersFragment : BottomSheetDialogFragment(), View.OnClickListener,
         }
     }
 
-    override fun onTableOrderListItemChecked(activeOrderItem: ActiveOrderItem, position: Int, isChecked: Boolean) {
-        mViewModel.setCancelOrderItem(activeOrderItem)
-        if(isChecked){
-            DeleteOrderDialogFragment.getInstance(activeOrderItem, position,this)
-                .showNow(childFragmentManager, DeleteOrderDialogFragment::class.java.simpleName)
-        }
-    }
-
-    override fun onOrderDeleted(activeOrderItem: ActiveOrderItem, position: Int, remarks: String?) {
-        (mBinding.activeTableOrderRV.adapter as TableOrderListRecyclerViewAdapter).selection = position
-        mViewModel.cancelTableOrder(remarks)
-    }
-
-    override fun onDeleteCancelled(
-        activeOrderItem: ActiveOrderItem,
-        position: Int
-    ) {
-        (mBinding.activeTableOrderRV.adapter as TableOrderListRecyclerViewAdapter).selection = position
-        mViewModel.setCancelOrderItem(null)
+    override fun onStop() {
+        super.onStop()
+        mTimer.cancel()
     }
 }
