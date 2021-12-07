@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.hamrobill.R
 import com.hamrobill.data.repository.AuthRepository
 import com.hamrobill.di.scope.ActivityScope
+import com.hamrobill.utils.Event
 import com.hamrobill.utils.NetworkConnectivity
 import com.hamrobill.utils.RequestStatus
 import com.hamrobill.utils.SharedPreferenceStorage
@@ -27,8 +28,8 @@ class LoginActivityViewModel @Inject constructor(
     val errorMessage: LiveData<Any> = _errorMessage
     private val _isNetworkAvailable: MutableLiveData<Boolean> = MutableLiveData()
     val isNetworkAvailable: LiveData<Boolean> = _isNetworkAvailable
-    private val _isLoginSuccess: MutableLiveData<Boolean> = MutableLiveData()
-    val isLoginSuccess: LiveData<Boolean> = _isLoginSuccess
+    private val _isLoginSuccess: MutableLiveData<Event<Boolean>> = MutableLiveData()
+    val isLoginSuccess: LiveData<Event<Boolean>> = _isLoginSuccess
 
     init {
         networkConnectivity.observeForever { _isNetworkAvailable.value = it }
@@ -53,7 +54,7 @@ class LoginActivityViewModel @Inject constructor(
                                 sharedPrefs.tokenExpiresAt = data.expiresAt
                                 sharedPrefs.loggedUserName = data.userName
                             }
-                            _isLoginSuccess.value = true
+                            _isLoginSuccess.value = Event(true)
                         }
                         is RequestStatus.Error -> {
                             _isLoading.value = false

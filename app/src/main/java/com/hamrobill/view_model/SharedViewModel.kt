@@ -77,9 +77,6 @@ class SharedViewModel @Inject constructor(
     private val _cancelOrderItem: MutableLiveData<CancellableOrderItem> = MutableLiveData()
     private val cancelOrderItem: LiveData<CancellableOrderItem> = _cancelOrderItem
 
-    private val _isCancelComplete: MutableLiveData<Boolean> = MutableLiveData()
-    val isCancelComplete: LiveData<Boolean> = _isCancelComplete
-
     init {
         networkConnectivity.observeForever { _isNetworkAvailable.value = it }
     }
@@ -463,7 +460,6 @@ class SharedViewModel @Inject constructor(
                                 _toast.value = R.string.order_has_cancelled
                                 _cancellableTableOrders.value = list
                                 _cancelOrderItem.value = null
-                                _isCancelComplete.value = true
                             }
                             is RequestStatus.Error -> {
                                 _isLoading.value = false

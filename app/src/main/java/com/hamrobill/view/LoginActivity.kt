@@ -13,10 +13,7 @@ import com.hamrobill.HamrobillApp
 import com.hamrobill.R
 import com.hamrobill.data.pojo.LoginRequest
 import com.hamrobill.databinding.ActivityLoginBinding
-import com.hamrobill.utils.hideKeyboard
-import com.hamrobill.utils.hideProgressDialog
-import com.hamrobill.utils.showProgressDialog
-import com.hamrobill.utils.vibrate
+import com.hamrobill.utils.*
 import com.hamrobill.view_model.LoginActivityViewModel
 import java.util.*
 import javax.inject.Inject
@@ -76,9 +73,9 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener, View.OnFocusCha
             mBinding.loginBtn.isEnabled = it
             mPreviousConnectivityStatus = it
         }
-        mViewModel.isLoginSuccess.observe(this) {
+        mViewModel.isLoginSuccess.observe(this, EventObserver {
             startActivity(Intent(this@LoginActivity, MainActivity::class.java))
-        }
+        })
     }
 
     private fun initializeView() {
