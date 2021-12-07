@@ -1,4 +1,4 @@
-package com.hamrobill.view.delete_order_dialog_fragment
+package com.hamrobill.view.cancel_order_dialog_fragment
 
 import android.app.Dialog
 import android.os.Bundle
@@ -8,30 +8,30 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatDialogFragment
 import com.hamrobill.R
-import com.hamrobill.data.pojo.ActiveOrderItem
-import com.hamrobill.databinding.FragmentDeleteOrderDialogBinding
+import com.hamrobill.data.pojo.CancellableOrderItem
+import com.hamrobill.databinding.FragmentCancelOrderDialogBinding
 import com.hamrobill.utils.DIALOG_WIDTH_LIMIT
 import com.hamrobill.utils.DIALOG_WIDTH_RATIO_BIG
 import com.hamrobill.utils.DIALOG_WIDTH_RATIO_SMALL
 import com.hamrobill.utils.windowWidth
 
-class DeleteOrderDialogFragment private constructor() : AppCompatDialogFragment(),
+class CancelOrderDialogFragment private constructor() : AppCompatDialogFragment(),
     View.OnClickListener {
 
-    private lateinit var mBinding: FragmentDeleteOrderDialogBinding
-    private lateinit var mActiveOrderItem: ActiveOrderItem
+    private lateinit var mBinding: FragmentCancelOrderDialogBinding
+    private lateinit var mCancellableOrderItem: CancellableOrderItem
     private var mPosition: Int = -1
     private lateinit var mOnOrderDeleteListener: OnOrderDeleteListener
 
     companion object {
         @JvmStatic
         fun getInstance(
-            activeOrderItem: ActiveOrderItem,
+            cancellableOrderItem: CancellableOrderItem,
             position: Int,
             onOrderDeleteListener: OnOrderDeleteListener
-        ): DeleteOrderDialogFragment {
-            return DeleteOrderDialogFragment().apply {
-                mActiveOrderItem = activeOrderItem
+        ): CancelOrderDialogFragment {
+            return CancelOrderDialogFragment().apply {
+                mCancellableOrderItem = cancellableOrderItem
                 mPosition = position
                 mOnOrderDeleteListener = onOrderDeleteListener
             }
@@ -42,7 +42,7 @@ class DeleteOrderDialogFragment private constructor() : AppCompatDialogFragment(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        mBinding = FragmentDeleteOrderDialogBinding.inflate(layoutInflater)
+        mBinding = FragmentCancelOrderDialogBinding.inflate(layoutInflater)
         return mBinding.root
     }
 
@@ -53,7 +53,7 @@ class DeleteOrderDialogFragment private constructor() : AppCompatDialogFragment(
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val dialog = super.onCreateDialog(savedInstanceState).apply {
-            setTitle(getString(R.string.cancel_order_format, mActiveOrderItem.subItemName))
+            setTitle(getString(R.string.cancel_order_format, mCancellableOrderItem.subItemName))
         }
         return dialog
     }
@@ -66,19 +66,23 @@ class DeleteOrderDialogFragment private constructor() : AppCompatDialogFragment(
             else (windowWidth * DIALOG_WIDTH_RATIO_SMALL).toInt(),
             LinearLayout.LayoutParams.WRAP_CONTENT
         )
-        mBinding.cancelButton.setOnClickListener(this)
-        mBinding.deleteBtn.setOnClickListener(this)
+        mBinding.cancelBtn.setOnClickListener(this)
+        mBinding.backBtn.setOnClickListener(this)
     }
 
     override fun onClick(view: View?) {
         if (view != null) {
             when (view.id) {
-                mBinding.deleteBtn.id -> {
-                    mOnOrderDeleteListener.onOrderDeleted(mActiveOrderItem, mPosition, mBinding.remarksEt.text.toString())
+                mBinding.cancelBtn.id -> {
+                    mOnOrderDeleteListener.onOrderCancelled(
+                        mCancellableOrderItem,
+                        mPosition,
+                        mBinding.remarksEt.text.toString()
+                    )
                     dismiss()
                 }
-                mBinding.cancelButton.id -> {
-                    mOnOrderDeleteListener.onDeleteCancelled(mActiveOrderItem, mPosition)
+                mBinding.backBtn.id -> {
+                    mOnOrderDeleteListener.onCancellationCancelled(mCancellableOrderItem, mPosition)
                     dismiss()
                 }
             }
@@ -86,7 +90,12 @@ class DeleteOrderDialogFragment private constructor() : AppCompatDialogFragment(
     }
 
     interface OnOrderDeleteListener {
-        fun onOrderDeleted(activeOrderItem: ActiveOrderItem, position: Int, remarks: String?)
-        fun onDeleteCancelled(activeOrderItem: ActiveOrderItem, position: Int)
+        fun onOrderCancelled(
+            cancellableOrderItem: CancellableOrderItem,
+            position: Int,
+            remarks: String?
+        )
+
+        fun onCancellationCancelled(cancellableOrderItem: CancellableOrderItem, position: Int)
     }
 }

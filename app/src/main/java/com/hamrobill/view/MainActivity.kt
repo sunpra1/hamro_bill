@@ -20,11 +20,12 @@ import com.hamrobill.model.FoodCategory
 import com.hamrobill.model.SubItemType
 import com.hamrobill.utils.hideProgressDialog
 import com.hamrobill.utils.showProgressDialog
+import com.hamrobill.view.cancellable_table_orders_fragment.CancellableTableOrdersFragment
 import com.hamrobill.view.change_table_dialog_fragment.ChangeTableDialogFragment
-import com.hamrobill.view.delete_order_dialog_fragment.DeleteOrderDialogFragment
+import com.hamrobill.view.estimated_bill_fragment.EstimatedBillFragment
+import com.hamrobill.view.food_items_fragment.FoodItemsFragment
 import com.hamrobill.view.food_sub_items_fragment.FoodSubItemsFragment
 import com.hamrobill.view.merge_table_dialog_fragment.MergeTableDialogFragment
-import com.hamrobill.view.table_orders_fragment.TableOrdersFragment
 import com.hamrobill.view.tables_fragment.TablesFragment
 import com.hamrobill.view_model.SharedViewModel
 import javax.inject.Inject
@@ -50,7 +51,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, SearchView.OnQue
         mViewModel = ViewModelProvider(this, factory).get(SharedViewModel::class.java)
         initializeViews()
         setupObservers()
-        attachFragment()
+        mViewModel.getTablesAndFoodItems()
     }
 
     private fun initializeViews() {
@@ -67,8 +68,13 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, SearchView.OnQue
             menu
         )
         menu?.setGroupVisible(
-            R.id.tableActiveOrdersMenuGroup,
+            R.id.estimatedBillMenuGroup,
             mViewModel.activeTableOrders.value != null && mViewModel.activeTableOrders.value!!.isNotEmpty()
+        )
+
+        menu?.setGroupVisible(
+            R.id.cancellableOrdersMenuGroup,
+            mViewModel.cancellableTableOrders.value != null && mViewModel.cancellableTableOrders.value!!.isNotEmpty()
         )
 
         menu?.setGroupVisible(
@@ -81,8 +87,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, SearchView.OnQue
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
-            R.id.tableOrdersMenuItem -> {
-                displayTableOrders()
+            R.id.estimatedBillMenuItem -> {
+                displayEstimatedBill()
                 true
             }
             R.id.changeTableMenuItem -> {
@@ -93,7 +99,10 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, SearchView.OnQue
                 ).showNow(supportFragmentManager, ChangeTableDialogFragment::class.java.simpleName)
                 true
             }
-
+            R.id.cancellableOrdersMenuItem -> {
+                displayCancellableTableOrders()
+                true
+            }
             R.id.mergeTableMenuItem -> {
                 MergeTableDialogFragment.getInstance(
                     this,
@@ -106,10 +115,17 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, SearchView.OnQue
         }
     }
 
-    private fun displayTableOrders() {
-        TableOrdersFragment().showNow(
+    private fun displayEstimatedBill() {
+        EstimatedBillFragment().showNow(
             supportFragmentManager,
-            TableOrdersFragment::class.java.simpleName
+            EstimatedBillFragment::class.java.simpleName
+        )
+    }
+
+    private fun displayCancellableTableOrders() {
+        CancellableTableOrdersFragment().showNow(
+            supportFragmentManager,
+            CancellableTableOrdersFragment::class.java.simpleName
         )
     }
 
@@ -124,7 +140,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, SearchView.OnQue
             val message = when (it) {
                 is String -> it
                 is Int -> getString(it)
-                else -> getString(R.string.something_went_wrong)
+                else -> null
             }
 
             alertDialog?.let { dialog -> if (dialog.isShowing) dialog.dismiss() }
@@ -137,6 +153,19 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, SearchView.OnQue
                     dialog.dismiss()
                 }
                 .show()
+        }
+        mViewModel.toast.observe(this) {
+            val message = when (it) {
+                is String -> it
+                is Int -> getString(it)
+                else -> null
+            }
+            Toast.makeText(this, message, Toast.LENGTH_LONG).show()
+        }
+        mViewModel.isInitialDataLoaded.observe(this) {
+            if (it != null && it) {
+                attachFragment()
+            }
         }
         mViewModel.activeTableOrders.observe(this) {
             val kitchenActiveOrdersItem = ArrayList<ActiveOrderItem>()
@@ -174,7 +203,9 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, SearchView.OnQue
             mBinding.botCount.text = barActiveOrdersItem.size.toString()
             mBinding.coffeeCount.text = coffeeActiveOrdersItem.size.toString()
             mBinding.sekuwaCount.text = sekuwaActiveOrdersItem.size.toString()
-
+            invalidateOptionsMenu()
+        }
+        mViewModel.cancellableTableOrders.observe(this) {
             invalidateOptionsMenu()
         }
         mViewModel.searchResult.observe(this) {
@@ -192,10 +223,15 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, SearchView.OnQue
 
     private fun attachFragment() {
         supportFragmentManager.beginTransaction()
-            .replace(mBinding.fragmentContainerOne.id, TablesFragment()).commit()
+            .replace(mBinding.fragmentContainerOne.id, TablesFragment())
+            .commit()
+
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.fragmentContainerTwo, FoodItemsFragment())
+            .commit()
     }
 
-    fun displayConnectivityMessage(isConnected: Boolean) {
+    private fun displayConnectivityMessage(isConnected: Boolean) {
         if (!mPreviousConnectivityStatus)
             Handler(Looper.getMainLooper()).postDelayed({
                 mBinding.netWorkConnectivity.root.visibility =

@@ -31,6 +31,9 @@ class SharedViewModel @Inject constructor(
     private val _errorMessage: MutableLiveData<Any> = MutableLiveData()
     val errorMessage: LiveData<Any> = _errorMessage
 
+    private val _toast: MutableLiveData<Any> = MutableLiveData()
+    val toast: LiveData<Any> = _toast
+
     private val _isNetworkAvailable: MutableLiveData<Boolean> = MutableLiveData()
     val isNetworkAvailable: LiveData<Boolean> = _isNetworkAvailable
 
@@ -40,6 +43,9 @@ class SharedViewModel @Inject constructor(
     private val _foodItems: MutableLiveData<ArrayList<FoodItem>> = MutableLiveData()
     val foodItems: LiveData<ArrayList<FoodItem>> = _foodItems
 
+    private val _isInitialDataLoaded: MutableLiveData<Boolean> = MutableLiveData()
+    val isInitialDataLoaded: LiveData<Boolean> = _isInitialDataLoaded
+
     private val _selectedTable: MutableLiveData<Table> = MutableLiveData()
     val selectedTable: LiveData<Table> = _selectedTable
 
@@ -48,6 +54,10 @@ class SharedViewModel @Inject constructor(
 
     private val _activeTableOrders: MutableLiveData<ArrayList<ActiveOrderItem>> = MutableLiveData()
     val activeTableOrders: LiveData<ArrayList<ActiveOrderItem>> = _activeTableOrders
+
+    private val _cancellableTableOrders: MutableLiveData<ArrayList<CancellableOrderItem>> =
+        MutableLiveData()
+    val cancellableTableOrders: LiveData<ArrayList<CancellableOrderItem>> = _cancellableTableOrders
 
     private val _selectedFoodItem: MutableLiveData<FoodItem> = MutableLiveData()
     val selectedFoodItem: LiveData<FoodItem> = _selectedFoodItem
@@ -64,10 +74,10 @@ class SharedViewModel @Inject constructor(
     private val _searchResult: MutableLiveData<ArrayList<FoodSubItem>> = MutableLiveData()
     val searchResult: LiveData<ArrayList<FoodSubItem>> = _searchResult
 
-    private val _cancelOrderItem: MutableLiveData<ActiveOrderItem> = MutableLiveData()
-    val cancelOrderItem: LiveData<ActiveOrderItem> = _cancelOrderItem
+    private val _cancelOrderItem: MutableLiveData<CancellableOrderItem> = MutableLiveData()
+    private val cancelOrderItem: LiveData<CancellableOrderItem> = _cancelOrderItem
 
-    private val _isCancelComplete : MutableLiveData<Boolean> = MutableLiveData()
+    private val _isCancelComplete: MutableLiveData<Boolean> = MutableLiveData()
     val isCancelComplete: LiveData<Boolean> = _isCancelComplete
 
     init {
@@ -86,15 +96,19 @@ class SharedViewModel @Inject constructor(
         _activeTableOrders.value = tableOrders
     }
 
+    fun setCancellableTableOrders(cancellableTableOrders: ArrayList<CancellableOrderItem>?) {
+        _cancellableTableOrders.value = cancellableTableOrders
+    }
+
     fun setIsOrderPlaced(isPlaced: Boolean) {
         _isOrderPlaced.value = isPlaced
     }
 
-    fun setCancelOrderItem(activeOrderItem: ActiveOrderItem?) {
-        if (cancelOrderItem.value == activeOrderItem) {
+    fun setCancelOrderItem(cancellableOrderItem: CancellableOrderItem?) {
+        if (cancelOrderItem.value == cancellableOrderItem) {
             _cancelOrderItem.value = null
         } else {
-            _cancelOrderItem.value = activeOrderItem
+            _cancelOrderItem.value = cancellableOrderItem
         }
     }
 
@@ -160,12 +174,12 @@ class SharedViewModel @Inject constructor(
         }
     }
 
-    fun getTables() {
+    fun getTablesAndFoodItems() {
         viewModelScope.launch {
-            billingRepository.getTables()
+            billingRepository.getTablesAndFoodItems()
                 .catch {
                     _isLoading.value = false
-                    _errorMessage.value = R.string.unable_fetch_tables
+                    _errorMessage.value = R.string.unable_fetch_tables_and_food_items
                 }
                 .collect {
                     when (it) {
@@ -175,7 +189,9 @@ class SharedViewModel @Inject constructor(
                         is RequestStatus.Success -> {
                             _isLoading.value = false
                             _tables.value =
-                                it.data?.data?.distinctBy { t -> t.tableID } as ArrayList<Table>
+                                it.data.tables?.data?.distinctBy { t -> t.tableID } as ArrayList<Table>
+                            _foodItems.value = it.data.foodItems?.data
+                            _isInitialDataLoaded.value = true
                         }
                         is RequestStatus.Error -> {
                             _isLoading.value = false
@@ -186,12 +202,38 @@ class SharedViewModel @Inject constructor(
         }
     }
 
-    fun getTableActiveOrders() {
+    fun getTableActiveOrdersAndCancelableOrderItems() {
+        viewModelScope.launch {
+            billingRepository.getTableActiveOrdersAndCancelableOrderItems(selectedTable.value!!.tableID)
+                .catch {
+                    _isLoading.value = false
+                    _errorMessage.value = R.string.unable_fetch_table_details
+                }
+                .collect {
+                    when (it) {
+                        is RequestStatus.Waiting -> {
+                            _isLoading.value = true
+                        }
+                        is RequestStatus.Success -> {
+                            _isLoading.value = false
+                            _activeTableOrders.value = it.data.activeTableOrders?.data
+                            _cancellableTableOrders.value = it.data.cancellableOrderItems?.data
+                        }
+                        is RequestStatus.Error -> {
+                            _isLoading.value = false
+                            _errorMessage.value = it.message
+                        }
+                    }
+                }
+        }
+    }
+
+    private fun getTableActiveOrders() {
         viewModelScope.launch {
             billingRepository.getTableActiveOrders(selectedTable.value!!.tableID)
                 .catch {
                     _isLoading.value = false
-                    _errorMessage.value = R.string.unable_fetch_tables
+                    _errorMessage.value = R.string.unable_fetch_table_orders
                 }
                 .collect {
                     when (it) {
@@ -201,31 +243,6 @@ class SharedViewModel @Inject constructor(
                         is RequestStatus.Success -> {
                             _isLoading.value = false
                             _activeTableOrders.value = it.data?.data
-                        }
-                        is RequestStatus.Error -> {
-                            _isLoading.value = false
-                            _errorMessage.value = it.message
-                        }
-                    }
-                }
-        }
-    }
-
-    fun getFoodItems() {
-        viewModelScope.launch {
-            billingRepository.getFoodItems()
-                .catch {
-                    _isLoading.value = false
-                    _errorMessage.value = R.string.unable_fetch_food_items
-                }
-                .collect {
-                    when (it) {
-                        is RequestStatus.Waiting -> {
-                            _isLoading.value = true
-                        }
-                        is RequestStatus.Success -> {
-                            _isLoading.value = false
-                            _foodItems.value = it.data?.data
                         }
                         is RequestStatus.Error -> {
                             _isLoading.value = false
@@ -384,7 +401,7 @@ class SharedViewModel @Inject constructor(
     fun cancelTableOrder(remarks: String?) {
         if (cancelOrderItem.value != null) {
             val printTitle = when {
-                cancelOrderItem.value!!.isExtraColumn -> "SEKUWA"
+                cancelOrderItem.value!!.extraColumn -> "SEKUWA"
                 cancelOrderItem.value!!.isBar -> "BOT"
                 cancelOrderItem.value!!.isCoffee -> "COFFEE"
                 else -> "KOT"
@@ -410,8 +427,17 @@ class SharedViewModel @Inject constructor(
 
             val cancelOrderBody = CancelOrderBody(
                 tableId = selectedTable.value!!.tableID,
-                orderItemId = cancelOrderItem.value!!.itemId,
-                remarks = remarks
+                orderId = cancelOrderItem.value!!.orderId,
+                deleteOrderItems = ArrayList<DeleteOrderItem>()
+                    .apply {
+                        add(
+                            DeleteOrderItem(
+                                tableId = selectedTable.value!!.tableID,
+                                orderItemId = cancelOrderItem.value!!.orderId,
+                                remarks = remarks
+                            )
+                        )
+                    }
             )
 
             viewModelScope.launch {
@@ -427,13 +453,15 @@ class SharedViewModel @Inject constructor(
                             }
                             is RequestStatus.Success -> {
                                 _isLoading.value = false
-                                val list = ArrayList<ActiveOrderItem>()
-                                activeTableOrders.value!!.forEach { order ->
-                                    if (cancelOrderItem.value!! == order && order.quantity > 1f)
-                                        list.add(order.apply { quantity -= 1 })
-
+                                val list = ArrayList<CancellableOrderItem>()
+                                cancellableTableOrders.value!!.forEach { order ->
+                                    if (cancelOrderItem.value!! == order && order.quantity >= 1f) {
+                                        if (order.quantity > 1f)
+                                            list.add(order.apply { quantity -= 1 })
+                                    } else list.add(order)
                                 }
-                                _activeTableOrders.value = list
+                                _toast.value = R.string.order_has_cancelled
+                                _cancellableTableOrders.value = list
                                 _cancelOrderItem.value = null
                                 _isCancelComplete.value = true
                             }

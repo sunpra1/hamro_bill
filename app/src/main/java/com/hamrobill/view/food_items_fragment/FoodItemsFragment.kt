@@ -35,13 +35,12 @@ class FoodItemsFragment : Fragment(),
             ViewModelProvider(requireActivity(), mViewModelFactory).get(SharedViewModel::class.java)
         mBinding = FragmentFoodItemsBinding.inflate(inflater, container, false)
         setupObservers()
-        mViewModel.getFoodItems()
         return mBinding.root
     }
 
     private fun setupObservers() {
         mViewModel.foodItems.observe(requireActivity()) {
-            if(isAdded) {
+            if (isAdded) {
                 mBinding.foodItemsRV.layoutManager = LinearLayoutManager(context)
                 mBinding.foodItemsRV.adapter = FoodCategoryRecyclerViewAdapter(it, this)
             }

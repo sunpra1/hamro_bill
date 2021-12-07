@@ -56,22 +56,28 @@ class NetworkModule {
     @Singleton
     @Provides
     @RetrofitWithRemoteEndPoint
-    fun providesRetrofitWithRemoteEndPoint(client: OkHttpClient, sharedPreferenceStorage: SharedPreferenceStorage): Retrofit {
+    fun providesRetrofitWithRemoteEndPoint(
+        client: OkHttpClient,
+        sharedPreferenceStorage: SharedPreferenceStorage
+    ): Retrofit {
         return Retrofit.Builder()
             .client(client)
             .addConverterFactory(GsonConverterFactory.create())
-            .baseUrl(sharedPreferenceStorage.remoteBaseUrl)
+            .baseUrl(sharedPreferenceStorage.remoteBaseUrl!!)
             .build()
     }
 
     @Singleton
     @Provides
     @RetrofitWithLocalEndPoint
-    fun providesRetrofitWithRemoteLocalEndPoint(client: OkHttpClient, sharedPreferenceStorage: SharedPreferenceStorage): Retrofit {
+    fun providesRetrofitWithRemoteLocalEndPoint(
+        client: OkHttpClient,
+        sharedPreferenceStorage: SharedPreferenceStorage
+    ): Retrofit {
         return Retrofit.Builder()
             .client(client)
             .addConverterFactory(GsonConverterFactory.create())
-            .baseUrl(sharedPreferenceStorage.localBaseUrl)
+            .baseUrl(sharedPreferenceStorage.localBaseUrl!!)
             .build()
     }
 

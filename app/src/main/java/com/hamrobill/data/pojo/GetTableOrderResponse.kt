@@ -46,7 +46,7 @@ data class ActiveOrderItem(
     @SerializedName("Remarks") val remarks: String?,
     @SerializedName("RoomCategoryId") val roomCategoryId: Int?,
     @SerializedName("StartTime") val startTime: String?,
-    @SerializedName("SubItemId") val subItemId: String?,
+    @SerializedName("SubItemId") val subItemId: Int?,
     @SerializedName("SubItemName") val subItemName: String,
     @SerializedName("SubItemPrice") val subItemPrice: Float,
     @SerializedName("TableId") val tableId: Int,
