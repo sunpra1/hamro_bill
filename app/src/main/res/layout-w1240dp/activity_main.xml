@@ -50,6 +50,7 @@
                         android:drawablePadding="8dp"
                         android:text="@string/kot"
                         android:textAlignment="center"
+                        android:textColor="@color/black"
                         android:textSize="20sp"
                         app:drawableStartCompat="@drawable/silverware_fork_knife" />
 
@@ -91,6 +92,7 @@
                         android:drawablePadding="8dp"
                         android:text="@string/bot"
                         android:textAlignment="center"
+                        android:textColor="@color/black"
                         android:textSize="20sp"
                         app:drawableStartCompat="@drawable/liquor" />
 
@@ -133,6 +135,7 @@
                         android:drawablePadding="8dp"
                         android:text="@string/coffee"
                         android:textAlignment="center"
+                        android:textColor="@color/black"
                         android:textSize="20sp"
                         app:drawableStartCompat="@drawable/coffee" />
 
@@ -175,6 +178,7 @@
                         android:drawablePadding="8dp"
                         android:text="@string/sekuwa"
                         android:textAlignment="center"
+                        android:textColor="@color/black"
                         android:textSize="20sp"
                         app:drawableStartCompat="@drawable/grill" />
 
