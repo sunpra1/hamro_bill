@@ -69,16 +69,20 @@
                 android:layout_gravity="center_vertical|center_horizontal"
                 android:layout_weight="1"
                 android:contentDescription="@string/order_status"
-                android:gravity="center_vertical|center_horizontal" />
+                android:gravity="center_vertical|center_horizontal
+" />
 
-            <CheckBox
-                android:id="@+id/deleteCheckBox"
+            <ImageView
+                android:id="@+id/deleteBtn"
                 android:layout_width="0dp"
-                android:layout_height="24dp"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical|center_horizontal"
                 android:layout_weight="0.5"
-                android:buttonTint="@color/green"
-                android:gravity="center_vertical|end" />
+                android:clickable="true"
+                android:contentDescription="@string/order_status"
+                android:focusable="true"
+                android:gravity="center_vertical|center_horizontal"
+                android:src="@drawable/close_red_18" />
 
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>

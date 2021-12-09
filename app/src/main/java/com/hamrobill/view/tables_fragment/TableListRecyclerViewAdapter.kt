@@ -89,7 +89,7 @@ class TableListRecyclerViewAdapter(
                 }
                 else -> {
                     view.cardView.setBackgroundColor(context.getColor(R.color.white))
-                    view.borderView.setBackgroundResource(R.drawable.grey_border)
+                    view.borderView.setBackgroundResource(R.drawable.black_border)
                     view.tableName.setTextColor(context.getColor(R.color.black))
                     view.tableCapacity.setTextColor(context.getColor(R.color.black))
                     view.customerOccupancy.setTextColor(context.getColor(R.color.black))

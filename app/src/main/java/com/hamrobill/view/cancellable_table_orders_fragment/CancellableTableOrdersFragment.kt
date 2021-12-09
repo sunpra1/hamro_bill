@@ -97,14 +97,11 @@ class CancellableTableOrdersFragment : BottomSheetDialogFragment(), View.OnClick
 
     override fun onTableOrderListItemChecked(
         cancellableOrderItem: CancellableOrderItem,
-        position: Int,
-        isChecked: Boolean
+        position: Int
     ) {
         mViewModel.setCancelOrderItem(cancellableOrderItem)
-        if (isChecked) {
-            CancelOrderDialogFragment.getInstance(cancellableOrderItem, position, this)
-                .showNow(childFragmentManager, CancelOrderDialogFragment::class.java.simpleName)
-        }
+        CancelOrderDialogFragment.getInstance(cancellableOrderItem, position, this)
+            .showNow(childFragmentManager, CancelOrderDialogFragment::class.java.simpleName)
     }
 
     override fun onOrderCancelled(
@@ -112,8 +109,6 @@ class CancellableTableOrdersFragment : BottomSheetDialogFragment(), View.OnClick
         position: Int,
         remarks: String?
     ) {
-        (mBinding.activeTableOrderRV.adapter as CancellableTableOrderListRecyclerViewAdapter).selection =
-            position
         mViewModel.cancelTableOrder(remarks)
     }
 
@@ -121,8 +116,6 @@ class CancellableTableOrdersFragment : BottomSheetDialogFragment(), View.OnClick
         cancellableOrderItem: CancellableOrderItem,
         position: Int
     ) {
-        (mBinding.activeTableOrderRV.adapter as CancellableTableOrderListRecyclerViewAdapter).selection =
-            position
         mViewModel.setCancelOrderItem(null)
     }
 }

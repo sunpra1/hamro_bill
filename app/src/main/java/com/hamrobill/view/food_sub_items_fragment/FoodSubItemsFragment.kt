@@ -25,8 +25,6 @@ class FoodSubItemsFragment private constructor() : BottomSheetDialogFragment(),
     private lateinit var mSubItemType: SubItemType
 
     companion object {
-        private const val TAG = "FoodSubItemsFragment"
-
         @JvmStatic
         fun getInstance(subItemType: SubItemType): FoodSubItemsFragment {
             return FoodSubItemsFragment().apply { mSubItemType = subItemType }
@@ -56,9 +54,9 @@ class FoodSubItemsFragment private constructor() : BottomSheetDialogFragment(),
     }
 
     private fun setupObservers() {
-        mViewModel.isOrderPlaced.observe(requireActivity()) {
+        mViewModel.isOrderPlaced.observe(requireActivity(), EventObserver {
             if (it && isAdded) dismiss()
-        }
+        })
         mViewModel.tableOrders.observe(requireActivity()) {
             if (isAdded) {
                 mBinding.btnSave.visibility = if (it.isNullOrEmpty()) View.GONE else View.VISIBLE

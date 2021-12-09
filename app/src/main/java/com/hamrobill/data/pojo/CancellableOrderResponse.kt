@@ -88,13 +88,13 @@ data class CancellableOrderItem(
     @SerializedName("SubItemName")
     val subItemName: String,
     @SerializedName("SubItemPrice")
-    val subItemPrice: Double,
+    val subItemPrice: Float,
     @SerializedName("TableId")
     val tableId: Int,
     @SerializedName("TableName")
     val tableName: String?,
     @SerializedName("TotalPrice")
-    val totalPrice: Double,
+    val totalPrice: Float,
     @SerializedName("UniqGuid")
     val uniqGuid: String?,
     @SerializedName("UserName")

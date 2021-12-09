@@ -49,7 +49,7 @@
                     android:id="@+id/currentTableSpn"
                     android:layout_width="match_parent"
                     android:layout_height="48dp"
-                    android:background="@drawable/grey_border" />
+                    android:background="@drawable/black_border" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
@@ -82,7 +82,7 @@
                     android:id="@+id/destinationTableSpn"
                     android:layout_width="match_parent"
                     android:layout_height="48dp"
-                    android:background="@drawable/grey_border" />
+                    android:background="@drawable/black_border" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <LinearLayout

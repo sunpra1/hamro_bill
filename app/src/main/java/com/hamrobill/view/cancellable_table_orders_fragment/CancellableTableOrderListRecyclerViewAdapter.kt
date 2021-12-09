@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.hamrobill.R
 import com.hamrobill.data.pojo.CancellableOrderItem
-import com.hamrobill.databinding.TableOrderListItemBinding
+import com.hamrobill.databinding.CancellableTableOrderListItemBinding
 
 class CancellableTableOrderListRecyclerViewAdapter(
     private val activeTableOrders: ArrayList<CancellableOrderItem>,
@@ -15,18 +15,9 @@ class CancellableTableOrderListRecyclerViewAdapter(
 ) :
     RecyclerView.Adapter<CancellableTableOrderListRecyclerViewAdapter.ViewHolder>() {
 
-    var selection = -1
-        set(value) {
-            val previousSelection = field
-            field = if (previousSelection == value) -1 else value
-            if (previousSelection > -1 && previousSelection != field)
-                notifyItemChanged(previousSelection)
-            notifyItemChanged(field)
-        }
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
-            TableOrderListItemBinding.inflate(LayoutInflater.from(parent.context)),
+            CancellableTableOrderListItemBinding.inflate(LayoutInflater.from(parent.context)),
             onTableOrderListItemCheckedListener
         )
     }
@@ -38,7 +29,7 @@ class CancellableTableOrderListRecyclerViewAdapter(
     override fun getItemCount(): Int = activeTableOrders.size
 
     inner class ViewHolder(
-        private val view: TableOrderListItemBinding,
+        private val view: CancellableTableOrderListItemBinding,
         private val onTableOrderListItemCheckedListener: OnTableOrderListItemCheckedListener,
         private val context: Context = view.root.context
     ) : RecyclerView.ViewHolder(view.root) {
@@ -51,15 +42,12 @@ class CancellableTableOrderListRecyclerViewAdapter(
                 context.getString(R.string.price_format)
                     .format("Rs.", cancellableOrderItem.totalPrice)
             view.status.setImageResource(if (cancellableOrderItem.isOrder) R.drawable.check_circle_red_18 else R.drawable.check_circle_green_18)
-            view.deleteCheckBox.visibility =
+            view.deleteBtn.visibility =
                 if (!cancellableOrderItem.isOrder) View.VISIBLE else View.INVISIBLE
-            view.deleteCheckBox.isChecked = selection == adapterPosition
-            view.deleteCheckBox.setOnClickListener {
-                selection = adapterPosition
+            view.deleteBtn.setOnClickListener {
                 onTableOrderListItemCheckedListener.onTableOrderListItemChecked(
                     cancellableOrderItem,
-                    adapterPosition,
-                    view.deleteCheckBox.isChecked
+                    adapterPosition
                 )
             }
         }
@@ -68,8 +56,7 @@ class CancellableTableOrderListRecyclerViewAdapter(
     interface OnTableOrderListItemCheckedListener {
         fun onTableOrderListItemChecked(
             cancellableOrderItem: CancellableOrderItem,
-            position: Int,
-            isChecked: Boolean
+            position: Int
         )
     }
 }

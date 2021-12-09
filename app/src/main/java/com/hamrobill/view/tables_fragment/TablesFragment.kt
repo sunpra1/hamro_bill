@@ -42,8 +42,8 @@ class TablesFragment : Fragment(),
 
     private fun setupObservers() {
         mViewModel.tables.observe(requireActivity()) {
-            requireActivity().invalidateOptionsMenu()
             if (isAdded) {
+                requireActivity().invalidateOptionsMenu()
                 mRecyclerViewAdapter = TableListRecyclerViewAdapter(it, this)
                 mBinding.tableRV.layoutManager =
                     GridLayoutManager(

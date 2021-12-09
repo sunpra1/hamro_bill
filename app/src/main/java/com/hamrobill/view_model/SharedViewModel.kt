@@ -11,6 +11,7 @@ import com.hamrobill.di.scope.ActivityScope
 import com.hamrobill.model.FoodCategory
 import com.hamrobill.model.OrderItem
 import com.hamrobill.model.TableItemChanged
+import com.hamrobill.utils.Event
 import com.hamrobill.utils.NetworkConnectivity
 import com.hamrobill.utils.RequestStatus
 import com.hamrobill.utils.SharedPreferenceStorage
@@ -25,17 +26,17 @@ class SharedViewModel @Inject constructor(
     private val billingRepository: BillingRepository,
     private val sharedPreferenceStorage: SharedPreferenceStorage
 ) : ViewModel() {
-    private val _isLoading: MutableLiveData<Boolean> = MutableLiveData()
-    val isLoading: LiveData<Boolean> = _isLoading
+    private val _isLoading: MutableLiveData<Event<Boolean>> = MutableLiveData()
+    val isLoading: LiveData<Event<Boolean>> = _isLoading
 
-    private val _errorMessage: MutableLiveData<Any> = MutableLiveData()
-    val errorMessage: LiveData<Any> = _errorMessage
+    private val _errorMessage: MutableLiveData<Event<Any>> = MutableLiveData()
+    val errorMessage: LiveData<Event<Any>> = _errorMessage
 
-    private val _toast: MutableLiveData<Any> = MutableLiveData()
-    val toast: LiveData<Any> = _toast
+    private val _toast: MutableLiveData<Event<Any>> = MutableLiveData()
+    val toast: LiveData<Event<Any>> = _toast
 
-    private val _isNetworkAvailable: MutableLiveData<Boolean> = MutableLiveData()
-    val isNetworkAvailable: LiveData<Boolean> = _isNetworkAvailable
+    private val _isNetworkAvailable: MutableLiveData<Event<Boolean>> = MutableLiveData()
+    val isNetworkAvailable: LiveData<Event<Boolean>> = _isNetworkAvailable
 
     private val _tables: MutableLiveData<ArrayList<Table>> = MutableLiveData()
     val tables: LiveData<ArrayList<Table>> = _tables
@@ -43,8 +44,8 @@ class SharedViewModel @Inject constructor(
     private val _foodItems: MutableLiveData<ArrayList<FoodItem>> = MutableLiveData()
     val foodItems: LiveData<ArrayList<FoodItem>> = _foodItems
 
-    private val _isInitialDataLoaded: MutableLiveData<Boolean> = MutableLiveData()
-    val isInitialDataLoaded: LiveData<Boolean> = _isInitialDataLoaded
+    private val _isInitialDataLoaded: MutableLiveData<Event<Boolean>> = MutableLiveData()
+    val isInitialDataLoaded: LiveData<Event<Boolean>> = _isInitialDataLoaded
 
     private val _selectedTable: MutableLiveData<Table> = MutableLiveData()
     val selectedTable: LiveData<Table> = _selectedTable
@@ -68,8 +69,8 @@ class SharedViewModel @Inject constructor(
     private val _tableItemChanged: MutableLiveData<TableItemChanged> = MutableLiveData()
     val tableItemChanged: LiveData<TableItemChanged> = _tableItemChanged
 
-    private val _isOrderPlaced: MutableLiveData<Boolean> = MutableLiveData()
-    val isOrderPlaced: LiveData<Boolean> = _isOrderPlaced
+    private val _isOrderPlaced: MutableLiveData<Event<Boolean>> = MutableLiveData()
+    val isOrderPlaced: LiveData<Event<Boolean>> = _isOrderPlaced
 
     private val _searchResult: MutableLiveData<ArrayList<FoodSubItem>> = MutableLiveData()
     val searchResult: LiveData<ArrayList<FoodSubItem>> = _searchResult
@@ -78,10 +79,10 @@ class SharedViewModel @Inject constructor(
     private val cancelOrderItem: LiveData<CancellableOrderItem> = _cancelOrderItem
 
     init {
-        networkConnectivity.observeForever { _isNetworkAvailable.value = it }
+        networkConnectivity.observeForever { _isNetworkAvailable.value = Event(it) }
     }
 
-    fun setSelectedFoodItem(foodItem: FoodItem) {
+    fun setSelectedFoodItem(foodItem: FoodItem?) {
         _selectedFoodItem.value = foodItem
     }
 
@@ -98,7 +99,7 @@ class SharedViewModel @Inject constructor(
     }
 
     fun setIsOrderPlaced(isPlaced: Boolean) {
-        _isOrderPlaced.value = isPlaced
+        _isOrderPlaced.value = Event(isPlaced)
     }
 
     fun setCancelOrderItem(cancellableOrderItem: CancellableOrderItem?) {
@@ -107,6 +108,10 @@ class SharedViewModel @Inject constructor(
         } else {
             _cancelOrderItem.value = cancellableOrderItem
         }
+    }
+
+    fun setFoodSubItems(foodSubItems: ArrayList<FoodSubItem>?){
+        _foodSubItems.value = foodSubItems
     }
 
     fun hasActiveTableOrders(): Boolean {
@@ -175,24 +180,24 @@ class SharedViewModel @Inject constructor(
         viewModelScope.launch {
             billingRepository.getTablesAndFoodItems()
                 .catch {
-                    _isLoading.value = false
-                    _errorMessage.value = R.string.unable_fetch_tables_and_food_items
+                    _isLoading.value = Event(false)
+                    _errorMessage.value = Event(R.string.unable_fetch_tables_and_food_items)
                 }
                 .collect {
                     when (it) {
                         is RequestStatus.Waiting -> {
-                            _isLoading.value = true
+                            _isLoading.value = Event(true)
                         }
                         is RequestStatus.Success -> {
-                            _isLoading.value = false
+                            _isLoading.value = Event(false)
                             _tables.value =
                                 it.data.tables?.data?.distinctBy { t -> t.tableID } as ArrayList<Table>
                             _foodItems.value = it.data.foodItems?.data
-                            _isInitialDataLoaded.value = true
+                            _isInitialDataLoaded.value = Event(true)
                         }
                         is RequestStatus.Error -> {
-                            _isLoading.value = false
-                            _errorMessage.value = it.message
+                            _isLoading.value = Event(false)
+                            _errorMessage.value = Event(it.message)
                         }
                     }
                 }
@@ -203,22 +208,22 @@ class SharedViewModel @Inject constructor(
         viewModelScope.launch {
             billingRepository.getTableActiveOrdersAndCancelableOrderItems(selectedTable.value!!.tableID)
                 .catch {
-                    _isLoading.value = false
-                    _errorMessage.value = R.string.unable_fetch_table_details
+                    _isLoading.value = Event(false)
+                    _errorMessage.value = Event(R.string.unable_fetch_table_details)
                 }
                 .collect {
                     when (it) {
                         is RequestStatus.Waiting -> {
-                            _isLoading.value = true
+                            _isLoading.value = Event(true)
                         }
                         is RequestStatus.Success -> {
-                            _isLoading.value = false
+                            _isLoading.value = Event(false)
                             _activeTableOrders.value = it.data.activeTableOrders?.data
                             _cancellableTableOrders.value = it.data.cancellableOrderItems?.data
                         }
                         is RequestStatus.Error -> {
-                            _isLoading.value = false
-                            _errorMessage.value = it.message
+                            _isLoading.value = Event(false)
+                            _errorMessage.value = Event(it.message)
                         }
                     }
                 }
@@ -229,21 +234,21 @@ class SharedViewModel @Inject constructor(
         viewModelScope.launch {
             billingRepository.getTableActiveOrders(selectedTable.value!!.tableID)
                 .catch {
-                    _isLoading.value = false
-                    _errorMessage.value = R.string.unable_fetch_table_orders
+                    _isLoading.value = Event(false)
+                    _errorMessage.value = Event(R.string.unable_fetch_table_orders)
                 }
                 .collect {
                     when (it) {
                         is RequestStatus.Waiting -> {
-                            _isLoading.value = true
+                            _isLoading.value = Event(true)
                         }
                         is RequestStatus.Success -> {
-                            _isLoading.value = false
+                            _isLoading.value = Event(false)
                             _activeTableOrders.value = it.data?.data
                         }
                         is RequestStatus.Error -> {
-                            _isLoading.value = false
-                            _errorMessage.value = it.message
+                            _isLoading.value = Event(false)
+                            _errorMessage.value = Event(it.message)
                         }
                     }
                 }
@@ -255,21 +260,21 @@ class SharedViewModel @Inject constructor(
             viewModelScope.launch {
                 billingRepository.getFoodSubItems(foodItem.itemId)
                     .catch {
-                        _isLoading.value = false
-                        _errorMessage.value = R.string.unable_fetch_food_sub_items
+                        _isLoading.value = Event(false)
+                        _errorMessage.value = Event(R.string.unable_fetch_food_sub_items)
                     }
                     .collect {
                         when (it) {
                             is RequestStatus.Waiting -> {
-                                _isLoading.value = true
+                                _isLoading.value = Event(true)
                             }
                             is RequestStatus.Success -> {
-                                _isLoading.value = false
+                                _isLoading.value = Event(false)
                                 _foodSubItems.value = it.data?.data
                             }
                             is RequestStatus.Error -> {
-                                _isLoading.value = false
-                                _errorMessage.value = it.message
+                                _isLoading.value = Event(false)
+                                _errorMessage.value = Event(it.message)
                             }
                         }
                     }
@@ -301,28 +306,28 @@ class SharedViewModel @Inject constructor(
         viewModelScope.launch {
             billingRepository.placeTableOrders(placeOrderRequest)
                 .catch {
-                    _isLoading.value = false
-                    _errorMessage.value = R.string.unable_place_table_order
+                    _isLoading.value = Event(false)
+                    _errorMessage.value = Event(R.string.unable_place_table_order)
                 }
                 .collect {
                     when (it) {
                         is RequestStatus.Waiting -> {
-                            _isLoading.value = true
+                            _isLoading.value = Event(true)
                         }
                         is RequestStatus.Success -> {
-                            _isLoading.value = false
+                            _isLoading.value = Event(false)
                             tables.value!!.apply {
                                 set(index, table.apply { isBooked = true })
                             }
                             _tableItemChanged.value = TableItemChanged(index, table)
                             _selectedFoodItem.value = null
                             _foodSubItems.value = null
-                            _isOrderPlaced.value = true
+                            _isOrderPlaced.value = Event(true)
                             getTableActiveOrders()
                         }
                         is RequestStatus.Error -> {
-                            _isLoading.value = false
-                            _errorMessage.value = it.message
+                            _isLoading.value = Event(false)
+                            _errorMessage.value = Event(it.message)
                         }
                     }
                 }
@@ -370,24 +375,24 @@ class SharedViewModel @Inject constructor(
             viewModelScope.launch {
                 billingRepository.saveTableOrders(saveOrderRequestBody)
                     .catch {
-                        _isLoading.value = false
-                        _errorMessage.value = R.string.unable_save_table_order
+                        _isLoading.value = Event(false)
+                        _errorMessage.value = Event(R.string.unable_save_table_order)
                     }
                     .collect {
                         when (it) {
                             is RequestStatus.Waiting -> {
-                                _isLoading.value = true
+                                _isLoading.value = Event(true)
                             }
                             is RequestStatus.Success -> {
-                                _isLoading.value = false
+                                _isLoading.value = Event(false)
                                 _activeTableOrders.value = activeTableOrders.value?.map { item ->
                                     if (orderItems.contains(item)) item.isOrder = false
                                     item
                                 } as ArrayList<ActiveOrderItem>
                             }
                             is RequestStatus.Error -> {
-                                _isLoading.value = false
-                                _errorMessage.value = it.message
+                                _isLoading.value = Event(false)
+                                _errorMessage.value = Event(it.message)
                             }
                         }
                     }
@@ -440,30 +445,23 @@ class SharedViewModel @Inject constructor(
             viewModelScope.launch {
                 billingRepository.cancelTableOrder(saveOrderRequestBody, cancelOrderBody)
                     .catch {
-                        _isLoading.value = false
-                        _errorMessage.value = R.string.unable_cancel_table_order
+                        _isLoading.value = Event(false)
+                        _errorMessage.value = Event(R.string.unable_cancel_table_order)
                     }
                     .collect {
                         when (it) {
                             is RequestStatus.Waiting -> {
-                                _isLoading.value = true
+                                _isLoading.value = Event(true)
                             }
                             is RequestStatus.Success -> {
-                                _isLoading.value = false
-                                val list = ArrayList<CancellableOrderItem>()
-                                cancellableTableOrders.value!!.forEach { order ->
-                                    if (cancelOrderItem.value!! == order && order.quantity >= 1f) {
-                                        if (order.quantity > 1f)
-                                            list.add(order.apply { quantity -= 1 })
-                                    } else list.add(order)
-                                }
-                                _toast.value = R.string.order_has_cancelled
-                                _cancellableTableOrders.value = list
+                                _isLoading.value = Event(false)
+                                getTableActiveOrdersAndCancelableOrderItems()
+                                _toast.value = Event(R.string.order_has_cancelled)
                                 _cancelOrderItem.value = null
                             }
                             is RequestStatus.Error -> {
-                                _isLoading.value = false
-                                _errorMessage.value = it.message
+                                _isLoading.value = Event(false)
+                                _errorMessage.value = Event(it.message)
                             }
                         }
                     }
@@ -475,21 +473,21 @@ class SharedViewModel @Inject constructor(
         viewModelScope.launch {
             billingRepository.searchSubItems(searchTerm)
                 .catch {
-                    _isLoading.value = false
-                    _errorMessage.value = R.string.unable_search_sub_items
+                    _isLoading.value = Event(false)
+                    _errorMessage.value = Event(R.string.unable_search_sub_items)
                 }
                 .collect {
                     when (it) {
                         is RequestStatus.Waiting -> {
-                            _isLoading.value = true
+                            _isLoading.value = Event(true)
                         }
                         is RequestStatus.Success -> {
-                            _isLoading.value = false
+                            _isLoading.value = Event(false)
                             _searchResult.value = it.data?.data
                         }
                         is RequestStatus.Error -> {
-                            _isLoading.value = false
-                            _errorMessage.value = it.message
+                            _isLoading.value = Event(false)
+                            _errorMessage.value = Event(it.message)
                         }
                     }
                 }
@@ -500,16 +498,16 @@ class SharedViewModel @Inject constructor(
         viewModelScope.launch {
             billingRepository.changeTableNumber(from.tableID, to.tableID)
                 .catch {
-                    _isLoading.value = false
-                    _errorMessage.value = R.string.unable_change_table_number
+                    _isLoading.value = Event(false)
+                    _errorMessage.value = Event(R.string.unable_change_table_number)
                 }
                 .collect {
                     when (it) {
                         is RequestStatus.Waiting -> {
-                            _isLoading.value = true
+                            _isLoading.value = Event(true)
                         }
                         is RequestStatus.Success -> {
-                            _isLoading.value = false
+                            _isLoading.value = Event(false)
                             from.apply { isBooked = false }
                             to.apply { isBooked = true }
                             val fromTableIndex = tables.value!!.indexOf(from)
@@ -525,8 +523,8 @@ class SharedViewModel @Inject constructor(
                                 TableItemChanged(toTableIndex, to)
                         }
                         is RequestStatus.Error -> {
-                            _isLoading.value = false
-                            _errorMessage.value = it.message
+                            _isLoading.value = Event(false)
+                            _errorMessage.value = Event(it.message)
                         }
                     }
                 }
@@ -537,16 +535,16 @@ class SharedViewModel @Inject constructor(
         viewModelScope.launch {
             billingRepository.mergeTable(from.tableID, to.tableID)
                 .catch {
-                    _isLoading.value = false
-                    _errorMessage.value = R.string.unable_merge_tables
+                    _isLoading.value = Event(false)
+                    _errorMessage.value = Event(R.string.unable_merge_tables)
                 }
                 .collect {
                     when (it) {
                         is RequestStatus.Waiting -> {
-                            _isLoading.value = true
+                            _isLoading.value = Event(true)
                         }
                         is RequestStatus.Success -> {
-                            _isLoading.value = false
+                            _isLoading.value = Event(false)
                             from.apply { isBooked = false }
                             val fromTableIndex = tables.value!!.indexOf(from)
                             tables.value?.apply {
@@ -558,8 +556,8 @@ class SharedViewModel @Inject constructor(
 
                         }
                         is RequestStatus.Error -> {
-                            _isLoading.value = false
-                            _errorMessage.value = it.message
+                            _isLoading.value = Event(false)
+                            _errorMessage.value = Event(it.message)
                         }
                     }
                 }

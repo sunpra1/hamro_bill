@@ -18,6 +18,7 @@ import com.hamrobill.data.pojo.Table
 import com.hamrobill.databinding.ActivityMainBinding
 import com.hamrobill.model.FoodCategory
 import com.hamrobill.model.SubItemType
+import com.hamrobill.utils.EventObserver
 import com.hamrobill.utils.hideProgressDialog
 import com.hamrobill.utils.showProgressDialog
 import com.hamrobill.view.cancellable_table_orders_fragment.CancellableTableOrdersFragment
@@ -60,6 +61,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, SearchView.OnQue
         mBinding.coffeeWrapper.setOnClickListener(this)
         mBinding.sekuwaWrapper.setOnClickListener(this)
         mBinding.searchBtn.setOnQueryTextListener(this)
+        mBinding.refreshBtn.setOnClickListener(this)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -130,13 +132,13 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, SearchView.OnQue
     }
 
     private fun setupObservers() {
-        mViewModel.isNetworkAvailable.observe(this) {
+        mViewModel.isNetworkAvailable.observe(this, EventObserver {
             displayConnectivityMessage(it)
-        }
-        mViewModel.isLoading.observe(this) {
+        })
+        mViewModel.isLoading.observe(this, EventObserver {
             if (it) showProgressDialog() else hideProgressDialog()
-        }
-        mViewModel.errorMessage.observe(this) {
+        })
+        mViewModel.errorMessage.observe(this, EventObserver {
             val message = when (it) {
                 is String -> it
                 is Int -> getString(it)
@@ -153,20 +155,20 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, SearchView.OnQue
                     dialog.dismiss()
                 }
                 .show()
-        }
-        mViewModel.toast.observe(this) {
+        })
+
+        mViewModel.toast.observe(this, EventObserver {
             val message = when (it) {
                 is String -> it
                 is Int -> getString(it)
                 else -> null
             }
             Toast.makeText(this, message, Toast.LENGTH_LONG).show()
-        }
-        mViewModel.isInitialDataLoaded.observe(this) {
-            if (it != null && it) {
-                attachFragment()
-            }
-        }
+        })
+
+        mViewModel.isInitialDataLoaded.observe(this, EventObserver {
+            attachFragment()
+        })
         mViewModel.activeTableOrders.observe(this) {
             val kitchenActiveOrdersItem = ArrayList<ActiveOrderItem>()
             val barActiveOrdersItem = ArrayList<ActiveOrderItem>()
@@ -261,6 +263,14 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, SearchView.OnQue
                 }
                 mBinding.sekuwaWrapper.id -> {
                     mViewModel.saveTableOrders(FoodCategory.SEKUWA_ITEM)
+                }
+                mBinding.refreshBtn.id -> {
+                    mViewModel.setSelectedTable(null)
+                    mViewModel.setActiveTableOrders(null)
+                    mViewModel.setCancellableTableOrders(null)
+                    mViewModel.setSelectedFoodItem(null)
+                    mViewModel.setFoodSubItems(null)
+                    mViewModel.getTablesAndFoodItems()
                 }
             }
         }
