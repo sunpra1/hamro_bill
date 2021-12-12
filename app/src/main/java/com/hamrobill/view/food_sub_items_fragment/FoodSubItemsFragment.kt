@@ -1,8 +1,8 @@
 package com.hamrobill.view.food_sub_items_fragment
 
 import android.content.Context
-import android.content.DialogInterface
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -41,6 +41,7 @@ class FoodSubItemsFragment private constructor() : BottomSheetDialogFragment(),
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        Log.d("TAG", "onCreateView: view created")
         mBinding = FragmentFoodSubItemsBinding.inflate(inflater)
         mViewModel =
             ViewModelProvider(requireActivity(), mViewModelFactory).get(SharedViewModel::class.java)
@@ -54,19 +55,9 @@ class FoodSubItemsFragment private constructor() : BottomSheetDialogFragment(),
     }
 
     private fun setupObservers() {
-        mViewModel.isOrderPlaced.observe(requireActivity(), EventObserver {
-            if (it && isAdded) dismiss()
-        })
         mViewModel.tableOrders.observe(requireActivity()) {
-            if (isAdded) {
-                mBinding.btnSave.visibility = if (it.isNullOrEmpty()) View.GONE else View.VISIBLE
-            }
+            mBinding.btnSave.visibility = if (it.isNullOrEmpty()) View.GONE else View.VISIBLE
         }
-    }
-
-    override fun onDismiss(dialog: DialogInterface) {
-        super.onDismiss(dialog)
-        mViewModel.setIsOrderPlaced(false)
     }
 
     private fun initializeViews() {

@@ -79,20 +79,6 @@ class BillingRepository @Inject constructor(
         }
     }
 
-    fun getTableActiveOrders(tableId: Int) = flow {
-        emit(RequestStatus.Waiting)
-        val response = hamroBillAPIConsumer.getTableActiveOrders(tableId)
-        if (response.isSuccessful) {
-            emit(RequestStatus.Success(response.body()))
-        } else {
-            Log.d(
-                TAG,
-                "getTableActiveOrders: ${response.errorBody()?.byteStream()?.reader()?.readText()}"
-            )
-            emit(RequestStatus.Error(R.string.unable_fetch_table_orders))
-        }
-    }
-
     fun getFoodSubItems(foodItemId: Int) = flow {
         emit(RequestStatus.Waiting)
         val response = hamroBillAPIConsumer.getFoodSubItems(foodItemId)
@@ -115,7 +101,9 @@ class BillingRepository @Inject constructor(
         } else {
             Log.d(
                 TAG,
-                "placeTableOrders: ${response.errorBody()?.byteStream()?.reader()?.readText()}"
+                "placeTableOrders: ${
+                    response.errorBody()?.byteStream()?.reader()?.readText()
+                }"
             )
             emit(RequestStatus.Error(R.string.unable_place_table_order))
         }

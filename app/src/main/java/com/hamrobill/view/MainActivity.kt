@@ -39,7 +39,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, SearchView.OnQue
     private lateinit var mBinding: ActivityMainBinding
     private var mPreviousConnectivityStatus = true
     private lateinit var mViewModel: SharedViewModel
-    private var alertDialog: AlertDialog? = null
+    private var mAlertDialog: AlertDialog? = null
+    private var mCancellableTableOrdersFragment: CancellableTableOrdersFragment? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         (application as HamrobillApp).applicationComponent.getActivityComponentFactory()
@@ -125,10 +126,12 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, SearchView.OnQue
     }
 
     private fun displayCancellableTableOrders() {
-        CancellableTableOrdersFragment().showNow(
-            supportFragmentManager,
-            CancellableTableOrdersFragment::class.java.simpleName
-        )
+        mCancellableTableOrdersFragment = CancellableTableOrdersFragment().apply {
+            showNow(
+                supportFragmentManager,
+                CancellableTableOrdersFragment::class.java.simpleName
+            )
+        }
     }
 
     private fun setupObservers() {
@@ -145,8 +148,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, SearchView.OnQue
                 else -> null
             }
 
-            alertDialog?.let { dialog -> if (dialog.isShowing) dialog.dismiss() }
-            alertDialog = AlertDialog.Builder(this)
+            mAlertDialog?.let { dialog -> if (dialog.isShowing) dialog.dismiss() }
+            mAlertDialog = AlertDialog.Builder(this)
                 .setMessage(message)
                 .setTitle("INFORMATION")
                 .setIcon(R.drawable.information_24)
@@ -220,6 +223,9 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, SearchView.OnQue
         }
         mViewModel.selectedTable.observe(this) {
             mBinding.searchBtn.visibility = if (it != null) View.VISIBLE else View.GONE
+        }
+        mViewModel.cancellableTableOrders.observe(this) {
+            if (mCancellableTableOrdersFragment != null && it.isNullOrEmpty()) mCancellableTableOrdersFragment!!.dismiss()
         }
     }
 

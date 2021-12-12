@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -13,6 +14,7 @@ import com.hamrobill.R
 import com.hamrobill.data.pojo.FoodItem
 import com.hamrobill.databinding.FragmentFoodItemsBinding
 import com.hamrobill.model.SubItemType
+import com.hamrobill.utils.EventObserver
 import com.hamrobill.utils.showToast
 import com.hamrobill.view.food_sub_items_fragment.FoodSubItemsFragment
 import com.hamrobill.view_model.SharedViewModel
@@ -25,6 +27,7 @@ class FoodItemsFragment : Fragment(),
     lateinit var mViewModelFactory: ViewModelProvider.Factory
     private lateinit var mViewModel: SharedViewModel
     private lateinit var mBinding: FragmentFoodItemsBinding
+    private var mFoodSubItemsFragment: FoodSubItemsFragment? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -46,12 +49,19 @@ class FoodItemsFragment : Fragment(),
             }
         }
         mViewModel.foodSubItems.observe(requireActivity()) { foodSubItems ->
-            if (isAdded && !foodSubItems.isNullOrEmpty()) {
-                FoodSubItemsFragment.getInstance(SubItemType.FOOD_ITEM_SUB_TYPES).also {
-                    it.show(childFragmentManager, it.tag)
-                }
+            if (!foodSubItems.isNullOrEmpty()) {
+                mFoodSubItemsFragment =
+                    FoodSubItemsFragment.getInstance(SubItemType.FOOD_ITEM_SUB_TYPES).also {
+                        it.showNow(
+                            childFragmentManager,
+                            FoodSubItemsFragment::class.java.simpleName
+                        )
+                    }
             }
         }
+        mViewModel.isOrderPlaced.observe(requireActivity(), EventObserver {
+            if (mFoodSubItemsFragment != null) mFoodSubItemsFragment!!.dismiss()
+        })
     }
 
     override fun onAttach(context: Context) {

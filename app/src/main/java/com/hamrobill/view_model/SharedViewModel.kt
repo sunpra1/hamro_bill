@@ -26,7 +26,8 @@ class SharedViewModel @Inject constructor(
     private val billingRepository: BillingRepository,
     private val sharedPreferenceStorage: SharedPreferenceStorage
 ) : ViewModel() {
-    private val _isLoading: MutableLiveData<Event<Boolean>> = MutableLiveData()
+
+    private var _isLoading: MutableLiveData<Event<Boolean>> = MutableLiveData()
     val isLoading: LiveData<Event<Boolean>> = _isLoading
 
     private val _errorMessage: MutableLiveData<Event<Any>> = MutableLiveData()
@@ -98,10 +99,6 @@ class SharedViewModel @Inject constructor(
         _cancellableTableOrders.value = cancellableTableOrders
     }
 
-    fun setIsOrderPlaced(isPlaced: Boolean) {
-        _isOrderPlaced.value = Event(isPlaced)
-    }
-
     fun setCancelOrderItem(cancellableOrderItem: CancellableOrderItem?) {
         if (cancelOrderItem.value == cancellableOrderItem) {
             _cancelOrderItem.value = null
@@ -110,7 +107,7 @@ class SharedViewModel @Inject constructor(
         }
     }
 
-    fun setFoodSubItems(foodSubItems: ArrayList<FoodSubItem>?){
+    fun setFoodSubItems(foodSubItems: ArrayList<FoodSubItem>?) {
         _foodSubItems.value = foodSubItems
     }
 
@@ -151,8 +148,11 @@ class SharedViewModel @Inject constructor(
             selectedFoodItem.value
                 ?: foodItems.value!!.first { it.itemId == foodSubItem.itemId }
         val index =
-            tableOrders.value?.indexOfFirst { it.table.tableID == selectedTable.value!!.tableID && it.foodItem.itemId == foodItem.itemId && it.foodSubItem.subItemId == foodSubItem.subItemId }
-                ?: -1
+            tableOrders.value?.indexOfFirst {
+                it.table.tableID == selectedTable.value!!.tableID
+                        && it.foodItem.itemId == foodItem.itemId
+                        && it.foodSubItem.subItemId == foodSubItem.subItemId
+            } ?: -1
         val orderItem = OrderItem(
             selectedTable.value!!,
             foodItem,
@@ -220,31 +220,14 @@ class SharedViewModel @Inject constructor(
                             _isLoading.value = Event(false)
                             _activeTableOrders.value = it.data.activeTableOrders?.data
                             _cancellableTableOrders.value = it.data.cancellableOrderItems?.data
-                        }
-                        is RequestStatus.Error -> {
-                            _isLoading.value = Event(false)
-                            _errorMessage.value = Event(it.message)
-                        }
-                    }
-                }
-        }
-    }
-
-    private fun getTableActiveOrders() {
-        viewModelScope.launch {
-            billingRepository.getTableActiveOrders(selectedTable.value!!.tableID)
-                .catch {
-                    _isLoading.value = Event(false)
-                    _errorMessage.value = Event(R.string.unable_fetch_table_orders)
-                }
-                .collect {
-                    when (it) {
-                        is RequestStatus.Waiting -> {
-                            _isLoading.value = Event(true)
-                        }
-                        is RequestStatus.Success -> {
-                            _isLoading.value = Event(false)
-                            _activeTableOrders.value = it.data?.data
+                            if ((it.data.activeTableOrders?.data.isNullOrEmpty() || it.data.cancellableOrderItems?.data.isNullOrEmpty()) && selectedTable.value?.isBooked == true) {
+                                val index = _tables.value?.lastIndexOf(selectedTable.value)
+                                if (index != null)
+                                    _tableItemChanged.value = TableItemChanged(
+                                        index,
+                                        _tables.value!![index].apply { isBooked = false }
+                                    )
+                            }
                         }
                         is RequestStatus.Error -> {
                             _isLoading.value = Event(false)
@@ -271,6 +254,9 @@ class SharedViewModel @Inject constructor(
                             is RequestStatus.Success -> {
                                 _isLoading.value = Event(false)
                                 _foodSubItems.value = it.data?.data
+                                if (it.data?.data.isNullOrEmpty()) {
+                                    _toast.value = Event(R.string.food_sub_items_empty)
+                                }
                             }
                             is RequestStatus.Error -> {
                                 _isLoading.value = Event(false)
@@ -322,8 +308,11 @@ class SharedViewModel @Inject constructor(
                             _tableItemChanged.value = TableItemChanged(index, table)
                             _selectedFoodItem.value = null
                             _foodSubItems.value = null
+                            _tableOrders.value = null
+                            _activeTableOrders.value = null
+                            _cancellableTableOrders.value = null
                             _isOrderPlaced.value = Event(true)
-                            getTableActiveOrders()
+                            getTableActiveOrdersAndCancelableOrderItems()
                         }
                         is RequestStatus.Error -> {
                             _isLoading.value = Event(false)
@@ -389,6 +378,7 @@ class SharedViewModel @Inject constructor(
                                     if (orderItems.contains(item)) item.isOrder = false
                                     item
                                 } as ArrayList<ActiveOrderItem>
+                                getTableActiveOrdersAndCancelableOrderItems()
                             }
                             is RequestStatus.Error -> {
                                 _isLoading.value = Event(false)
