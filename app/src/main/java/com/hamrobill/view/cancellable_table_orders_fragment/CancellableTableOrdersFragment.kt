@@ -45,7 +45,7 @@ class CancellableTableOrdersFragment : BottomSheetDialogFragment(), View.OnClick
 
     private fun setupObservers() {
         mViewModel.cancellableTableOrders.observe(requireActivity()) {
-            if (!it.isNullOrEmpty()) {
+            if (isAdded && !it.isNullOrEmpty()) {
                 mBinding.activeTableOrderRV.swapAdapter(
                     CancellableTableOrderListRecyclerViewAdapter(it, this),
                     true

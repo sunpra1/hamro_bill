@@ -42,30 +42,33 @@ class TablesFragment : Fragment(),
 
     private fun setupObservers() {
         mViewModel.tables.observe(requireActivity()) {
-
-            requireActivity().invalidateOptionsMenu()
-            mRecyclerViewAdapter = TableListRecyclerViewAdapter(it, this)
-            mBinding.tableRV.layoutManager =
-                GridLayoutManager(
-                    context,
-                    if (requireActivity().windowWidth() > RECYCLER_VIEW_WIDTH_LIMIT) 3 else 2
-                )
-            mBinding.tableRV.swapAdapter(mRecyclerViewAdapter, true)
+            if (isAdded) {
+                requireActivity().invalidateOptionsMenu()
+                mRecyclerViewAdapter = TableListRecyclerViewAdapter(it, this)
+                mBinding.tableRV.layoutManager =
+                    GridLayoutManager(
+                        context,
+                        if (requireActivity().windowWidth() > RECYCLER_VIEW_WIDTH_LIMIT) 3 else 2
+                    )
+                mBinding.tableRV.swapAdapter(mRecyclerViewAdapter, true)
+            }
         }
         mViewModel.tableItemChanged.observe(requireActivity()) {
-            mRecyclerViewAdapter.tableItemChanged(it)
+            if (isAdded)
+                mRecyclerViewAdapter.tableItemChanged(it)
         }
         mViewModel.selectedTable.observe(requireActivity()) {
-
-            if (it != null) {
-                (requireActivity() as MainActivity).supportActionBar?.title =
-                    getString(R.string.selected_table_format, it.tableName)
-                mViewModel.getTableActiveOrdersAndCancelableOrderItems()
-            } else {
-                (requireActivity() as MainActivity).supportActionBar?.title =
-                    getString(R.string.not_table_selected)
-                mViewModel.setActiveTableOrders(null)
-                mViewModel.setCancellableTableOrders(null)
+            if (isAdded) {
+                if (it != null) {
+                    (requireActivity() as MainActivity).supportActionBar?.title =
+                        getString(R.string.selected_table_format, it.tableName)
+                    mViewModel.getTableActiveOrdersAndCancelableOrderItems()
+                } else {
+                    (requireActivity() as MainActivity).supportActionBar?.title =
+                        getString(R.string.not_table_selected)
+                    mViewModel.setActiveTableOrders(null)
+                    mViewModel.setCancellableTableOrders(null)
+                }
             }
         }
     }

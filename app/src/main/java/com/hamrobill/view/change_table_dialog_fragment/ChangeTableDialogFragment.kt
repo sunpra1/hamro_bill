@@ -145,9 +145,7 @@ class ChangeTableDialogFragment private constructor() : AppCompatDialogFragment(
         }
     }
 
-    override fun onNothingSelected(parent: AdapterView<*>?) {
-
-    }
+    override fun onNothingSelected(parent: AdapterView<*>?) {}
 
     override fun onClick(view: View?) {
         if (view != null) {

@@ -56,7 +56,9 @@ class FoodSubItemsFragment private constructor() : BottomSheetDialogFragment(),
 
     private fun setupObservers() {
         mViewModel.tableOrders.observe(requireActivity()) {
-            mBinding.btnSave.visibility = if (it.isNullOrEmpty()) View.GONE else View.VISIBLE
+            if (isAdded) {
+                mBinding.btnSave.visibility = if (it.isNullOrEmpty()) View.GONE else View.VISIBLE
+            }
         }
     }
 

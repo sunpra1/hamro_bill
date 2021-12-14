@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -49,7 +48,7 @@ class FoodItemsFragment : Fragment(),
             }
         }
         mViewModel.foodSubItems.observe(requireActivity()) { foodSubItems ->
-            if (!foodSubItems.isNullOrEmpty()) {
+            if (isAdded && !foodSubItems.isNullOrEmpty()) {
                 mFoodSubItemsFragment =
                     FoodSubItemsFragment.getInstance(SubItemType.FOOD_ITEM_SUB_TYPES).also {
                         it.showNow(
@@ -60,7 +59,7 @@ class FoodItemsFragment : Fragment(),
             }
         }
         mViewModel.isOrderPlaced.observe(requireActivity(), EventObserver {
-            if (mFoodSubItemsFragment != null) mFoodSubItemsFragment!!.dismiss()
+            if (isAdded && mFoodSubItemsFragment != null) mFoodSubItemsFragment!!.dismiss()
         })
     }
 

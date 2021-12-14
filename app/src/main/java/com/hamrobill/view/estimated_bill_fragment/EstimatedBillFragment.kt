@@ -47,7 +47,7 @@ class EstimatedBillFragment : BottomSheetDialogFragment(), View.OnClickListener 
 
     private fun setupObservers() {
         mViewModel.activeTableOrders.observe(requireActivity()) {
-            if (!it.isNullOrEmpty()) {
+            if (isAdded && !it.isNullOrEmpty()) {
                 mBinding.estimatedBillItemsRV.swapAdapter(
                     EstimatedBillItemRecyclerViewAdapter(it),
                     true
