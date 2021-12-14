@@ -113,7 +113,8 @@ class FoodSubItemsFragment private constructor() : BottomSheetDialogFragment(),
         view?.let {
             when (it.id) {
                 mBinding.btnClose.id -> {
-                    mViewModel.clearTableOrders()
+                    mViewModel.setTableOrders(null)
+                    mViewModel.setFoodSubItems(null)
                     dismiss()
                 }
                 mBinding.btnSave.id -> {

@@ -87,6 +87,10 @@ class SharedViewModel @Inject constructor(
         _selectedFoodItem.value = foodItem
     }
 
+    fun setTableOrders(tableOrders: ArrayList<OrderItem>?) {
+        _tableOrders.value = tableOrders
+    }
+
     fun setSelectedTable(table: Table?) {
         _selectedTable.value = table
     }
@@ -321,10 +325,6 @@ class SharedViewModel @Inject constructor(
                     }
                 }
         }
-    }
-
-    fun clearTableOrders() {
-        _tableOrders.value = ArrayList()
     }
 
     fun saveTableOrders(foodCategory: FoodCategory) {
