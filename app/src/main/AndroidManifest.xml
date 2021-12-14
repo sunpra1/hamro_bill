@@ -36,7 +36,7 @@
         </activity>
 
         <receiver android:name=".utility.broadcast_receiver.LogoutServiceBroadcastReceiver"
-            android:exported="false"
+            android:exported="true"
             android:enabled="true" />
 
     </application>
