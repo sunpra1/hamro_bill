@@ -28,6 +28,7 @@
             android:background="?attr/selectableItemBackground"
             android:clickable="true"
             android:focusable="true"
+            android:contentDescription="@string/button_close_desc"
             android:src="@drawable/close_circle" />
 
     </LinearLayout>

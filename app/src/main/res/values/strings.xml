@@ -105,4 +105,5 @@
     <string name="back">BACK</string>
     <string name="order_has_cancelled">Order has been cancelled.</string>
     <string name="food_sub_items_empty">Food sub-items is empty.</string>
+    <string name="button_close_desc">Button close.</string>
 </resources>
