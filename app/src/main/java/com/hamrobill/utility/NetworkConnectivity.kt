@@ -1,4 +1,4 @@
-package com.hamrobill.utils
+package com.hamrobill.utility
 
 import android.content.Context
 import android.net.ConnectivityManager

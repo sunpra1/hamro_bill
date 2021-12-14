@@ -1,4 +1,4 @@
-package com.hamrobill.utils
+package com.hamrobill.utility
 
 import android.content.Context
 import android.content.res.Configuration
@@ -98,7 +98,7 @@ fun Calendar.getFormattedStringDate(format: String = DEFAULT_OUTPUT_FORMAT): Str
 }
 
 fun String.getCalenderDate(inputFormat: String = "EEE, dd MMM yyyy HH:mm:ss zzzz"): Calendar {
-    val dateFormat = SimpleDateFormat(inputFormat, Locale.ENGLISH)
+    val dateFormat = SimpleDateFormat(inputFormat, Locale.US)
     val date = dateFormat.parse(this)
     return Calendar.getInstance().apply { time = date!! }
 }

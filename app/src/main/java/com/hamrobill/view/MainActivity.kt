@@ -1,5 +1,6 @@
 package com.hamrobill.view
 
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -18,9 +19,10 @@ import com.hamrobill.data.pojo.Table
 import com.hamrobill.databinding.ActivityMainBinding
 import com.hamrobill.model.FoodCategory
 import com.hamrobill.model.SubItemType
-import com.hamrobill.utils.EventObserver
-import com.hamrobill.utils.hideProgressDialog
-import com.hamrobill.utils.showProgressDialog
+import com.hamrobill.utility.EventObserver
+import com.hamrobill.utility.SharedPreferenceStorage
+import com.hamrobill.utility.hideProgressDialog
+import com.hamrobill.utility.showProgressDialog
 import com.hamrobill.view.cancellable_table_orders_fragment.CancellableTableOrdersFragment
 import com.hamrobill.view.change_table_dialog_fragment.ChangeTableDialogFragment
 import com.hamrobill.view.estimated_bill_fragment.EstimatedBillFragment
@@ -35,7 +37,9 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, SearchView.OnQue
     ChangeTableDialogFragment.TableChangeListener, MergeTableDialogFragment.TableMergeListener {
 
     @Inject
-    lateinit var factory: ViewModelProvider.Factory
+    lateinit var mFactory: ViewModelProvider.Factory
+    @Inject
+    lateinit var mSharedPreferenceStorage: SharedPreferenceStorage
     private lateinit var mBinding: ActivityMainBinding
     private var mPreviousConnectivityStatus = true
     private lateinit var mViewModel: SharedViewModel
@@ -50,7 +54,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, SearchView.OnQue
         setContentView(mBinding.root)
         supportActionBar?.title = getString(R.string.no_table_selected)
 
-        mViewModel = ViewModelProvider(this, factory).get(SharedViewModel::class.java)
+        mViewModel = ViewModelProvider(this, mFactory).get(SharedViewModel::class.java)
         initializeViews()
         setupObservers()
         mViewModel.getTablesAndFoodItems()
@@ -112,6 +116,14 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, SearchView.OnQue
                     mViewModel.tables.value!!,
                     mViewModel.selectedTable.value
                 ).showNow(supportFragmentManager, MergeTableDialogFragment::class.java.simpleName)
+                true
+            }
+            R.id.logoutMenuItem -> {
+                mSharedPreferenceStorage.token = null
+                mSharedPreferenceStorage.tokenExpiresAt = null
+                mSharedPreferenceStorage.loggedUserName = null
+                startActivity(Intent(this, LoginActivity::class.java))
+                finish()
                 true
             }
             else -> super.onOptionsItemSelected(item)

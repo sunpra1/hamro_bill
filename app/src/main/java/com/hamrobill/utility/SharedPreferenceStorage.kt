@@ -1,4 +1,4 @@
-package com.hamrobill.utils
+package com.hamrobill.utility
 
 import android.content.Context
 import javax.inject.Inject
@@ -15,6 +15,11 @@ class SharedPreferenceStorage @Inject constructor(@Named("Application") context:
     }
 
     private val sharedPreferences = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
+
+    var loggedUserName: String? = null
+        get() = sharedPreferences.getString(LOGGED_USER_NAME, null)
+        set(value) = sharedPreferences.edit().putString(LOGGED_USER_NAME, value).apply()
+            .also { field = value }
 
     var token: String? = null
         get() = sharedPreferences.getString(TOKEN_VALUE, null)?.let { "Bearer $it" }
@@ -34,11 +39,6 @@ class SharedPreferenceStorage @Inject constructor(@Named("Application") context:
     var remoteBaseUrl: String? = null
         get() = sharedPreferences.getString(REMOTE_BASE_URL, null)
         set(value) = sharedPreferences.edit().putString(REMOTE_BASE_URL, value).apply()
-            .also { field = value }
-
-    var loggedUserName: String? = null
-        get() = sharedPreferences.getString(LOGGED_USER_NAME, null)
-        set(value) = sharedPreferences.edit().putString(LOGGED_USER_NAME, value).apply()
             .also { field = value }
 
 }

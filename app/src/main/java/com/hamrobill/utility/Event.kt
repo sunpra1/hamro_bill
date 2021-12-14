@@ -1,4 +1,4 @@
-package com.hamrobill.utils
+package com.hamrobill.utility
 
 import androidx.lifecycle.Observer
 

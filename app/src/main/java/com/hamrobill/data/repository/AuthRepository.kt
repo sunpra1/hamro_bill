@@ -3,7 +3,7 @@ package com.hamrobill.data.repository
 import android.util.Log
 import com.hamrobill.R
 import com.hamrobill.data.api.HamrobillAPIConsumer
-import com.hamrobill.utils.RequestStatus
+import com.hamrobill.utility.RequestStatus
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 import javax.inject.Singleton

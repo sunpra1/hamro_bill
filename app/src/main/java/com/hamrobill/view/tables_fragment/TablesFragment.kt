@@ -12,8 +12,8 @@ import com.hamrobill.HamrobillApp
 import com.hamrobill.R
 import com.hamrobill.data.pojo.Table
 import com.hamrobill.databinding.FragmentTablesBinding
-import com.hamrobill.utils.RECYCLER_VIEW_WIDTH_LIMIT
-import com.hamrobill.utils.windowWidth
+import com.hamrobill.utility.RECYCLER_VIEW_WIDTH_LIMIT
+import com.hamrobill.utility.windowWidth
 import com.hamrobill.view.MainActivity
 import com.hamrobill.view_model.SharedViewModel
 import javax.inject.Inject

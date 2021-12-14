@@ -1,4 +1,4 @@
-package com.hamrobill.utils
+package com.hamrobill.utility
 
 import android.graphics.Rect
 import android.view.View

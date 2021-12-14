@@ -14,7 +14,6 @@
         <entry key="..\:/Users/Sunil Prasai/AndroidStudioProjects/hamrobill/app/src/main/res/drawable/check_circle_blue_24.xml" value="0.19739583333333333" />
         <entry key="..\:/Users/Sunil Prasai/AndroidStudioProjects/hamrobill/app/src/main/res/drawable/check_circle_green_24.xml" value="0.19739583333333333" />
         <entry key="..\:/Users/Sunil Prasai/AndroidStudioProjects/hamrobill/app/src/main/res/drawable/close_circle.xml" value="0.23802083333333332" />
-        <entry key="..\:/Users/Sunil Prasai/AndroidStudioProjects/hamrobill/app/src/main/res/drawable/close_red_18.xml" value="0.19947916666666668" />
         <entry key="..\:/Users/Sunil Prasai/AndroidStudioProjects/hamrobill/app/src/main/res/drawable/close_white.xml" value="0.21041666666666667" />
         <entry key="..\:/Users/Sunil Prasai/AndroidStudioProjects/hamrobill/app/src/main/res/drawable/coffee.xml" value="0.3885416666666667" />
         <entry key="..\:/Users/Sunil Prasai/AndroidStudioProjects/hamrobill/app/src/main/res/drawable/food.xml" value="0.1" />
@@ -23,8 +22,6 @@
         <entry key="..\:/Users/Sunil Prasai/AndroidStudioProjects/hamrobill/app/src/main/res/drawable/information_24.xml" value="0.28425925925925927" />
         <entry key="..\:/Users/Sunil Prasai/AndroidStudioProjects/hamrobill/app/src/main/res/drawable/liquor.xml" value="0.3885416666666667" />
         <entry key="..\:/Users/Sunil Prasai/AndroidStudioProjects/hamrobill/app/src/main/res/drawable/plus.xml" value="0.2611111111111111" />
-        <entry key="..\:/Users/Sunil Prasai/AndroidStudioProjects/hamrobill/app/src/main/res/drawable/refresh.xml" value="0.26145833333333335" />
-        <entry key="..\:/Users/Sunil Prasai/AndroidStudioProjects/hamrobill/app/src/main/res/drawable/refresh_black_18.xml" value="0.26145833333333335" />
         <entry key="..\:/Users/Sunil Prasai/AndroidStudioProjects/hamrobill/app/src/main/res/drawable/save.xml" value="0.29074074074074074" />
         <entry key="..\:/Users/Sunil Prasai/AndroidStudioProjects/hamrobill/app/src/main/res/drawable/save_16.xml" value="0.29074074074074074" />
         <entry key="..\:/Users/Sunil Prasai/AndroidStudioProjects/hamrobill/app/src/main/res/drawable/save_20.xml" value="0.3885416666666667" />
@@ -38,7 +35,7 @@
         <entry key="..\:/Users/Sunil Prasai/AndroidStudioProjects/hamrobill/app/src/main/res/font/roboto.xml" value="0.28854166666666664" />
         <entry key="..\:/Users/Sunil Prasai/AndroidStudioProjects/hamrobill/app/src/main/res/layout-sw600dp/activity_main.xml" value="0.264" />
         <entry key="..\:/Users/Sunil Prasai/AndroidStudioProjects/hamrobill/app/src/main/res/layout-sw600dp/fragment_merge_table_dialog.xml" value="0.10416666666666667" />
-        <entry key="..\:/Users/Sunil Prasai/AndroidStudioProjects/hamrobill/app/src/main/res/layout-w1240dp/activity_main.xml" value="0.2" />
+        <entry key="..\:/Users/Sunil Prasai/AndroidStudioProjects/hamrobill/app/src/main/res/layout-w1240dp/activity_main.xml" value="0.1" />
         <entry key="..\:/Users/Sunil Prasai/AndroidStudioProjects/hamrobill/app/src/main/res/layout/active_table_order_list_item.xml" value="0.4" />
         <entry key="..\:/Users/Sunil Prasai/AndroidStudioProjects/hamrobill/app/src/main/res/layout/activity_login.xml" value="0.1" />
         <entry key="..\:/Users/Sunil Prasai/AndroidStudioProjects/hamrobill/app/src/main/res/layout/activity_main.xml" value="0.2" />
@@ -48,12 +45,8 @@
         <entry key="..\:/Users/Sunil Prasai/AndroidStudioProjects/hamrobill/app/src/main/res/layout/food_list_item.xml" value="0.3723958333333333" />
         <entry key="..\:/Users/Sunil Prasai/AndroidStudioProjects/hamrobill/app/src/main/res/layout/food_sub_item_list_item.xml" value="0.4" />
         <entry key="..\:/Users/Sunil Prasai/AndroidStudioProjects/hamrobill/app/src/main/res/layout/fragment_active_table_orders.xml" value="0.1" />
-        <entry key="..\:/Users/Sunil Prasai/AndroidStudioProjects/hamrobill/app/src/main/res/layout/fragment_base_url_dialog.xml" value="0.25" />
-        <entry key="..\:/Users/Sunil Prasai/AndroidStudioProjects/hamrobill/app/src/main/res/layout/fragment_cancel_order_dialog.xml" value="0.18333333333333332" />
-        <entry key="..\:/Users/Sunil Prasai/AndroidStudioProjects/hamrobill/app/src/main/res/layout/fragment_cancellable_table_orders.xml" value="0.18333333333333332" />
         <entry key="..\:/Users/Sunil Prasai/AndroidStudioProjects/hamrobill/app/src/main/res/layout/fragment_change_table_dialog.xml" value="0.31693989071038253" />
         <entry key="..\:/Users/Sunil Prasai/AndroidStudioProjects/hamrobill/app/src/main/res/layout/fragment_dashboard.xml" value="0.3723958333333333" />
-        <entry key="..\:/Users/Sunil Prasai/AndroidStudioProjects/hamrobill/app/src/main/res/layout/fragment_estimated_bill.xml" value="0.3625" />
         <entry key="..\:/Users/Sunil Prasai/AndroidStudioProjects/hamrobill/app/src/main/res/layout/fragment_food_items.xml" value="0.13421052631578947" />
         <entry key="..\:/Users/Sunil Prasai/AndroidStudioProjects/hamrobill/app/src/main/res/layout/fragment_food_sub_item.xml" value="0.25833333333333336" />
         <entry key="..\:/Users/Sunil Prasai/AndroidStudioProjects/hamrobill/app/src/main/res/layout/fragment_food_sub_items.xml" value="0.4" />
@@ -75,8 +68,11 @@
         <entry key="..\:/Users/Sunil Prasai/AndroidStudioProjects/hamrobill/app/src/main/res/menu/table_fragment_menu.xml" value="0.20105820105820105" />
         <entry key="app/src/main/res/drawable/check_circle_green_18.xml" value="0.3921875" />
         <entry key="app/src/main/res/drawable/check_circle_red_18.xml" value="0.3921875" />
+        <entry key="app/src/main/res/drawable/logout_white_24.xml" value="0.3851851851851852" />
         <entry key="app/src/main/res/drawable/minus_black_18.xml" value="0.3921875" />
         <entry key="app/src/main/res/drawable/minus_box_outline.xml" value="0.3921875" />
+        <entry key="app/src/main/res/drawable/settings_black_24.xml" value="0.3851851851851852" />
+        <entry key="app/src/main/res/drawable/settings_white_24.xml" value="0.3851851851851852" />
         <entry key="app/src/main/res/layout-w1240dp/activity_main.xml" value="0.113671875" />
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.37604166666666666" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.1" />
@@ -87,6 +83,8 @@
         <entry key="app/src/main/res/layout/fragment_merge_table_dialog.xml" value="0.30277777777777776" />
         <entry key="app/src/main/res/layout/fragment_table_orders.xml" value="0.5" />
         <entry key="app/src/main/res/layout/table_order_list_item.xml" value="0.37604166666666666" />
+        <entry key="app/src/main/res/menu/login_menu.xml" value="0.34444444444444444" />
+        <entry key="app/src/main/res/menu/main_menu.xml" value="0.34444444444444444" />
       </map>
     </option>
   </component>
@@ -95,7 +93,7 @@
       <item index="0" class="java.lang.String" itemvalue="dagger.Binds" />
     </list>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">

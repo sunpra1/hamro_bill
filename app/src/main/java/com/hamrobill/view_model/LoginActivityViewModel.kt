@@ -7,10 +7,10 @@ import androidx.lifecycle.viewModelScope
 import com.hamrobill.R
 import com.hamrobill.data.repository.AuthRepository
 import com.hamrobill.di.scope.ActivityScope
-import com.hamrobill.utils.Event
-import com.hamrobill.utils.NetworkConnectivity
-import com.hamrobill.utils.RequestStatus
-import com.hamrobill.utils.SharedPreferenceStorage
+import com.hamrobill.utility.Event
+import com.hamrobill.utility.NetworkConnectivity
+import com.hamrobill.utility.RequestStatus
+import com.hamrobill.utility.SharedPreferenceStorage
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch

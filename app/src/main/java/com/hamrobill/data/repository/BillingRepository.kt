@@ -5,7 +5,7 @@ import com.hamrobill.R
 import com.hamrobill.data.api.HamrobillAPIConsumer
 import com.hamrobill.data.api.PrintApiConsumer
 import com.hamrobill.data.pojo.*
-import com.hamrobill.utils.RequestStatus
+import com.hamrobill.utility.RequestStatus
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 import javax.inject.Singleton

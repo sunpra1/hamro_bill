@@ -7,10 +7,10 @@ import android.os.Looper
 import androidx.appcompat.app.AppCompatActivity
 import com.hamrobill.HamrobillApp
 import com.hamrobill.R
-import com.hamrobill.utils.SharedPreferenceStorage
-import com.hamrobill.utils.getCalenderDate
-import com.hamrobill.utils.hideProgressDialog
-import com.hamrobill.utils.showProgressDialog
+import com.hamrobill.utility.SharedPreferenceStorage
+import com.hamrobill.utility.getCalenderDate
+import com.hamrobill.utility.hideProgressDialog
+import com.hamrobill.utility.showProgressDialog
 import com.hamrobill.view.base_url_dialog_fragment.BaseUrlDialogFragment
 import java.util.*
 import javax.inject.Inject
@@ -32,7 +32,7 @@ class SplashActivity : AppCompatActivity(), BaseUrlDialogFragment.UrlUpdateListe
     private fun determineRouting() {
         if (mSharedPreferenceStorage.remoteBaseUrl.isNullOrEmpty() || mSharedPreferenceStorage.remoteBaseUrl.isNullOrEmpty()) {
             BaseUrlDialogFragment.getInstance(mSharedPreferenceStorage, this).apply {
-                show(supportFragmentManager, tag)
+                showNow(supportFragmentManager, tag)
             }
         } else {
             Handler(Looper.getMainLooper()).postDelayed({

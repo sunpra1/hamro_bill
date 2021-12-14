@@ -1,7 +1,7 @@
 package com.hamrobill.data.pojo
 
 import com.google.gson.annotations.SerializedName
-import com.hamrobill.utils.getISOFormattedStringDate
+import com.hamrobill.utility.getISOFormattedStringDate
 import java.util.*
 
 data class SaveOrderRequest(

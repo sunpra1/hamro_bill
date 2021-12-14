@@ -10,10 +10,10 @@ import androidx.appcompat.app.AppCompatDialogFragment
 import com.hamrobill.R
 import com.hamrobill.data.pojo.CancellableOrderItem
 import com.hamrobill.databinding.FragmentCancelOrderDialogBinding
-import com.hamrobill.utils.DIALOG_WIDTH_LIMIT
-import com.hamrobill.utils.DIALOG_WIDTH_RATIO_BIG
-import com.hamrobill.utils.DIALOG_WIDTH_RATIO_SMALL
-import com.hamrobill.utils.windowWidth
+import com.hamrobill.utility.DIALOG_WIDTH_LIMIT
+import com.hamrobill.utility.DIALOG_WIDTH_RATIO_BIG
+import com.hamrobill.utility.DIALOG_WIDTH_RATIO_SMALL
+import com.hamrobill.utility.windowWidth
 
 class CancelOrderDialogFragment private constructor() : AppCompatDialogFragment(),
     View.OnClickListener {

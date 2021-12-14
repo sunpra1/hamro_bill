@@ -13,8 +13,8 @@ import com.hamrobill.R
 import com.hamrobill.data.pojo.FoodItem
 import com.hamrobill.databinding.FragmentFoodItemsBinding
 import com.hamrobill.model.SubItemType
-import com.hamrobill.utils.EventObserver
-import com.hamrobill.utils.showToast
+import com.hamrobill.utility.EventObserver
+import com.hamrobill.utility.showToast
 import com.hamrobill.view.food_sub_items_fragment.FoodSubItemsFragment
 import com.hamrobill.view_model.SharedViewModel
 import javax.inject.Inject

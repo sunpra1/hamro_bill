@@ -9,8 +9,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.hamrobill.data.pojo.FoodItem
 import com.hamrobill.databinding.CategoryListItemBinding
 import com.hamrobill.model.FoodCategory
-import com.hamrobill.utils.RECYCLER_VIEW_WIDTH_LIMIT
-import com.hamrobill.utils.windowWidth
+import com.hamrobill.utility.RECYCLER_VIEW_WIDTH_LIMIT
+import com.hamrobill.utility.windowWidth
 import java.util.*
 import kotlin.collections.ArrayList
 

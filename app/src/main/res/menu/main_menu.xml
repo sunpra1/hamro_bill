@@ -28,4 +28,10 @@
             app:showAsAction="ifRoom" />
     </group>
 
+    <item
+        android:icon="@drawable/logout_white_24"
+        android:id="@+id/logoutMenuItem"
+        android:title="@string/logout"
+        app:showAsAction="never" />
+
 </menu>

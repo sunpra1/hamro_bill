@@ -1,11 +1,16 @@
 package com.hamrobill.view
 
+import android.app.AlarmManager
+import android.app.PendingIntent
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Patterns
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
@@ -13,17 +18,39 @@ import com.hamrobill.HamrobillApp
 import com.hamrobill.R
 import com.hamrobill.data.pojo.LoginRequest
 import com.hamrobill.databinding.ActivityLoginBinding
-import com.hamrobill.utils.*
+import com.hamrobill.utility.*
+import com.hamrobill.utility.broadcast_receiver.LogoutServiceBroadcastReceiver
+import com.hamrobill.view.base_url_dialog_fragment.BaseUrlDialogFragment
 import com.hamrobill.view_model.LoginActivityViewModel
 import java.util.*
 import javax.inject.Inject
 
-class LoginActivity : AppCompatActivity(), View.OnClickListener, View.OnFocusChangeListener {
+class LoginActivity : AppCompatActivity(), View.OnClickListener, View.OnFocusChangeListener,
+    BaseUrlDialogFragment.UrlUpdateListener {
     @Inject
     lateinit var mViewModelFactory: ViewModelProvider.Factory
+    @Inject
+    lateinit var mSharedPreferenceStorage: SharedPreferenceStorage
+    @Inject
+    lateinit var mAlarmManager: AlarmManager
+
     private lateinit var mViewModel: LoginActivityViewModel
     private lateinit var mBinding: ActivityLoginBinding
     private var mPreviousConnectivityStatus = true
+
+    companion object {
+        private const val LOGOUT_ALARM_REQUEST_CODE = 1
+    }
+
+    private val mPendingIntent: PendingIntent by lazy {
+        val intent = Intent(this, LogoutServiceBroadcastReceiver::class.java)
+        PendingIntent.getBroadcast(
+            this,
+            LOGOUT_ALARM_REQUEST_CODE,
+            intent,
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        )
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         (application as HamrobillApp).applicationComponent.getActivityComponentFactory()
@@ -35,8 +62,29 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener, View.OnFocusCha
         supportActionBar?.title = resources.getString(R.string.login)
         mViewModel = ViewModelProvider(this, mViewModelFactory)[LoginActivityViewModel::class.java]
 
+        mPendingIntent.cancel()
+        mAlarmManager.cancel(mPendingIntent)
+
         initializeView()
         setupObservers()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.login_menu, menu)
+
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.settingMenuItem -> {
+                BaseUrlDialogFragment.getInstance(mSharedPreferenceStorage, this).apply {
+                    showNow(supportFragmentManager, tag)
+                }
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 
     private fun setupObservers() {
@@ -74,6 +122,9 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener, View.OnFocusCha
             mPreviousConnectivityStatus = it
         }
         mViewModel.isLoginSuccess.observe(this, EventObserver {
+            //TODO remove
+//            mAlarmManager.setAndAllowWhileIdle(AlarmManager.RTC, mSharedPreferenceStorage.tokenExpiresAt!!.getCalenderDate().time.time, mPendingIntent)
+            mAlarmManager.setAndAllowWhileIdle(AlarmManager.RTC, Calendar.getInstance().timeInMillis + (20 * 1000), mPendingIntent)
             startActivity(Intent(this@LoginActivity, MainActivity::class.java))
         })
     }
@@ -178,5 +229,9 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener, View.OnFocusCha
                 }
             }
         }
+    }
+
+    override fun onUrlUpdated() {
+        Toast.makeText(this, "End points has been updated", Toast.LENGTH_SHORT).show()
     }
 }

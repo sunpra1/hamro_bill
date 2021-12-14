@@ -1,4 +1,4 @@
-package com.hamrobill.utils
+package com.hamrobill.utility
 
 sealed class RequestStatus<out T> {
     object Waiting : RequestStatus<Nothing>()

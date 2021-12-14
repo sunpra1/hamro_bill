@@ -1,4 +1,4 @@
-package com.hamrobill.utils
+package com.hamrobill.utility
 
 const val FRAGMENT_CONTAINER_WIDTH_LIMIT = 2300
 const val DIALOG_WIDTH_LIMIT = 2000

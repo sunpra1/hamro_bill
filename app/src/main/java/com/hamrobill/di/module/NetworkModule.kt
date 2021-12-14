@@ -5,7 +5,7 @@ import com.hamrobill.data.api.HamrobillAPIConsumer
 import com.hamrobill.data.api.PrintApiConsumer
 import com.hamrobill.di.anotation.RetrofitWithLocalEndPoint
 import com.hamrobill.di.anotation.RetrofitWithRemoteEndPoint
-import com.hamrobill.utils.SharedPreferenceStorage
+import com.hamrobill.utility.SharedPreferenceStorage
 import dagger.Module
 import dagger.Provides
 import okhttp3.Interceptor

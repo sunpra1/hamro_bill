@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatDialogFragment
 import com.hamrobill.databinding.FragmentBaseUrlDialogBinding
-import com.hamrobill.utils.SharedPreferenceStorage
+import com.hamrobill.utility.SharedPreferenceStorage
 
 class BaseUrlDialogFragment private constructor() : AppCompatDialogFragment(), View.OnClickListener,
     View.OnFocusChangeListener {
@@ -74,9 +74,14 @@ class BaseUrlDialogFragment private constructor() : AppCompatDialogFragment(), V
     }
 
     private fun initializeViews() {
-        mBinding.okButton.setOnClickListener(this)
-        mBinding.localEndPointEt.onFocusChangeListener = this
-        mBinding.remoteEndPointEt.onFocusChangeListener = this
+        mBinding.apply{
+            okButton.setOnClickListener(this@BaseUrlDialogFragment)
+            remoteEndPointEt.onFocusChangeListener = this@BaseUrlDialogFragment
+            mSharedPreferenceStorage.remoteBaseUrl?.let { remoteEndPointEt.setText(it) }
+            localEndPointEt.onFocusChangeListener = this@BaseUrlDialogFragment
+            mSharedPreferenceStorage.localBaseUrl?.let { localEndPointEt.setText(it) }
+        }
+
     }
 
     override fun onFocusChange(view: View?, hasFocus: Boolean) {
