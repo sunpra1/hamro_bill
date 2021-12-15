@@ -31,7 +31,6 @@ class BootCompletedBroadcastReceiver : BroadcastReceiver() {
 
         when (intent.action) {
             Intent.ACTION_BOOT_COMPLETED -> {
-                Log.d("ALARM", "onReceive: boot completed")
                 val tokenExpiryTime = mSharedPreferenceStorage.tokenExpiresAt
                 if (tokenExpiryTime != null) {
                     val pendingIntent: PendingIntent =

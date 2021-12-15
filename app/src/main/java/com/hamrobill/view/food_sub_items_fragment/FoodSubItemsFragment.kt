@@ -94,6 +94,7 @@ class FoodSubItemsFragment private constructor() : BottomSheetDialogFragment(),
         )
         mBinding.btnClose.setOnClickListener(this)
         mBinding.btnSave.setOnClickListener(this)
+        mBinding.btnSave.visibility = View.GONE
         mBinding.tableOrderItemsRV.layoutManager = LinearLayoutManager(requireContext())
         mBinding.tableOrderItemsRV.adapter =
             FoodSubItemListRecyclerViewAdapter(
