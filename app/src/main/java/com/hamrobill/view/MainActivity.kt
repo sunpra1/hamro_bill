@@ -38,6 +38,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, SearchView.OnQue
 
     @Inject
     lateinit var mFactory: ViewModelProvider.Factory
+
     @Inject
     lateinit var mSharedPreferenceStorage: SharedPreferenceStorage
     private lateinit var mBinding: ActivityMainBinding

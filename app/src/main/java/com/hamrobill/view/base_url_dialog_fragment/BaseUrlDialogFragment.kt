@@ -74,7 +74,7 @@ class BaseUrlDialogFragment private constructor() : AppCompatDialogFragment(), V
     }
 
     private fun initializeViews() {
-        mBinding.apply{
+        mBinding.apply {
             okButton.setOnClickListener(this@BaseUrlDialogFragment)
             remoteEndPointEt.onFocusChangeListener = this@BaseUrlDialogFragment
             mSharedPreferenceStorage.remoteBaseUrl?.let { remoteEndPointEt.setText(it) }
