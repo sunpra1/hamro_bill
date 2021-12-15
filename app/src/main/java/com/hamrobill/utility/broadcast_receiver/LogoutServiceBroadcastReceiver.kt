@@ -8,7 +8,7 @@ import com.hamrobill.utility.SharedPreferenceStorage
 import com.hamrobill.view.LoginActivity
 import javax.inject.Inject
 
-class LogoutServiceBroadcastReceiver: BroadcastReceiver() {
+class LogoutServiceBroadcastReceiver : BroadcastReceiver() {
     @Inject
     lateinit var mSharedPreferenceStorage: SharedPreferenceStorage
 
@@ -21,6 +21,7 @@ class LogoutServiceBroadcastReceiver: BroadcastReceiver() {
         mSharedPreferenceStorage.token = null
         mSharedPreferenceStorage.tokenExpiresAt = null
         mSharedPreferenceStorage.loggedUserName = null
+        mSharedPreferenceStorage.hasSessionExpired = true
         context.startActivity(Intent(context, LoginActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
         })

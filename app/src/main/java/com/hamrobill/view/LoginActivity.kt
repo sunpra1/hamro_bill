@@ -29,19 +29,16 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener, View.OnFocusCha
     BaseUrlDialogFragment.UrlUpdateListener {
     @Inject
     lateinit var mViewModelFactory: ViewModelProvider.Factory
+
     @Inject
     lateinit var mSharedPreferenceStorage: SharedPreferenceStorage
+
     @Inject
     lateinit var mAlarmManager: AlarmManager
 
     private lateinit var mViewModel: LoginActivityViewModel
     private lateinit var mBinding: ActivityLoginBinding
     private var mPreviousConnectivityStatus = true
-
-    companion object {
-        private const val LOGOUT_ALARM_REQUEST_CODE = 1
-    }
-
     private val mPendingIntent: PendingIntent by lazy {
         val intent = Intent(this, LogoutServiceBroadcastReceiver::class.java)
         PendingIntent.getBroadcast(
@@ -50,6 +47,10 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener, View.OnFocusCha
             intent,
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
+    }
+
+    companion object {
+        private const val LOGOUT_ALARM_REQUEST_CODE = 1
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -62,7 +63,6 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener, View.OnFocusCha
         supportActionBar?.title = resources.getString(R.string.login)
         mViewModel = ViewModelProvider(this, mViewModelFactory)[LoginActivityViewModel::class.java]
 
-        mPendingIntent.cancel()
         mAlarmManager.cancel(mPendingIntent)
 
         initializeView()
@@ -122,9 +122,11 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener, View.OnFocusCha
             mPreviousConnectivityStatus = it
         }
         mViewModel.isLoginSuccess.observe(this, EventObserver {
-            //TODO remove
-//            mAlarmManager.setAndAllowWhileIdle(AlarmManager.RTC, mSharedPreferenceStorage.tokenExpiresAt!!.getCalenderDate().time.time, mPendingIntent)
-            mAlarmManager.setAndAllowWhileIdle(AlarmManager.RTC, Calendar.getInstance().timeInMillis + (20 * 1000), mPendingIntent)
+            mAlarmManager.setExact(
+                AlarmManager.RTC_WAKEUP,
+                mSharedPreferenceStorage.tokenExpiresAt!!.getCalenderDate().timeInMillis,
+                mPendingIntent
+            )
             startActivity(Intent(this@LoginActivity, MainActivity::class.java))
         })
     }
@@ -204,6 +206,16 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener, View.OnFocusCha
             }
         }
         return errorMessage == null
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (mSharedPreferenceStorage.hasSessionExpired)
+            Toast.makeText(
+                this,
+                "Your session has expired.",
+                Toast.LENGTH_LONG
+            ).show()
     }
 
     override fun onFocusChange(view: View?, hasFocus: Boolean) {

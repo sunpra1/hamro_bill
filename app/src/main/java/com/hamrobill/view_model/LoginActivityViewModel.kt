@@ -53,6 +53,7 @@ class LoginActivityViewModel @Inject constructor(
                                 sharedPrefs.token = data.accessToken
                                 sharedPrefs.tokenExpiresAt = data.expiresAt
                                 sharedPrefs.loggedUserName = data.userName
+                                sharedPrefs.hasSessionExpired = false
                             }
                             _isLoginSuccess.value = Event(true)
                         }

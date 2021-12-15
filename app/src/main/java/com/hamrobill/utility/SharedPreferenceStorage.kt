@@ -7,6 +7,7 @@ import javax.inject.Named
 class SharedPreferenceStorage @Inject constructor(@Named("Application") context: Context) {
     companion object {
         private const val PREF_NAME = "HAMRO_BILL_SHARED_PREF"
+        private const val HAS_SESSION_EXPIRED = "HAS_SESSION_EXPIRED"
         private const val TOKEN_VALUE: String = "TOKEN_VALUE"
         private const val TOKEN_EXPIRES_AT: String = "TOKEN_EXPIRES_AT"
         private const val LOGGED_USER_NAME: String = "LOGGED_USER_NAME"
@@ -29,6 +30,11 @@ class SharedPreferenceStorage @Inject constructor(@Named("Application") context:
     var tokenExpiresAt: String? = null
         get() = sharedPreferences.getString(TOKEN_EXPIRES_AT, null)
         set(value) = sharedPreferences.edit().putString(TOKEN_EXPIRES_AT, value).apply()
+            .also { field = value }
+
+    var hasSessionExpired: Boolean = false
+        get() = sharedPreferences.getBoolean(HAS_SESSION_EXPIRED, false)
+        set(value) = sharedPreferences.edit().putBoolean(HAS_SESSION_EXPIRED, value).apply()
             .also { field = value }
 
     var localBaseUrl: String? = null
