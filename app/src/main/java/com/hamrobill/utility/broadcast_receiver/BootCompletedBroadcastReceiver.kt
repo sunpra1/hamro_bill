@@ -5,6 +5,7 @@ import android.app.PendingIntent
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import com.hamrobill.HamrobillApp
 import com.hamrobill.utility.SharedPreferenceStorage
 import com.hamrobill.utility.getCalenderDate
@@ -30,8 +31,9 @@ class BootCompletedBroadcastReceiver : BroadcastReceiver() {
 
         when (intent.action) {
             Intent.ACTION_BOOT_COMPLETED -> {
+                Log.d("ALARM", "onReceive: boot completed")
                 val tokenExpiryTime = mSharedPreferenceStorage.tokenExpiresAt
-                if (tokenExpiryTime != null && Calendar.getInstance() > tokenExpiryTime.getCalenderDate()) {
+                if (tokenExpiryTime != null) {
                     val pendingIntent: PendingIntent =
                         Intent(context, LogoutServiceBroadcastReceiver::class.java)
                             .let {
@@ -42,9 +44,13 @@ class BootCompletedBroadcastReceiver : BroadcastReceiver() {
                                     PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
                                 )
                             }
+                    val currentTimeInMillis = Calendar.getInstance().timeInMillis
+                    val expiryTimeInMillis = tokenExpiryTime.getCalenderDate().timeInMillis
+                    val triggerAt =
+                        if (currentTimeInMillis >= expiryTimeInMillis) currentTimeInMillis + 1000 else expiryTimeInMillis
                     mAlarmManager.setExact(
                         AlarmManager.RTC_WAKEUP,
-                        Calendar.getInstance().timeInMillis + 5000,
+                        triggerAt,
                         pendingIntent
                     )
                 }
