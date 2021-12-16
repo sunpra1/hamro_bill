@@ -2,17 +2,16 @@ package com.hamrobill.utility.broadcast_receiver
 
 import android.app.AlarmManager
 import android.app.PendingIntent
-import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.util.Log
-import com.hamrobill.HamrobillApp
+import com.hamrobill.di.subcomponent.ActivityComponent
+import com.hamrobill.utility.DICompactBroadcastReceiver
 import com.hamrobill.utility.SharedPreferenceStorage
 import com.hamrobill.utility.getCalenderDate
 import java.util.*
 import javax.inject.Inject
 
-class BootCompletedBroadcastReceiver : BroadcastReceiver() {
+class BootCompletedBroadcastReceiver : DICompactBroadcastReceiver() {
     @Inject
     lateinit var mSharedPreferenceStorage: SharedPreferenceStorage
 
@@ -24,11 +23,7 @@ class BootCompletedBroadcastReceiver : BroadcastReceiver() {
     }
 
     override fun onReceive(context: Context, intent: Intent) {
-        (context.applicationContext as HamrobillApp).applicationComponent
-            .getActivityComponentFactory()
-            .create(context)
-            .inject(this)
-
+        super.onReceive(context, intent)
         when (intent.action) {
             Intent.ACTION_BOOT_COMPLETED -> {
                 val tokenExpiryTime = mSharedPreferenceStorage.tokenExpiresAt
@@ -55,5 +50,9 @@ class BootCompletedBroadcastReceiver : BroadcastReceiver() {
                 }
             }
         }
+    }
+
+    override fun configureDependencyInjection(activityComponent: ActivityComponent) {
+        activityComponent.inject(this)
     }
 }

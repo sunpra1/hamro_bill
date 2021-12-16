@@ -1,6 +1,5 @@
 package com.hamrobill.view.estimated_bill_fragment
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,17 +7,16 @@ import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import com.hamrobill.HamrobillApp
 import com.hamrobill.R
 import com.hamrobill.data.pojo.ActiveOrderItem
 import com.hamrobill.databinding.FragmentEstimatedBillBinding
+import com.hamrobill.di.subcomponent.FragmentComponent
 import com.hamrobill.utility.*
 import com.hamrobill.view_model.SharedViewModel
 import java.util.*
 import javax.inject.Inject
 
-class EstimatedBillFragment : BottomSheetDialogFragment(), View.OnClickListener {
+class EstimatedBillFragment : DICompactBottomSheetDialogFragment(), View.OnClickListener {
     @Inject
     lateinit var mViewModelFactory: ViewModelProvider.Factory
 
@@ -107,10 +105,8 @@ class EstimatedBillFragment : BottomSheetDialogFragment(), View.OnClickListener 
         mBinding.btnClose.setOnClickListener(this)
     }
 
-    override fun onAttach(context: Context) {
-        (requireActivity().application as HamrobillApp).applicationComponent.getActivityComponentFactory()
-            .create(requireActivity()).getFragmentSubComponent().inject(this)
-        super.onAttach(context)
+    override fun configureDependencyInjection(fragmentComponent: FragmentComponent) {
+        fragmentComponent.inject(this)
     }
 
     override fun onClick(view: View?) {

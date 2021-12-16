@@ -9,20 +9,16 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.ViewModelProvider
-import com.hamrobill.HamrobillApp
 import com.hamrobill.R
 import com.hamrobill.data.pojo.ActiveOrderItem
 import com.hamrobill.data.pojo.Table
 import com.hamrobill.databinding.ActivityMainBinding
+import com.hamrobill.di.subcomponent.ActivityComponent
 import com.hamrobill.model.FoodCategory
 import com.hamrobill.model.SubItemType
-import com.hamrobill.utility.EventObserver
-import com.hamrobill.utility.SharedPreferenceStorage
-import com.hamrobill.utility.hideProgressDialog
-import com.hamrobill.utility.showProgressDialog
+import com.hamrobill.utility.*
 import com.hamrobill.view.cancellable_table_orders_fragment.CancellableTableOrdersFragment
 import com.hamrobill.view.change_table_dialog_fragment.ChangeTableDialogFragment
 import com.hamrobill.view.estimated_bill_fragment.EstimatedBillFragment
@@ -33,7 +29,7 @@ import com.hamrobill.view.tables_fragment.TablesFragment
 import com.hamrobill.view_model.SharedViewModel
 import javax.inject.Inject
 
-class MainActivity : AppCompatActivity(), View.OnClickListener, SearchView.OnQueryTextListener,
+class MainActivity : DICompactActivity(), View.OnClickListener, SearchView.OnQueryTextListener,
     ChangeTableDialogFragment.TableChangeListener, MergeTableDialogFragment.TableMergeListener {
 
     @Inject
@@ -48,8 +44,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, SearchView.OnQue
     private var mCancellableTableOrdersFragment: CancellableTableOrdersFragment? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        (application as HamrobillApp).applicationComponent.getActivityComponentFactory()
-            .create(baseContext).inject(this)
         super.onCreate(savedInstanceState)
         mBinding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(mBinding.root)
@@ -59,6 +53,10 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, SearchView.OnQue
         initializeViews()
         setupObservers()
         mViewModel.getTablesAndFoodItems()
+    }
+
+    override fun configureDependencyInjection(activityComponent: ActivityComponent) {
+        activityComponent.inject(this)
     }
 
     private fun initializeViews() {

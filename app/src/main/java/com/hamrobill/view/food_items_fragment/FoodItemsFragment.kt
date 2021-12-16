@@ -1,25 +1,24 @@
 package com.hamrobill.view.food_items_fragment
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.hamrobill.HamrobillApp
 import com.hamrobill.R
 import com.hamrobill.data.pojo.FoodItem
 import com.hamrobill.databinding.FragmentFoodItemsBinding
+import com.hamrobill.di.subcomponent.FragmentComponent
 import com.hamrobill.model.SubItemType
+import com.hamrobill.utility.DICompactFragment
 import com.hamrobill.utility.EventObserver
 import com.hamrobill.utility.showToast
 import com.hamrobill.view.food_sub_items_fragment.FoodSubItemsFragment
 import com.hamrobill.view_model.SharedViewModel
 import javax.inject.Inject
 
-class FoodItemsFragment : Fragment(),
+class FoodItemsFragment : DICompactFragment(),
     FoodRecyclerViewAdapter.FoodRecyclerViewItemClickListener {
 
     @Inject
@@ -63,10 +62,8 @@ class FoodItemsFragment : Fragment(),
         })
     }
 
-    override fun onAttach(context: Context) {
-        (requireActivity().application as HamrobillApp).applicationComponent.getActivityComponentFactory()
-            .create(requireActivity()).getFragmentSubComponent().inject(this)
-        super.onAttach(context)
+    override fun configureDependencyInjection(fragmentComponent: FragmentComponent) {
+        fragmentComponent.inject(this)
     }
 
     override fun onFoodItemClick(foodItem: FoodItem, position: Int) {

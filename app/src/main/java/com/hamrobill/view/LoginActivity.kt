@@ -12,12 +12,11 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
-import com.hamrobill.HamrobillApp
 import com.hamrobill.R
 import com.hamrobill.data.pojo.LoginRequest
 import com.hamrobill.databinding.ActivityLoginBinding
+import com.hamrobill.di.subcomponent.ActivityComponent
 import com.hamrobill.utility.*
 import com.hamrobill.utility.broadcast_receiver.LogoutServiceBroadcastReceiver
 import com.hamrobill.view.base_url_dialog_fragment.BaseUrlDialogFragment
@@ -25,7 +24,7 @@ import com.hamrobill.view_model.LoginActivityViewModel
 import java.util.*
 import javax.inject.Inject
 
-class LoginActivity : AppCompatActivity(), View.OnClickListener, View.OnFocusChangeListener,
+class LoginActivity : DICompactActivity(), View.OnClickListener, View.OnFocusChangeListener,
     BaseUrlDialogFragment.UrlUpdateListener {
     @Inject
     lateinit var mViewModelFactory: ViewModelProvider.Factory
@@ -54,8 +53,6 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener, View.OnFocusCha
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        (application as HamrobillApp).applicationComponent.getActivityComponentFactory()
-            .create(baseContext).inject(this)
         super.onCreate(savedInstanceState)
         mBinding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(mBinding.root)
@@ -67,6 +64,10 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener, View.OnFocusCha
 
         initializeView()
         setupObservers()
+    }
+
+    override fun configureDependencyInjection(activityComponent: ActivityComponent) {
+        activityComponent.inject(this)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

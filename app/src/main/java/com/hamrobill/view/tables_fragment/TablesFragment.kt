@@ -1,24 +1,23 @@
 package com.hamrobill.view.tables_fragment
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
-import com.hamrobill.HamrobillApp
 import com.hamrobill.R
 import com.hamrobill.data.pojo.Table
 import com.hamrobill.databinding.FragmentTablesBinding
+import com.hamrobill.di.subcomponent.FragmentComponent
+import com.hamrobill.utility.DICompactFragment
 import com.hamrobill.utility.RECYCLER_VIEW_WIDTH_LIMIT
 import com.hamrobill.utility.windowWidth
 import com.hamrobill.view.MainActivity
 import com.hamrobill.view_model.SharedViewModel
 import javax.inject.Inject
 
-class TablesFragment : Fragment(),
+class TablesFragment : DICompactFragment(),
     TableListRecyclerViewAdapter.TableItemClickListener {
     @Inject
     lateinit var mViewModelFactory: ViewModelProvider.Factory
@@ -73,10 +72,8 @@ class TablesFragment : Fragment(),
         }
     }
 
-    override fun onAttach(context: Context) {
-        (requireActivity().application as HamrobillApp).applicationComponent.getActivityComponentFactory()
-            .create(requireActivity()).getFragmentSubComponent().inject(this)
-        super.onAttach(context)
+    override fun configureDependencyInjection(fragmentComponent: FragmentComponent) {
+        fragmentComponent.inject(this)
     }
 
     override fun onTableItemClick(table: Table, position: Int) {

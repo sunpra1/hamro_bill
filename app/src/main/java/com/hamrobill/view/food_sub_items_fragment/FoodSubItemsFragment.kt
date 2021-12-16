@@ -1,6 +1,5 @@
 package com.hamrobill.view.food_sub_items_fragment
 
-import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -9,17 +8,16 @@ import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import com.hamrobill.HamrobillApp
 import com.hamrobill.R
 import com.hamrobill.data.pojo.FoodSubItem
 import com.hamrobill.databinding.FragmentFoodSubItemsBinding
+import com.hamrobill.di.subcomponent.FragmentComponent
 import com.hamrobill.model.SubItemType
 import com.hamrobill.utility.*
 import com.hamrobill.view_model.SharedViewModel
 import javax.inject.Inject
 
-class FoodSubItemsFragment private constructor() : BottomSheetDialogFragment(),
+class FoodSubItemsFragment private constructor() : DICompactBottomSheetDialogFragment(),
     View.OnClickListener,
     FoodSubItemListRecyclerViewAdapter.FoodSubItemOnClickListener {
     private lateinit var mSubItemType: SubItemType
@@ -106,10 +104,8 @@ class FoodSubItemsFragment private constructor() : BottomSheetDialogFragment(),
             )
     }
 
-    override fun onAttach(context: Context) {
-        (requireActivity().application as HamrobillApp).applicationComponent.getActivityComponentFactory()
-            .create(requireActivity()).getFragmentSubComponent().inject(this)
-        super.onAttach(context)
+    override fun configureDependencyInjection(fragmentComponent: FragmentComponent) {
+        fragmentComponent.inject(this)
     }
 
     override fun onClick(view: View?) {

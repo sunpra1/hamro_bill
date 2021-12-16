@@ -1,24 +1,19 @@
 package com.hamrobill.utility.broadcast_receiver
 
-import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.util.Log
-import com.hamrobill.HamrobillApp
+import com.hamrobill.di.subcomponent.ActivityComponent
+import com.hamrobill.utility.DICompactBroadcastReceiver
 import com.hamrobill.utility.SharedPreferenceStorage
 import com.hamrobill.view.LoginActivity
 import javax.inject.Inject
 
-class LogoutServiceBroadcastReceiver : BroadcastReceiver() {
+class LogoutServiceBroadcastReceiver : DICompactBroadcastReceiver() {
     @Inject
     lateinit var mSharedPreferenceStorage: SharedPreferenceStorage
 
     override fun onReceive(context: Context, intent: Intent) {
-        (context.applicationContext as HamrobillApp).applicationComponent
-            .getActivityComponentFactory()
-            .create(context)
-            .inject(this)
-
+        super.onReceive(context, intent)
         mSharedPreferenceStorage.token = null
         mSharedPreferenceStorage.tokenExpiresAt = null
         mSharedPreferenceStorage.loggedUserName = null
@@ -26,5 +21,9 @@ class LogoutServiceBroadcastReceiver : BroadcastReceiver() {
         context.startActivity(Intent(context, LoginActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
         })
+    }
+
+    override fun configureDependencyInjection(activityComponent: ActivityComponent) {
+        activityComponent.inject(this)
     }
 }

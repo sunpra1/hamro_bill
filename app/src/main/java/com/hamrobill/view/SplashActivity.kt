@@ -4,29 +4,27 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import androidx.appcompat.app.AppCompatActivity
-import com.hamrobill.HamrobillApp
 import com.hamrobill.R
-import com.hamrobill.utility.SharedPreferenceStorage
-import com.hamrobill.utility.getCalenderDate
-import com.hamrobill.utility.hideProgressDialog
-import com.hamrobill.utility.showProgressDialog
+import com.hamrobill.di.subcomponent.ActivityComponent
+import com.hamrobill.utility.*
 import com.hamrobill.view.base_url_dialog_fragment.BaseUrlDialogFragment
 import java.util.*
 import javax.inject.Inject
 
-class SplashActivity : AppCompatActivity(), BaseUrlDialogFragment.UrlUpdateListener {
+class SplashActivity : DICompactActivity(), BaseUrlDialogFragment.UrlUpdateListener {
 
     @Inject
     lateinit var mSharedPreferenceStorage: SharedPreferenceStorage
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        (application as HamrobillApp).applicationComponent.getActivityComponentFactory()
-            .create(baseContext).inject(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
         determineRouting()
 
+    }
+
+    override fun configureDependencyInjection(activityComponent: ActivityComponent) {
+        activityComponent.inject(this)
     }
 
     private fun determineRouting() {
