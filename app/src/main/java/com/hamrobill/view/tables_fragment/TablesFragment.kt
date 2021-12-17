@@ -67,6 +67,7 @@ class TablesFragment : DICompactFragment(),
                         getString(R.string.not_table_selected)
                     mViewModel.setActiveTableOrders(null)
                     mViewModel.setCancellableTableOrders(null)
+                    (mBinding.tableRV.adapter as TableListRecyclerViewAdapter).selection = -1
                 }
             }
         }

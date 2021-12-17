@@ -55,7 +55,7 @@ class MergeTableDialogFragment private constructor() : AppCompatDialogFragment()
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val dialog = super.onCreateDialog(savedInstanceState).apply {
-            setTitle(getString(R.string.merge_table))
+            setStyle(STYLE_NO_TITLE, 0)
         }
         return dialog
     }

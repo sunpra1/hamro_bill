@@ -53,7 +53,7 @@ class CancelOrderDialogFragment private constructor() : AppCompatDialogFragment(
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val dialog = super.onCreateDialog(savedInstanceState).apply {
-            setTitle(getString(R.string.cancel_order_format, mCancellableOrderItem.subItemName))
+            setStyle(STYLE_NO_TITLE, 0)
         }
         return dialog
     }
@@ -66,6 +66,7 @@ class CancelOrderDialogFragment private constructor() : AppCompatDialogFragment(
             else (windowWidth * DIALOG_WIDTH_RATIO_SMALL).toInt(),
             LinearLayout.LayoutParams.WRAP_CONTENT
         )
+        mBinding.dialogTitle.text = getString(R.string.cancel_order_format, mCancellableOrderItem.subItemName)
         mBinding.cancelBtn.setOnClickListener(this)
         mBinding.backBtn.setOnClickListener(this)
     }

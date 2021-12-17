@@ -62,11 +62,12 @@ class EstimatedBillFragment : DICompactBottomSheetDialogFragment(), View.OnClick
         orderItems.forEach { total += it.quantity * it.subItemPrice }
         if (serviceChargePercentage > 0) {
             serviceCharge = (total * serviceChargePercentage) / 100
-            total += serviceCharge
         }
         mBinding.serviceChargeAmount.text =
             getString(R.string.amount_format, serviceCharge.toString())
         mBinding.totalAmount.text = getString(R.string.amount_format, total.toString())
+        mBinding.grandTotalAmount.text =
+            getString(R.string.amount_format, (total + serviceCharge).toString())
     }
 
     private fun initializeViews() {
@@ -113,11 +114,13 @@ class EstimatedBillFragment : DICompactBottomSheetDialogFragment(), View.OnClick
         val serviceChargePercentage = mSharedPreferenceStorage.serviceChargePercentage
         if (serviceChargePercentage > 0) {
             mBinding.serviceChargeWrapper.visibility = View.VISIBLE
+            mBinding.grandTotalWrapper.visibility = View.VISIBLE
             mBinding.serviceChargeLbl.text = getString(
                 R.string.service_charge_format,
                 "${mSharedPreferenceStorage.serviceChargePercentage}%"
             )
         } else {
+            mBinding.grandTotalWrapper.visibility = View.GONE
             mBinding.serviceChargeWrapper.visibility = View.GONE
         }
         mBinding.btnClose.setOnClickListener(this)

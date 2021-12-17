@@ -77,8 +77,7 @@ fun FragmentActivity.showProgressDialog() {
     progressDialog?.show()
     //Dialog window is set only after it is shown
     progressDialog?.window?.setLayout(
-        if (windowWidth() > DIALOG_WIDTH_LIMIT) (windowWidth() * PROGRESS_DIALOG_WIDTH_RATIO_BIG).toInt()
-        else (windowWidth() * PROGRESS_DIALOG_WIDTH_RATIO_SMALL).toInt(),
+        550,
         LinearLayout.LayoutParams.WRAP_CONTENT
     )
 }

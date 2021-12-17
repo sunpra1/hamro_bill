@@ -11,7 +11,7 @@ data class SaveOrderRequest(
     @SerializedName("TotalPrice") val totalPrice: Float = 0f,
     @SerializedName("IsChecked") val isPacking: Boolean = false,
     @SerializedName("Remarks") val remarks: String = "",
-    @SerializedName("OrderBy") val orderBy: String = "",
+    @SerializedName("OrderBy") val orderBy: String,
     @SerializedName("CountCustomer") val countCustomer: Int = 0,
     @SerializedName("OrderItemList") val orderItemList: ArrayList<SaveOrderItem>,
     @SerializedName("RoomCategoryId") val roomCategoryId: Int = 0,

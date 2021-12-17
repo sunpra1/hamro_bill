@@ -1,5 +1,6 @@
 package com.hamrobill.view.base_url_dialog_fragment
 
+import android.app.Dialog
 import android.os.Bundle
 import android.util.Patterns
 import android.view.LayoutInflater
@@ -37,6 +38,13 @@ class BaseUrlDialogFragment private constructor() : AppCompatDialogFragment(), V
                 }
             }
         }
+    }
+
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        val dialog = super.onCreateDialog(savedInstanceState).apply {
+            setStyle(STYLE_NO_TITLE, 0)
+        }
+        return dialog
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

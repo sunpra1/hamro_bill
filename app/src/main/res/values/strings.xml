@@ -110,4 +110,5 @@
     <string name="update_service_charge">UPDATE SERVICE CHARGE</string>
     <string name="provide_service_charge">PROVIDE SERVICE CHARGE</string>
     <string name="service_charge">SERVICE CHARGE</string>
+    <string name="grand_total">GRAND TOTAL</string>
 </resources>

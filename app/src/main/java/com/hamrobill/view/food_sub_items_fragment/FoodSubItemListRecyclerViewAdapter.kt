@@ -2,8 +2,8 @@ package com.hamrobill.view.food_sub_items_fragment
 
 import android.content.Context
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
+import androidx.core.widget.addTextChangedListener
 import androidx.recyclerview.widget.RecyclerView
 import com.hamrobill.R
 import com.hamrobill.data.pojo.FoodSubItem
@@ -40,28 +40,28 @@ class FoodSubItemListRecyclerViewAdapter(
             view.foodSubItemName.setOnClickListener {
                 foodSbItemOnClickListener.onFoodSubItemClicked(foodSubItem, adapterPosition)
             }
-            val onKeyListener = View.OnKeyListener { _, _, _ ->
-                val quantity =
-                    if (view.quantityEt.text.isNullOrBlank()) 0f else view.quantityEt.text.toString()
-                        .toFloat()
-                val priority =
-                    if (view.orderByEt.text.isNullOrBlank()) null else view.orderByEt.text.toString()
-                        .toInt()
-                val remarks =
-                    if (view.remarksEt.text.isNullOrBlank()) null else view.remarksEt.text.toString()
-                view.foodSubItemName.isChecked = quantity > 0
-                foodSbItemOnClickListener.onFoodSubItemEdited(
-                    foodSubItem,
-                    quantity,
-                    priority,
-                    remarks,
-                    adapterPosition
-                )
-                false
-            }
-            view.quantityEt.setOnKeyListener(onKeyListener)
-            view.orderByEt.setOnKeyListener(onKeyListener)
-            view.remarksEt.setOnKeyListener(onKeyListener)
+            view.quantityEt.addTextChangedListener { keyListener(foodSubItem) }
+            view.orderByEt.addTextChangedListener { keyListener(foodSubItem) }
+            view.remarksEt.addTextChangedListener { keyListener(foodSubItem) }
+        }
+
+        private fun keyListener(foodSubItem: FoodSubItem) {
+            val quantity =
+                if (view.quantityEt.text.isNullOrBlank()) 0f else view.quantityEt.text.toString()
+                    .toFloat()
+            val priority =
+                if (view.orderByEt.text.isNullOrBlank()) null else view.orderByEt.text.toString()
+                    .toInt()
+            val remarks =
+                if (view.remarksEt.text.isNullOrBlank()) null else view.remarksEt.text.toString()
+            view.foodSubItemName.isChecked = quantity > 0
+            foodSbItemOnClickListener.onFoodSubItemEdited(
+                foodSubItem,
+                quantity,
+                priority,
+                remarks,
+                adapterPosition
+            )
         }
     }
 

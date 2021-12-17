@@ -162,8 +162,7 @@ class SharedViewModel @Inject constructor(
             foodItem,
             foodSubItem,
             quantity,
-            priority,
-            remarks
+            remarks = remarks
         )
         if (index > -1 && quantity < 1)
             _tableOrders.value = tableOrders.value?.apply {
@@ -359,7 +358,8 @@ class SharedViewModel @Inject constructor(
                 printTitle = printTitle,
                 tableName = selectedTable.value!!.tableName,
                 billNumber = orderItems.last().billNumber,
-                orderItemList = saveOrderItems
+                orderItemList = saveOrderItems,
+                orderBy = sharedPreferenceStorage.loggedUserName ?: ""
             )
 
             viewModelScope.launch {
@@ -393,10 +393,13 @@ class SharedViewModel @Inject constructor(
 
     fun cancelTableOrder(remarks: String?) {
         if (cancelOrderItem.value != null) {
+
+            val item1 = cancelOrderItem.value!!
+
             val printTitle = when {
-                cancelOrderItem.value!!.extraColumn -> "SEKUWA"
-                cancelOrderItem.value!!.isBar -> "BOT"
-                cancelOrderItem.value!!.isCoffee -> "COFFEE"
+                item1.extraColumn -> "SEKUWA"
+                item1.isBar -> "BOT"
+                item1.isCoffee -> "COFFEE"
                 else -> "KOT"
             }
 
@@ -406,7 +409,7 @@ class SharedViewModel @Inject constructor(
                 itemId = cancelOrderItem.value!!.itemId,
                 subItemName = cancelOrderItem.value!!.subItemName,
                 quantity = cancelOrderItem.value!!.quantity,
-                remarks = cancelOrderItem.value!!.remarks,
+                remarks = remarks
             )
 
             val saveOrderRequestBody = SaveOrderRequest(
@@ -415,6 +418,7 @@ class SharedViewModel @Inject constructor(
                 tableName = selectedTable.value!!.tableName,
                 billNumber = cancelOrderItem.value!!.billNumber,
                 orderItemList = ArrayList<SaveOrderRequest.SaveOrderItem>().apply { add(item) },
+                orderBy = sharedPreferenceStorage.loggedUserName ?: "",
                 isDelete = true
             )
 

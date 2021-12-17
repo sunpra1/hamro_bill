@@ -11,8 +11,9 @@ android {
         applicationId "com.hamrobill"
         minSdk 24
         targetSdk 30
-        versionCode 1
-        versionName "1.0"
+        multiDexEnabled true
+        versionCode 2
+        versionName "2021.12.17"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 

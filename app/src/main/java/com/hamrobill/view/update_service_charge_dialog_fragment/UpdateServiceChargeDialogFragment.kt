@@ -1,5 +1,6 @@
 package com.hamrobill.view.update_service_charge_dialog_fragment
 
+import android.app.Dialog
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -21,6 +22,13 @@ class UpdateServiceChargeDialogFragment private constructor() : AppCompatDialogF
     ): View {
         mBinding = FragmentUpdateServiceChargeDialogBinding.inflate(layoutInflater)
         return mBinding.root
+    }
+
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        val dialog = super.onCreateDialog(savedInstanceState).apply {
+            setStyle(STYLE_NO_TITLE, 0)
+        }
+        return dialog
     }
 
     override fun onClick(view: View?) {
