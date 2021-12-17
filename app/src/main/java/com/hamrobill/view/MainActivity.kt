@@ -26,6 +26,7 @@ import com.hamrobill.view.food_items_fragment.FoodItemsFragment
 import com.hamrobill.view.food_sub_items_fragment.FoodSubItemsFragment
 import com.hamrobill.view.merge_table_dialog_fragment.MergeTableDialogFragment
 import com.hamrobill.view.tables_fragment.TablesFragment
+import com.hamrobill.view.update_service_charge_dialog_fragment.UpdateServiceChargeDialogFragment
 import com.hamrobill.view_model.SharedViewModel
 import javax.inject.Inject
 
@@ -123,6 +124,14 @@ class MainActivity : DICompactActivity(), View.OnClickListener, SearchView.OnQue
                 mSharedPreferenceStorage.loggedUserName = null
                 startActivity(Intent(this, LoginActivity::class.java))
                 finish()
+                true
+            }
+            R.id.updateServiceChargeMenuItem -> {
+                UpdateServiceChargeDialogFragment.getInstance(mSharedPreferenceStorage)
+                    .showNow(
+                        supportFragmentManager,
+                        UpdateServiceChargeDialogFragment::class.java.simpleName
+                    )
                 true
             }
             else -> super.onOptionsItemSelected(item)

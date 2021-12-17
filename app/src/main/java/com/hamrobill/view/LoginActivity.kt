@@ -7,8 +7,6 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Patterns
-import android.view.Menu
-import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
@@ -19,13 +17,11 @@ import com.hamrobill.databinding.ActivityLoginBinding
 import com.hamrobill.di.subcomponent.ActivityComponent
 import com.hamrobill.utility.*
 import com.hamrobill.utility.broadcast_receiver.LogoutServiceBroadcastReceiver
-import com.hamrobill.view.base_url_dialog_fragment.BaseUrlDialogFragment
 import com.hamrobill.view_model.LoginActivityViewModel
 import java.util.*
 import javax.inject.Inject
 
-class LoginActivity : DICompactActivity(), View.OnClickListener, View.OnFocusChangeListener,
-    BaseUrlDialogFragment.UrlUpdateListener {
+class LoginActivity : DICompactActivity(), View.OnClickListener, View.OnFocusChangeListener {
     @Inject
     lateinit var mViewModelFactory: ViewModelProvider.Factory
 
@@ -68,24 +64,6 @@ class LoginActivity : DICompactActivity(), View.OnClickListener, View.OnFocusCha
 
     override fun configureDependencyInjection(activityComponent: ActivityComponent) {
         activityComponent.inject(this)
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.login_menu, menu)
-
-        return super.onCreateOptionsMenu(menu)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.settingMenuItem -> {
-                BaseUrlDialogFragment.getInstance(mSharedPreferenceStorage, this).apply {
-                    showNow(supportFragmentManager, tag)
-                }
-                true
-            }
-            else -> super.onOptionsItemSelected(item)
-        }
     }
 
     private fun setupObservers() {
@@ -242,9 +220,5 @@ class LoginActivity : DICompactActivity(), View.OnClickListener, View.OnFocusCha
                 }
             }
         }
-    }
-
-    override fun onUrlUpdated() {
-        Toast.makeText(this, "End points has been updated", Toast.LENGTH_SHORT).show()
     }
 }

@@ -29,8 +29,14 @@
     </group>
 
     <item
+        android:id="@+id/updateServiceChargeMenuItem"
+        android:icon="@drawable/percent_black_24"
+        android:title="@string/update_service_charge"
+        app:showAsAction="never" />
+
+    <item
         android:id="@+id/logoutMenuItem"
-        android:icon="@drawable/logout_white_24"
+        android:icon="@drawable/logout_black_24"
         android:title="@string/logout"
         app:showAsAction="never" />
 

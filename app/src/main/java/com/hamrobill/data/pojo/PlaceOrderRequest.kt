@@ -23,6 +23,7 @@ data class PlaceOrderItem(
     @SerializedName("Quantity") val quantity: Float,
     @SerializedName("TotalPrice") val totalPrice: Float,
     @SerializedName("ItemId") val itemId: Int,
+    @SerializedName("Remarks") val remarks: String?,
     @SerializedName("Discount") val discount: Float,
     @SerializedName("OrderItemPOSId") val orderItemPOSId: Int? = null,
     @SerializedName("IsOrderByPOS") val isOrderByPOS: Boolean = false,

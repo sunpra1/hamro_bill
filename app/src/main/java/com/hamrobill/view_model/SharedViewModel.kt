@@ -284,6 +284,7 @@ class SharedViewModel @Inject constructor(
                     it.quantity,
                     it.quantity * it.foodSubItem.subItemPrice,
                     it.foodItem.itemId,
+                    it.remarks,
                     0f
                 )
             } as ArrayList

@@ -3,14 +3,12 @@
     <string name="email">Email</string>
     <string name="password">Password</string>
     <string name="login">LOGIN</string>
-    <string name="processing">Processing</string>
+    <string name="processing">Processing…</string>
     <string name="remember_me">Remember me</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="next">Next</string>
     <string name="previous">Previous</string>
 
-    <string name="hello_first_fragment">Hello first fragment</string>
-    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
@@ -108,4 +106,8 @@
     <string name="button_close_desc">Button close.</string>
     <string name="settings">SETTINGS</string>
     <string name="logout">LOGOUT</string>
+    <string name="service_charge_format">SERVICE CHARGE [%s]</string>
+    <string name="update_service_charge">UPDATE SERVICE CHARGE</string>
+    <string name="provide_service_charge">PROVIDE SERVICE CHARGE</string>
+    <string name="service_charge">SERVICE CHARGE</string>
 </resources>
