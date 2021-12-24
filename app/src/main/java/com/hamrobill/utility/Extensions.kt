@@ -101,3 +101,8 @@ fun String.getCalenderDate(inputFormat: String = "EEE, dd MMM yyyy HH:mm:ss zzzz
     val date = dateFormat.parse(this)
     return Calendar.getInstance().apply { time = date!! }
 }
+
+fun String.getUserName(): String {
+    val lastUnderscoreIndex = lastIndexOf("@")
+    return substring(0, lastUnderscoreIndex)
+}

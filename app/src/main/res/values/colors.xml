@@ -14,6 +14,5 @@
     <color name="lightGrey">#DCDCDC</color>
     <color name="white">#FFFFFF</color>
     <color name="black">#FF000000</color>
-    <color name="transparent">#88CCCCCC</color>
     <color name="magenta">#8B008B</color>
 </resources>

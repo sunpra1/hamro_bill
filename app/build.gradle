@@ -50,6 +50,9 @@ dependencies {
     implementation 'androidx.navigation:navigation-ui-ktx:2.3.5'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
 
+    implementation 'androidx.preference:preference-ktx:1.1.1'
+    implementation 'androidx.security:security-crypto:1.1.0-alpha03'
+
     //Dagger
     implementation "com.google.dagger:dagger:$rootProject.daggerVersion"
     kapt "com.google.dagger:dagger-compiler:$rootProject.daggerVersion"

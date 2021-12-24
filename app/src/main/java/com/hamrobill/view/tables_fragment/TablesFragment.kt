@@ -10,9 +10,7 @@ import com.hamrobill.R
 import com.hamrobill.data.pojo.Table
 import com.hamrobill.databinding.FragmentTablesBinding
 import com.hamrobill.di.subcomponent.FragmentComponent
-import com.hamrobill.utility.DICompactFragment
-import com.hamrobill.utility.RECYCLER_VIEW_WIDTH_LIMIT
-import com.hamrobill.utility.windowWidth
+import com.hamrobill.utility.*
 import com.hamrobill.view.MainActivity
 import com.hamrobill.view_model.SharedViewModel
 import javax.inject.Inject
@@ -21,6 +19,9 @@ class TablesFragment : DICompactFragment(),
     TableListRecyclerViewAdapter.TableItemClickListener {
     @Inject
     lateinit var mViewModelFactory: ViewModelProvider.Factory
+
+    @Inject
+    lateinit var mSharedPreferenceStorage: SharedPreferenceStorage
     private lateinit var mViewModel: SharedViewModel
     private lateinit var mBinding: FragmentTablesBinding
     private lateinit var mRecyclerViewAdapter: TableListRecyclerViewAdapter
@@ -60,11 +61,18 @@ class TablesFragment : DICompactFragment(),
             if (isAdded) {
                 if (it != null) {
                     (requireActivity() as MainActivity).supportActionBar?.title =
-                        getString(R.string.selected_table_format, it.tableName)
+                        getString(
+                            R.string.selected_table_format,
+                            mSharedPreferenceStorage.loggedUserName!!.getUserName(),
+                            it.tableName
+                        )
                     mViewModel.getTableActiveOrdersAndCancelableOrderItems()
                 } else {
                     (requireActivity() as MainActivity).supportActionBar?.title =
-                        getString(R.string.not_table_selected)
+                        getString(
+                            R.string.no_table_selected_format,
+                            mSharedPreferenceStorage.loggedUserName!!.getUserName()
+                        )
                     mViewModel.setActiveTableOrders(null)
                     mViewModel.setCancellableTableOrders(null)
                     (mBinding.tableRV.adapter as TableListRecyclerViewAdapter).selection = -1

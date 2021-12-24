@@ -48,7 +48,10 @@ class MainActivity : DICompactActivity(), View.OnClickListener, SearchView.OnQue
         super.onCreate(savedInstanceState)
         mBinding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(mBinding.root)
-        supportActionBar?.title = getString(R.string.no_table_selected)
+        supportActionBar?.title = getString(
+            R.string.no_table_selected_format,
+            mSharedPreferenceStorage.loggedUserName!!.getUserName()
+        )
 
         mViewModel = ViewModelProvider(this, mFactory).get(SharedViewModel::class.java)
         initializeViews()

@@ -162,7 +162,8 @@ class SharedViewModel @Inject constructor(
             foodItem,
             foodSubItem,
             quantity,
-            remarks = remarks
+            priority,
+            remarks
         )
         if (index > -1 && quantity < 1)
             _tableOrders.value = tableOrders.value?.apply {
@@ -507,15 +508,21 @@ class SharedViewModel @Inject constructor(
                             to.apply { isBooked = true }
                             val fromTableIndex = tables.value!!.indexOf(from)
                             val toTableIndex = tables.value!!.indexOf(to)
+                            val selectedTableIndex = tables.value!!.indexOf(selectedTable.value)
                             tables.value?.apply {
                                 set(fromTableIndex, from)
                                 set(toTableIndex, to)
                             }
-                            _selectedTable.value = to
+                            if (fromTableIndex == selectedTableIndex || toTableIndex == selectedTableIndex)
+                                _selectedTable.value = to
                             _tableItemChanged.value =
                                 TableItemChanged(fromTableIndex, from)
                             _tableItemChanged.value =
-                                TableItemChanged(toTableIndex, to)
+                                TableItemChanged(
+                                    toTableIndex,
+                                    to,
+                                    selectedTableIndex == toTableIndex
+                                )
                         }
                         is RequestStatus.Error -> {
                             _isLoading.value = Event(false)
@@ -542,10 +549,13 @@ class SharedViewModel @Inject constructor(
                             _isLoading.value = Event(false)
                             from.apply { isBooked = false }
                             val fromTableIndex = tables.value!!.indexOf(from)
+                            val toTableIndex = tables.value!!.indexOf(to)
+                            val selectedTableIndex = tables.value!!.indexOf(selectedTable.value)
                             tables.value?.apply {
                                 set(fromTableIndex, from)
                             }
-                            _selectedTable.value = to
+                            if (fromTableIndex == selectedTableIndex || toTableIndex == selectedTableIndex)
+                                _selectedTable.value = to
                             _tableItemChanged.value =
                                 TableItemChanged(fromTableIndex, from)
 

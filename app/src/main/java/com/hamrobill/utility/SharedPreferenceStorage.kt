@@ -1,6 +1,9 @@
 package com.hamrobill.utility
 
 import android.content.Context
+import android.content.SharedPreferences
+import androidx.security.crypto.EncryptedSharedPreferences
+import androidx.security.crypto.MasterKey
 import javax.inject.Inject
 import javax.inject.Named
 
@@ -16,7 +19,19 @@ class SharedPreferenceStorage @Inject constructor(@Named("Application") context:
         private const val SERVICE_CHARGE_PERCENTAGE: String = "SERVICE_CHARGE_PERCENTAGE"
     }
 
-    private val sharedPreferences = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
+    private val sharedPreferences: SharedPreferences by lazy {
+        val masterKey = MasterKey.Builder(context, MasterKey.DEFAULT_MASTER_KEY_ALIAS)
+            .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
+            .build()
+
+        EncryptedSharedPreferences.create(
+            context,
+            PREF_NAME,
+            masterKey,
+            EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
+            EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
+        )
+    }
 
     var loggedUserName: String? = null
         get() = sharedPreferences.getString(LOGGED_USER_NAME, null)
