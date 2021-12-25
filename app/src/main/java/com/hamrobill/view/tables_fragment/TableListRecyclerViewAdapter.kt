@@ -38,7 +38,8 @@ class TableListRecyclerViewAdapter(
     fun tableItemChanged(tableItemChanged: TableItemChanged) {
         tableData[tableItemChanged.updatedTableItemPosition] = tableItemChanged.updatedTableItem
         notifyItemChanged(tableItemChanged.updatedTableItemPosition)
-        if (tableItemChanged.isSelected) selection = tableItemChanged.updatedTableItemPosition
+        if (tableItemChanged.isSelected && selection != tableItemChanged.updatedTableItemPosition) selection =
+            tableItemChanged.updatedTableItemPosition
     }
 
     inner class ViewHolder(

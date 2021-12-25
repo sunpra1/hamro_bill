@@ -44,10 +44,10 @@
                 android:id="@+id/remarkslabel"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_below="@+id/lineTop"
                 android:layout_marginHorizontal="12dp"
                 android:layout_marginTop="12dp"
-                android:layout_below="@+id/lineTop"
-                android:text="@string/current_table"
+                android:text="@string/remarks"
                 android:textColor="@color/blue" />
 
             <com.google.android.material.textfield.TextInputLayout

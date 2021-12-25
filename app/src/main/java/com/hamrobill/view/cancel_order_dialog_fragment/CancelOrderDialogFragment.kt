@@ -16,7 +16,7 @@ import com.hamrobill.utility.DIALOG_WIDTH_RATIO_SMALL
 import com.hamrobill.utility.windowWidth
 
 class CancelOrderDialogFragment private constructor() : AppCompatDialogFragment(),
-    View.OnClickListener {
+    View.OnClickListener, View.OnFocusChangeListener {
 
     private lateinit var mBinding: FragmentCancelOrderDialogBinding
     private lateinit var mCancellableOrderItem: CancellableOrderItem
@@ -66,21 +66,37 @@ class CancelOrderDialogFragment private constructor() : AppCompatDialogFragment(
             else (windowWidth * DIALOG_WIDTH_RATIO_SMALL).toInt(),
             LinearLayout.LayoutParams.WRAP_CONTENT
         )
-        mBinding.dialogTitle.text = getString(R.string.cancel_order_format, mCancellableOrderItem.subItemName)
-        mBinding.cancelBtn.setOnClickListener(this)
-        mBinding.backBtn.setOnClickListener(this)
+        mBinding.apply {
+            dialogTitle.text =
+                getString(R.string.cancel_order_format, mCancellableOrderItem.subItemName)
+            cancelBtn.setOnClickListener(this@CancelOrderDialogFragment)
+            backBtn.setOnClickListener(this@CancelOrderDialogFragment)
+            remarksEt.onFocusChangeListener = this@CancelOrderDialogFragment
+        }
+    }
+
+    private fun validateRemarks(): Boolean {
+        return if (mBinding.remarksEt.text.isNullOrEmpty()) {
+            mBinding.remarksTil.apply {
+                isErrorEnabled = true
+                error = "Remarks is required."
+            }
+            false
+        } else true
     }
 
     override fun onClick(view: View?) {
         if (view != null) {
             when (view.id) {
                 mBinding.cancelBtn.id -> {
-                    mOnOrderDeleteListener.onOrderCancelled(
-                        mCancellableOrderItem,
-                        mPosition,
-                        mBinding.remarksEt.text.toString()
-                    )
-                    dismiss()
+                    if (validateRemarks()) {
+                        mOnOrderDeleteListener.onOrderCancelled(
+                            mCancellableOrderItem,
+                            mPosition,
+                            mBinding.remarksEt.text.toString()
+                        )
+                        dismiss()
+                    }
                 }
                 mBinding.backBtn.id -> {
                     mOnOrderDeleteListener.onCancellationCancelled(mCancellableOrderItem, mPosition)
@@ -94,9 +110,21 @@ class CancelOrderDialogFragment private constructor() : AppCompatDialogFragment(
         fun onOrderCancelled(
             cancellableOrderItem: CancellableOrderItem,
             position: Int,
-            remarks: String?
+            remarks: String
         )
 
         fun onCancellationCancelled(cancellableOrderItem: CancellableOrderItem, position: Int)
+    }
+
+    override fun onFocusChange(view: View?, hasFocus: Boolean) {
+        if (view != null) {
+            when (view.id) {
+                mBinding.remarksEt.id -> {
+                    if (hasFocus && mBinding.remarksTil.isErrorEnabled) {
+                        mBinding.remarksTil.isErrorEnabled = false
+                    }
+                }
+            }
+        }
     }
 }

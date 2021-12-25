@@ -94,7 +94,10 @@ class EstimatedBillFragment : DICompactBottomSheetDialogFragment(), View.OnClick
             mViewModel.activeTableOrders.value!!.last().billNumber.toString()
         )
         mBinding.cashierName.text =
-            getString(R.string.cashier_format, mSharedPreferenceStorage.loggedUserName!!.getUserName())
+            getString(
+                R.string.cashier_format,
+                mSharedPreferenceStorage.loggedUserName!!.getUserName()
+            )
         mBinding.tableNumber.text =
             getString(R.string.table_number_format, mViewModel.selectedTable.value!!.tableName)
         val delay = (60 - Calendar.getInstance().get(Calendar.SECOND)).toLong()

@@ -89,4 +89,9 @@
     <string name="provide_service_charge">PROVIDE SERVICE CHARGE</string>
     <string name="service_charge">SERVICE CHARGE</string>
     <string name="grand_total">GRAND TOTAL</string>
+    <string name="old_password">OLD PASSWORD</string>
+    <string name="new_password">NEW PASSWORD</string>
+    <string name="confirm_new_password">CONFIRM NEW PASSWORD</string>
+    <string name="change_password">CHANGE PASSWORD</string>
+    <string name="unable_change_password">Unable to change password, please verify your old password and try again.</string>
 </resources>

@@ -85,9 +85,7 @@ class BaseUrlDialogFragment private constructor() : AppCompatDialogFragment(), V
         mBinding.apply {
             okButton.setOnClickListener(this@BaseUrlDialogFragment)
             remoteEndPointEt.onFocusChangeListener = this@BaseUrlDialogFragment
-            mSharedPreferenceStorage.remoteBaseUrl?.let { remoteEndPointEt.setText(it) }
             localEndPointEt.onFocusChangeListener = this@BaseUrlDialogFragment
-            mSharedPreferenceStorage.localBaseUrl?.let { localEndPointEt.setText(it) }
         }
 
     }

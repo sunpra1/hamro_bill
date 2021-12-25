@@ -79,6 +79,9 @@ class SharedViewModel @Inject constructor(
     private val _cancelOrderItem: MutableLiveData<CancellableOrderItem> = MutableLiveData()
     private val cancelOrderItem: LiveData<CancellableOrderItem> = _cancelOrderItem
 
+    private val _isPasswordChanged: MutableLiveData<Event<Boolean>> = MutableLiveData()
+    val isPasswordChanged: LiveData<Event<Boolean>> = _isPasswordChanged
+
     init {
         networkConnectivity.observeForever { _isNetworkAvailable.value = Event(it) }
     }
@@ -392,15 +395,15 @@ class SharedViewModel @Inject constructor(
         }
     }
 
-    fun cancelTableOrder(remarks: String?) {
+    fun cancelTableOrder(remarks: String) {
         if (cancelOrderItem.value != null) {
 
-            val item1 = cancelOrderItem.value!!
+            val itemA = cancelOrderItem.value!!
 
             val printTitle = when {
-                item1.extraColumn -> "SEKUWA"
-                item1.isBar -> "BOT"
-                item1.isCoffee -> "COFFEE"
+                itemA.extraColumn -> "SEKUWA"
+                itemA.isBar -> "BOT"
+                itemA.isCoffee -> "COFFEE"
                 else -> "KOT"
             }
 
@@ -439,7 +442,11 @@ class SharedViewModel @Inject constructor(
             )
 
             viewModelScope.launch {
-                billingRepository.cancelTableOrder(saveOrderRequestBody, cancelOrderBody)
+                billingRepository.cancelTableOrder(
+                    saveOrderRequestBody,
+                    cancelOrderBody,
+                    !itemA.isOrder
+                )
                     .catch {
                         _isLoading.value = Event(false)
                         _errorMessage.value = Event(R.string.unable_cancel_table_order)
@@ -521,7 +528,7 @@ class SharedViewModel @Inject constructor(
                                 TableItemChanged(
                                     toTableIndex,
                                     to,
-                                    selectedTableIndex == toTableIndex
+                                    fromTableIndex == selectedTableIndex || toTableIndex == selectedTableIndex
                                 )
                         }
                         is RequestStatus.Error -> {
@@ -558,6 +565,12 @@ class SharedViewModel @Inject constructor(
                                 _selectedTable.value = to
                             _tableItemChanged.value =
                                 TableItemChanged(fromTableIndex, from)
+                            _tableItemChanged.value =
+                                TableItemChanged(
+                                    toTableIndex,
+                                    to,
+                                    fromTableIndex == selectedTableIndex || toTableIndex == selectedTableIndex
+                                )
 
                         }
                         is RequestStatus.Error -> {
@@ -566,6 +579,27 @@ class SharedViewModel @Inject constructor(
                         }
                     }
                 }
+        }
+    }
+
+    fun changePassword(requestBody: ChangePasswordRequestBody) {
+        viewModelScope.launch {
+            billingRepository.changePassword(requestBody).collect {
+                when (it) {
+                    is RequestStatus.Waiting -> {
+                        _isLoading.value = Event(true)
+                    }
+                    is RequestStatus.Success -> {
+                        _isLoading.value = Event(false)
+                        _isPasswordChanged.value = Event(true)
+                        _toast.value = Event("Password updated successfully.")
+                    }
+                    is RequestStatus.Error -> {
+                        _isLoading.value = Event(false)
+                        _toast.value = Event(it.message)
+                    }
+                }
+            }
         }
     }
 }

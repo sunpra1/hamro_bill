@@ -29,6 +29,11 @@
     </group>
 
     <item
+        android:id="@+id/changePasswordMenuItem"
+        android:title="@string/change_password"
+        app:showAsAction="never" />
+
+    <item
         android:id="@+id/updateServiceChargeMenuItem"
         android:icon="@drawable/percent_black_24"
         android:title="@string/update_service_charge"

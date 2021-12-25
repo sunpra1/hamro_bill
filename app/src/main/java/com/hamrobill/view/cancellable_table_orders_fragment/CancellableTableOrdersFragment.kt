@@ -101,7 +101,7 @@ class CancellableTableOrdersFragment : DICompactBottomSheetDialogFragment(), Vie
     override fun onOrderCancelled(
         cancellableOrderItem: CancellableOrderItem,
         position: Int,
-        remarks: String?
+        remarks: String
     ) {
         mViewModel.cancelTableOrder(remarks)
     }

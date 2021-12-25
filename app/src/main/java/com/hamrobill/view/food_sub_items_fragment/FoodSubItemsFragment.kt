@@ -56,6 +56,8 @@ class FoodSubItemsFragment private constructor() : DICompactBottomSheetDialogFra
         mViewModel.tableOrders.observe(requireActivity()) {
             if (isAdded) {
                 mBinding.btnSave.visibility = if (it.isNullOrEmpty()) View.GONE else View.VISIBLE
+                (mBinding.tableOrderItemsRV.adapter as FoodSubItemListRecyclerViewAdapter).tableOrders =
+                    it
             }
         }
     }

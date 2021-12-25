@@ -2,7 +2,6 @@ package com.hamrobill.view.cancellable_table_orders_fragment
 
 import android.content.Context
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.hamrobill.R
@@ -42,8 +41,6 @@ class CancellableTableOrderListRecyclerViewAdapter(
                 context.getString(R.string.price_format)
                     .format("Rs.", cancellableOrderItem.totalPrice)
             view.status.setImageResource(if (cancellableOrderItem.isOrder) R.drawable.check_circle_red_18 else R.drawable.check_circle_green_18)
-            view.deleteBtn.visibility =
-                if (!cancellableOrderItem.isOrder) View.VISIBLE else View.INVISIBLE
             view.deleteBtn.setOnClickListener {
                 onTableOrderListItemCheckedListener.onTableOrderListItemChecked(
                     cancellableOrderItem,

@@ -46,4 +46,7 @@ interface HamrobillAPIConsumer {
 
     @GET("api/OrderItem/GetOrderListForCancelItem/{tableID}/0")
     suspend fun getCancelableOrderItems(@Path("tableID") foodTableId: Int): Response<CancellableOrderResponse>
+
+    @POST("api/Account/ChangePassword")
+    suspend fun changePassword(@Body requestBody: ChangePasswordRequestBody): Response<SuccessResponse>
 }

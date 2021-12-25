@@ -8,12 +8,15 @@ import androidx.recyclerview.widget.RecyclerView
 import com.hamrobill.R
 import com.hamrobill.data.pojo.FoodSubItem
 import com.hamrobill.databinding.FoodSubItemListItemBinding
+import com.hamrobill.model.OrderItem
 
 class FoodSubItemListRecyclerViewAdapter(
     private val foodSubItems: ArrayList<FoodSubItem>,
     private val foodSubItemOnClickListener: FoodSubItemOnClickListener
 ) :
     RecyclerView.Adapter<FoodSubItemListRecyclerViewAdapter.ViewHolder>() {
+
+    var tableOrders: ArrayList<OrderItem>? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
@@ -28,7 +31,7 @@ class FoodSubItemListRecyclerViewAdapter(
 
     override fun getItemCount(): Int = foodSubItems.size
 
-    class ViewHolder(
+    inner class ViewHolder(
         private val view: FoodSubItemListItemBinding,
         private val foodSbItemOnClickListener: FoodSubItemOnClickListener,
         private val context: Context = view.root.context
@@ -37,6 +40,8 @@ class FoodSubItemListRecyclerViewAdapter(
             view.foodSubItemName.text = foodSubItem.subItemName
             view.foodSubItemPrice.text = context.getString(R.string.price_format)
                 .format(context.getString(R.string.currency), foodSubItem.subItemPrice)
+            view.foodSubItemName.isChecked =
+                !tableOrders.isNullOrEmpty() && tableOrders!!.any { it.foodSubItem.subItemId == foodSubItem.subItemId }
             view.foodSubItemName.setOnClickListener {
                 foodSbItemOnClickListener.onFoodSubItemClicked(foodSubItem, adapterPosition)
             }

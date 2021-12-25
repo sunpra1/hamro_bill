@@ -137,11 +137,43 @@ class BillingRepository @Inject constructor(
         }
     }
 
-    fun cancelTableOrder(saveOrderRequest: SaveOrderRequest, cancelOrderBody: CancelOrderBody) =
+    fun cancelTableOrder(
+        saveOrderRequest: SaveOrderRequest,
+        cancelOrderBody: CancelOrderBody,
+        isOrderPlaced: Boolean
+    ) =
         flow {
             emit(RequestStatus.Waiting)
-            val printResponse = printAPIConsumer.saveTableOrders(saveOrderRequest)
-            if (printResponse.isSuccessful) {
+            if (isOrderPlaced) {
+                val printResponse = printAPIConsumer.saveTableOrders(saveOrderRequest)
+                if (printResponse.isSuccessful) {
+                    val response = hamroBillAPIConsumer.cancelOrder(cancelOrderBody)
+                    if (response.isSuccessful) {
+                        emit(RequestStatus.Success(response.body()))
+                    } else {
+                        Log.d(
+                            TAG,
+                            "cancelTableOrder: ${
+                                response.errorBody()?.byteStream()?.reader()?.readText()
+                            }"
+                        )
+                        emit(RequestStatus.Error(R.string.unable_cancel_table_order))
+                    }
+                } else {
+                    Log.d(
+                        TAG,
+                        "cancelTableOrder: ${
+                            printResponse.errorBody()?.byteStream()?.reader()?.readText()
+                        }"
+                    )
+                    emit(
+                        RequestStatus.Error(
+                            printResponse.errorBody()?.byteStream()?.reader()?.readText()
+                                ?: R.string.print_server_error
+                        )
+                    )
+                }
+            } else {
                 val response = hamroBillAPIConsumer.cancelOrder(cancelOrderBody)
                 if (response.isSuccessful) {
                     emit(RequestStatus.Success(response.body()))
@@ -154,19 +186,6 @@ class BillingRepository @Inject constructor(
                     )
                     emit(RequestStatus.Error(R.string.unable_cancel_table_order))
                 }
-            } else {
-                Log.d(
-                    TAG,
-                    "cancelTableOrder: ${
-                        printResponse.errorBody()?.byteStream()?.reader()?.readText()
-                    }"
-                )
-                emit(
-                    RequestStatus.Error(
-                        printResponse.errorBody()?.byteStream()?.reader()?.readText()
-                            ?: R.string.print_server_error
-                    )
-                )
             }
         }
 
@@ -209,6 +228,20 @@ class BillingRepository @Inject constructor(
                 "mergeTable: ${response.errorBody()?.byteStream()?.reader()?.readText()}"
             )
             emit(RequestStatus.Error(R.string.unable_merge_tables))
+        }
+    }
+
+    fun changePassword(requestBody: ChangePasswordRequestBody) = flow {
+        emit(RequestStatus.Waiting)
+        val response = hamroBillAPIConsumer.changePassword(requestBody)
+        if (response.isSuccessful) {
+            emit(RequestStatus.Success(response.body()))
+        } else {
+            Log.d(
+                TAG,
+                "changePassword: ${response.errorBody()?.byteStream()?.reader()?.readText()}"
+            )
+            emit(RequestStatus.Error(R.string.unable_change_password))
         }
     }
 }

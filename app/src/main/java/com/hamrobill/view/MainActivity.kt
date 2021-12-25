@@ -13,6 +13,7 @@ import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.ViewModelProvider
 import com.hamrobill.R
 import com.hamrobill.data.pojo.ActiveOrderItem
+import com.hamrobill.data.pojo.ChangePasswordRequestBody
 import com.hamrobill.data.pojo.Table
 import com.hamrobill.databinding.ActivityMainBinding
 import com.hamrobill.di.subcomponent.ActivityComponent
@@ -20,6 +21,7 @@ import com.hamrobill.model.FoodCategory
 import com.hamrobill.model.SubItemType
 import com.hamrobill.utility.*
 import com.hamrobill.view.cancellable_table_orders_fragment.CancellableTableOrdersFragment
+import com.hamrobill.view.change_password_dialog_fragment.ChangePasswordDialogFragment
 import com.hamrobill.view.change_table_dialog_fragment.ChangeTableDialogFragment
 import com.hamrobill.view.estimated_bill_fragment.EstimatedBillFragment
 import com.hamrobill.view.food_items_fragment.FoodItemsFragment
@@ -31,7 +33,8 @@ import com.hamrobill.view_model.SharedViewModel
 import javax.inject.Inject
 
 class MainActivity : DICompactActivity(), View.OnClickListener, SearchView.OnQueryTextListener,
-    ChangeTableDialogFragment.TableChangeListener, MergeTableDialogFragment.TableMergeListener {
+    ChangeTableDialogFragment.TableChangeListener, MergeTableDialogFragment.TableMergeListener,
+    ChangePasswordDialogFragment.PasswordUpdateListener {
 
     @Inject
     lateinit var mFactory: ViewModelProvider.Factory
@@ -43,6 +46,7 @@ class MainActivity : DICompactActivity(), View.OnClickListener, SearchView.OnQue
     private lateinit var mViewModel: SharedViewModel
     private var mAlertDialog: AlertDialog? = null
     private var mCancellableTableOrdersFragment: CancellableTableOrdersFragment? = null
+    private var mChangePasswordDialogFragment: ChangePasswordDialogFragment? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -135,6 +139,16 @@ class MainActivity : DICompactActivity(), View.OnClickListener, SearchView.OnQue
                         supportFragmentManager,
                         UpdateServiceChargeDialogFragment::class.java.simpleName
                     )
+                true
+            }
+            R.id.changePasswordMenuItem -> {
+                mChangePasswordDialogFragment = ChangePasswordDialogFragment.getInstance(this)
+                    .apply {
+                        showNow(
+                            supportFragmentManager,
+                            ChangePasswordDialogFragment::class.java.simpleName
+                        )
+                    }
                 true
             }
             else -> super.onOptionsItemSelected(item)
@@ -250,6 +264,11 @@ class MainActivity : DICompactActivity(), View.OnClickListener, SearchView.OnQue
         mViewModel.cancellableTableOrders.observe(this) {
             if (mCancellableTableOrdersFragment != null && it.isNullOrEmpty()) mCancellableTableOrdersFragment!!.dismiss()
         }
+        mViewModel.isPasswordChanged.observe(this, EventObserver {
+            if (it) {
+                mChangePasswordDialogFragment?.dismiss()
+            }
+        })
     }
 
     private fun attachFragment() {
@@ -319,5 +338,9 @@ class MainActivity : DICompactActivity(), View.OnClickListener, SearchView.OnQue
 
     override fun onTableMerged(from: Table, to: Table) {
         mViewModel.mergeTable(from, to)
+    }
+
+    override fun onPasswordUpdated(oldPassword: String, newPassword: String) {
+        mViewModel.changePassword(ChangePasswordRequestBody(oldPassword, newPassword))
     }
 }

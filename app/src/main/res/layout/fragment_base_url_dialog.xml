@@ -40,12 +40,24 @@
                 android:layout_marginVertical="2dp"
                 android:background="@color/grey" />
 
+            <TextView
+                android:id="@+id/remoteEndPointTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/lineTop"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginEnd="12dp"
+                android:text="@string/remote_base_url"
+                android:textColor="@color/dark_700"
+                android:textSize="@dimen/medium_text_size" />
+
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/remoteEndPointTil"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/lineTop"
+                android:layout_below="@id/remoteEndPointTitle"
                 android:layout_margin="12dp"
                 app:boxCornerRadiusBottomEnd="0dp"
                 app:boxCornerRadiusBottomStart="0dp"
@@ -62,12 +74,24 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
+            <TextView
+                android:id="@+id/localEndPointTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/remoteEndPointTil"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginEnd="12dp"
+                android:text="@string/local_print_base_url"
+                android:textColor="@color/dark_700"
+                android:textSize="@dimen/medium_text_size" />
+
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/localEndPointTil"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/remoteEndPointTil"
+                android:layout_below="@id/localEndPointTitle"
                 android:layout_margin="12dp"
                 app:boxCornerRadiusBottomEnd="0dp"
                 app:boxCornerRadiusBottomStart="0dp"
