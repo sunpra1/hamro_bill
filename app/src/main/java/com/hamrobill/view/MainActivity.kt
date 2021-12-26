@@ -172,9 +172,9 @@ class MainActivity : DICompactActivity(), View.OnClickListener, SearchView.OnQue
     }
 
     private fun setupObservers() {
-        mViewModel.isNetworkAvailable.observe(this, EventObserver {
+        mViewModel.isNetworkAvailable.observe(this) {
             displayConnectivityMessage(it)
-        })
+        }
         mViewModel.isLoading.observe(this, EventObserver {
             if (it) showProgressDialog() else hideProgressDialog()
         })

@@ -36,8 +36,8 @@ class SharedViewModel @Inject constructor(
     private val _toast: MutableLiveData<Event<Any>> = MutableLiveData()
     val toast: LiveData<Event<Any>> = _toast
 
-    private val _isNetworkAvailable: MutableLiveData<Event<Boolean>> = MutableLiveData()
-    val isNetworkAvailable: LiveData<Event<Boolean>> = _isNetworkAvailable
+    private val _isNetworkAvailable: MutableLiveData<Boolean> = MutableLiveData()
+    val isNetworkAvailable: LiveData<Boolean> = _isNetworkAvailable
 
     private val _tables: MutableLiveData<ArrayList<Table>> = MutableLiveData()
     val tables: LiveData<ArrayList<Table>> = _tables
@@ -83,7 +83,7 @@ class SharedViewModel @Inject constructor(
     val isPasswordChanged: LiveData<Event<Boolean>> = _isPasswordChanged
 
     init {
-        networkConnectivity.observeForever { _isNetworkAvailable.value = Event(it) }
+        networkConnectivity.observeForever { _isNetworkAvailable.value = it }
     }
 
     fun setSelectedFoodItem(foodItem: FoodItem?) {

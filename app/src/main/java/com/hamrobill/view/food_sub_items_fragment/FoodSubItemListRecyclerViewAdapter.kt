@@ -1,7 +1,6 @@
 package com.hamrobill.view.food_sub_items_fragment
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.widget.addTextChangedListener
@@ -38,13 +37,13 @@ class FoodSubItemListRecyclerViewAdapter(
         private val foodSbItemOnClickListener: FoodSubItemOnClickListener,
         private val context: Context = view.root.context
     ) : RecyclerView.ViewHolder(view.root) {
+        init {
+            setIsRecyclable(false)
+        }
+
         fun updateView(foodSubItem: FoodSubItem) {
             val orderItem =
                 tableOrders?.firstOrNull { it.foodSubItem == foodSubItem }
-            Log.d(
-                "sunpra",
-                "orderSize: ${tableOrders?.size}, position: $adapterPosition, and data: $orderItem"
-            )
 
             view.foodSubItemName.text = foodSubItem.subItemName
             view.foodSubItemPrice.text = context.getString(R.string.price_format)
