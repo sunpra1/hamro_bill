@@ -1,6 +1,7 @@
 package com.hamrobill.view.food_sub_items_fragment
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.widget.addTextChangedListener
@@ -9,6 +10,7 @@ import com.hamrobill.R
 import com.hamrobill.data.pojo.FoodSubItem
 import com.hamrobill.databinding.FoodSubItemListItemBinding
 import com.hamrobill.model.OrderItem
+import com.hamrobill.utility.getOrderQuantity
 
 class FoodSubItemListRecyclerViewAdapter(
     private val foodSubItems: ArrayList<FoodSubItem>,
@@ -37,17 +39,42 @@ class FoodSubItemListRecyclerViewAdapter(
         private val context: Context = view.root.context
     ) : RecyclerView.ViewHolder(view.root) {
         fun updateView(foodSubItem: FoodSubItem) {
+            val orderItem =
+                tableOrders?.firstOrNull { it.foodSubItem == foodSubItem }
+            Log.d(
+                "sunpra",
+                "orderSize: ${tableOrders?.size}, position: $adapterPosition, and data: $orderItem"
+            )
+
             view.foodSubItemName.text = foodSubItem.subItemName
             view.foodSubItemPrice.text = context.getString(R.string.price_format)
                 .format(context.getString(R.string.currency), foodSubItem.subItemPrice)
-            view.foodSubItemName.isChecked =
-                !tableOrders.isNullOrEmpty() && tableOrders!!.any { it.foodSubItem.subItemId == foodSubItem.subItemId }
+            view.foodSubItemName.isChecked = orderItem != null
             view.foodSubItemName.setOnClickListener {
+                view.quantityEt.setText("1.0")
                 foodSbItemOnClickListener.onFoodSubItemClicked(foodSubItem, adapterPosition)
             }
-            view.quantityEt.addTextChangedListener { keyListener(foodSubItem) }
-            view.orderByEt.addTextChangedListener { keyListener(foodSubItem) }
-            view.remarksEt.addTextChangedListener { keyListener(foodSubItem) }
+            view.quantityEt.apply {
+                setText(orderItem?.quantity?.toString())
+                setOnFocusChangeListener { _, hasFocus ->
+                    if (hasFocus) setText(text.toString().getOrderQuantity())
+                }
+                addTextChangedListener {
+                    if (hasFocus()) keyListener(foodSubItem)
+                }
+            }
+            view.orderByEt.apply {
+                setText(orderItem?.priority?.toString())
+                addTextChangedListener {
+                    if (hasFocus()) keyListener(foodSubItem)
+                }
+            }
+            view.remarksEt.apply {
+                setText(orderItem?.remarks)
+                addTextChangedListener {
+                    if (hasFocus()) keyListener(foodSubItem)
+                }
+            }
         }
 
         private fun keyListener(foodSubItem: FoodSubItem) {

@@ -103,6 +103,19 @@ fun String.getCalenderDate(inputFormat: String = "EEE, dd MMM yyyy HH:mm:ss zzzz
 }
 
 fun String.getUserName(): String {
-    val lastUnderscoreIndex = lastIndexOf("@")
-    return substring(0, lastUnderscoreIndex)
+    val lastAtIndex = lastIndexOf("@")
+    return substring(0, lastAtIndex)
+}
+
+fun String.getOrderQuantity(): String {
+    return try {
+        val lastUnderscoreIndex = lastIndexOf(".")
+        if(substring(lastUnderscoreIndex + 1, length).toInt() > 0){
+            this
+        }else{
+            substring(0, lastUnderscoreIndex)
+        }
+    } catch (e: Exception) {
+        this
+    }
 }
