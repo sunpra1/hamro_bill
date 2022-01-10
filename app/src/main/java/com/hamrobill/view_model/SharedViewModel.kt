@@ -1,9 +1,6 @@
 package com.hamrobill.view_model
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.hamrobill.R
 import com.hamrobill.data.pojo.*
 import com.hamrobill.data.repository.BillingRepository
@@ -22,7 +19,7 @@ import javax.inject.Inject
 
 @ActivityScope
 class SharedViewModel @Inject constructor(
-    networkConnectivity: NetworkConnectivity,
+    private val networkConnectivity: NetworkConnectivity,
     private val billingRepository: BillingRepository,
     private val sharedPreferenceStorage: SharedPreferenceStorage
 ) : ViewModel() {
@@ -82,8 +79,15 @@ class SharedViewModel @Inject constructor(
     private val _isPasswordChanged: MutableLiveData<Event<Boolean>> = MutableLiveData()
     val isPasswordChanged: LiveData<Event<Boolean>> = _isPasswordChanged
 
+    private val locationObserver = Observer<Boolean> { _isNetworkAvailable.value = it }
+
     init {
-        networkConnectivity.observeForever { _isNetworkAvailable.value = it }
+        networkConnectivity.observeForever(locationObserver)
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        networkConnectivity.removeObserver(locationObserver)
     }
 
     fun setSelectedFoodItem(foodItem: FoodItem?) {

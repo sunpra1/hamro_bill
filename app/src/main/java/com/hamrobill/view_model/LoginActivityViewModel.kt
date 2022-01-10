@@ -2,6 +2,7 @@ package com.hamrobill.view_model
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.hamrobill.R
@@ -19,7 +20,7 @@ import javax.inject.Inject
 @ActivityScope
 class LoginActivityViewModel @Inject constructor(
     private val sharedPrefs: SharedPreferenceStorage,
-    networkConnectivity: NetworkConnectivity,
+    private val networkConnectivity: NetworkConnectivity,
     private val authRepository: AuthRepository
 ) : ViewModel() {
     private val _isLoading: MutableLiveData<Boolean> = MutableLiveData()
@@ -31,8 +32,15 @@ class LoginActivityViewModel @Inject constructor(
     private val _isLoginSuccess: MutableLiveData<Event<Boolean>> = MutableLiveData()
     val isLoginSuccess: LiveData<Event<Boolean>> = _isLoginSuccess
 
+    private val locationObserver = Observer<Boolean> { _isNetworkAvailable.value = it }
+
     init {
-        networkConnectivity.observeForever { _isNetworkAvailable.value = it }
+        networkConnectivity.observeForever(locationObserver)
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        networkConnectivity.removeObserver(locationObserver)
     }
 
     fun loginUser(loginBody: HashMap<String, Any>) {
