@@ -6,7 +6,9 @@ import com.hamrobill.data.api.HamrobillAPIConsumer
 import com.hamrobill.data.api.PrintApiConsumer
 import com.hamrobill.data.pojo.*
 import com.hamrobill.utility.RequestStatus
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -21,8 +23,9 @@ class BillingRepository @Inject constructor(
 
     fun getTablesAndFoodItems() = flow {
         emit(RequestStatus.Waiting)
-        val getTablesResponse = hamroBillAPIConsumer.getTableList()
-        val getFoodItemsResponse = hamroBillAPIConsumer.getFoodItems()
+        val getTablesResponse = withContext(Dispatchers.IO) { hamroBillAPIConsumer.getTableList() }
+        val getFoodItemsResponse =
+            withContext(Dispatchers.IO) { hamroBillAPIConsumer.getFoodItems() }
         if (getTablesResponse.isSuccessful && getFoodItemsResponse.isSuccessful) {
             emit(
                 RequestStatus.Success(
@@ -51,8 +54,10 @@ class BillingRepository @Inject constructor(
 
     fun getTableActiveOrdersAndCancelableOrderItems(tableId: Int) = flow {
         emit(RequestStatus.Waiting)
-        val tableActiveOrderResponse = hamroBillAPIConsumer.getTableActiveOrders(tableId)
-        val cancellableOrderItemResponse = hamroBillAPIConsumer.getCancelableOrderItems(tableId)
+        val tableActiveOrderResponse =
+            withContext(Dispatchers.IO) { hamroBillAPIConsumer.getTableActiveOrders(tableId) }
+        val cancellableOrderItemResponse =
+            withContext(Dispatchers.IO) { hamroBillAPIConsumer.getCancelableOrderItems(tableId) }
         if (tableActiveOrderResponse.isSuccessful && cancellableOrderItemResponse.isSuccessful) {
             emit(
                 RequestStatus.Success(
@@ -81,7 +86,8 @@ class BillingRepository @Inject constructor(
 
     fun getFoodSubItems(foodItemId: Int) = flow {
         emit(RequestStatus.Waiting)
-        val response = hamroBillAPIConsumer.getFoodSubItems(foodItemId)
+        val response =
+            withContext(Dispatchers.IO) { hamroBillAPIConsumer.getFoodSubItems(foodItemId) }
         if (response.isSuccessful) {
             emit(RequestStatus.Success(response.body()))
         } else {
@@ -95,7 +101,8 @@ class BillingRepository @Inject constructor(
 
     fun placeTableOrders(placeOrderRequest: PlaceOrderRequest) = flow {
         emit(RequestStatus.Waiting)
-        val response = hamroBillAPIConsumer.placeTableOrders(placeOrderRequest)
+        val response =
+            withContext(Dispatchers.IO) { hamroBillAPIConsumer.placeTableOrders(placeOrderRequest) }
         if (response.isSuccessful) {
             emit(RequestStatus.Success(response.body()))
         } else {
@@ -111,9 +118,11 @@ class BillingRepository @Inject constructor(
 
     fun saveTableOrders(saveOrderRequest: SaveOrderRequest) = flow {
         emit(RequestStatus.Waiting)
-        val printResponse = printAPIConsumer.saveTableOrders(saveOrderRequest)
+        val printResponse =
+            withContext(Dispatchers.IO) { printAPIConsumer.saveTableOrders(saveOrderRequest) }
         if (printResponse.isSuccessful) {
-            val response = hamroBillAPIConsumer.saveTableOrders(saveOrderRequest)
+            val response =
+                withContext(Dispatchers.IO) { hamroBillAPIConsumer.saveTableOrders(saveOrderRequest) }
             if (response.isSuccessful) {
                 emit(RequestStatus.Success(response.body()))
             } else {
@@ -145,9 +154,12 @@ class BillingRepository @Inject constructor(
         flow {
             emit(RequestStatus.Waiting)
             if (isOrderPlaced) {
-                val printResponse = printAPIConsumer.saveTableOrders(saveOrderRequest)
+                val printResponse =
+                    withContext(Dispatchers.IO) { printAPIConsumer.saveTableOrders(saveOrderRequest) }
                 if (printResponse.isSuccessful) {
-                    val response = hamroBillAPIConsumer.cancelOrder(cancelOrderBody)
+                    val response = withContext(Dispatchers.IO) {
+                        hamroBillAPIConsumer.cancelOrder(cancelOrderBody)
+                    }
                     if (response.isSuccessful) {
                         emit(RequestStatus.Success(response.body()))
                     } else {
@@ -191,7 +203,8 @@ class BillingRepository @Inject constructor(
 
     fun searchSubItems(searchTerm: String) = flow {
         emit(RequestStatus.Waiting)
-        val response = hamroBillAPIConsumer.searchSubItems(searchTerm)
+        val response =
+            withContext(Dispatchers.IO) { hamroBillAPIConsumer.searchSubItems(searchTerm) }
         if (response.isSuccessful) {
             emit(RequestStatus.Success(response.body()))
         } else {
@@ -205,7 +218,8 @@ class BillingRepository @Inject constructor(
 
     fun changeTableNumber(from: Int, to: Int) = flow {
         emit(RequestStatus.Waiting)
-        val response = hamroBillAPIConsumer.changeTableNumber(from, to)
+        val response =
+            withContext(Dispatchers.IO) { hamroBillAPIConsumer.changeTableNumber(from, to) }
         if (response.isSuccessful) {
             emit(RequestStatus.Success(response.body()))
         } else {
@@ -219,7 +233,7 @@ class BillingRepository @Inject constructor(
 
     fun mergeTable(from: Int, to: Int) = flow {
         emit(RequestStatus.Waiting)
-        val response = hamroBillAPIConsumer.mergeTable(from, to)
+        val response = withContext(Dispatchers.IO) { hamroBillAPIConsumer.mergeTable(from, to) }
         if (response.isSuccessful) {
             emit(RequestStatus.Success(response.body()))
         } else {
@@ -233,7 +247,8 @@ class BillingRepository @Inject constructor(
 
     fun changePassword(requestBody: ChangePasswordRequestBody) = flow {
         emit(RequestStatus.Waiting)
-        val response = hamroBillAPIConsumer.changePassword(requestBody)
+        val response =
+            withContext(Dispatchers.IO) { hamroBillAPIConsumer.changePassword(requestBody) }
         if (response.isSuccessful) {
             emit(RequestStatus.Success(response.body()))
         } else {

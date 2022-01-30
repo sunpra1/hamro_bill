@@ -4,7 +4,9 @@ import android.util.Log
 import com.hamrobill.R
 import com.hamrobill.data.api.HamrobillAPIConsumer
 import com.hamrobill.utility.RequestStatus
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -16,7 +18,7 @@ class AuthRepository @Inject constructor(private val hamrobillAPIConsumer: Hamro
 
     fun login(loginBody: HashMap<String, Any>) = flow {
         emit(RequestStatus.Waiting)
-        val response = hamrobillAPIConsumer.get(loginBody)
+        val response = withContext(Dispatchers.IO) { hamrobillAPIConsumer.get(loginBody) }
         if (response.isSuccessful) {
             emit(RequestStatus.Success(response.body()))
         } else {

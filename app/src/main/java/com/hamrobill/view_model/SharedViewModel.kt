@@ -180,7 +180,7 @@ class SharedViewModel @Inject constructor(
             _tableOrders.value = tableOrders.value?.apply {
                 set(index, orderItem)
             }
-        } else {
+        } else if (quantity > 0) {
             _tableOrders.value = tableOrders.value?.apply {
                 add(orderItem)
             } ?: arrayListOf(orderItem)
