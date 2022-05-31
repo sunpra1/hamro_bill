@@ -94,6 +94,4 @@
     <string name="confirm_new_password">CONFIRM NEW PASSWORD</string>
     <string name="change_password">CHANGE PASSWORD</string>
     <string name="unable_change_password">Unable to change password, please verify your old password and try again.</string>
-    <string name="demo_print_url">https://api.hamrobill.com/</string>
-    <string name="demo_remote_url">http://192.168.1.250:1010/</string>
 </resources>
