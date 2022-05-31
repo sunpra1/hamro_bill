@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatDialogFragment
+import com.hamrobill.R
 import com.hamrobill.databinding.FragmentBaseUrlDialogBinding
 import com.hamrobill.utility.SharedPreferenceStorage
 
@@ -86,6 +87,8 @@ class BaseUrlDialogFragment private constructor() : AppCompatDialogFragment(), V
             okButton.setOnClickListener(this@BaseUrlDialogFragment)
             remoteEndPointEt.onFocusChangeListener = this@BaseUrlDialogFragment
             localEndPointEt.onFocusChangeListener = this@BaseUrlDialogFragment
+            this.localEndPointEt.setText(getString(R.string.demo_remote_url))
+            this.remoteEndPointEt.setText(getString(R.string.demo_print_url))
         }
 
     }
