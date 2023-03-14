@@ -31,9 +31,8 @@ class TablesFragment : DICompactFragment(),
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        setHasOptionsMenu(true)
         mViewModel =
-            ViewModelProvider(requireActivity(), mViewModelFactory).get(SharedViewModel::class.java)
+            ViewModelProvider(requireActivity(), mViewModelFactory)[SharedViewModel::class.java]
         mBinding = FragmentTablesBinding.inflate(inflater, container, false)
 
         setupObservers()

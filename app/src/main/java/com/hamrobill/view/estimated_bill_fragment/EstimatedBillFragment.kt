@@ -33,7 +33,7 @@ class EstimatedBillFragment : DICompactBottomSheetDialogFragment(), View.OnClick
     ): View {
         mBinding = FragmentEstimatedBillBinding.inflate(inflater)
         mViewModel =
-            ViewModelProvider(requireActivity(), mViewModelFactory).get(SharedViewModel::class.java)
+            ViewModelProvider(requireActivity(), mViewModelFactory)[SharedViewModel::class.java]
         return mBinding.root
     }
 

@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.hamrobill.R
 import com.hamrobill.data.pojo.FoodSubItem
@@ -43,7 +42,7 @@ class FoodSubItemsFragment private constructor() : DICompactBottomSheetDialogFra
         Log.d("TAG", "onCreateView: view created")
         mBinding = FragmentFoodSubItemsBinding.inflate(inflater)
         mViewModel =
-            ViewModelProvider(requireActivity(), mViewModelFactory).get(SharedViewModel::class.java)
+            ViewModelProvider(requireActivity(), mViewModelFactory)[SharedViewModel::class.java]
         return mBinding.root
     }
 

@@ -31,7 +31,7 @@ class CancellableTableOrdersFragment : DICompactBottomSheetDialogFragment(), Vie
     ): View {
         mBinding = FragmentCancellableTableOrdersBinding.inflate(inflater)
         mViewModel =
-            ViewModelProvider(requireActivity(), mViewModelFactory).get(SharedViewModel::class.java)
+            ViewModelProvider(requireActivity(), mViewModelFactory)[SharedViewModel::class.java]
         return mBinding.root
     }
 

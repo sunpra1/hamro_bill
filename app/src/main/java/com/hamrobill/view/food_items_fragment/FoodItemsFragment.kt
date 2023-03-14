@@ -33,7 +33,7 @@ class FoodItemsFragment : DICompactFragment(),
         savedInstanceState: Bundle?
     ): View {
         mViewModel =
-            ViewModelProvider(requireActivity(), mViewModelFactory).get(SharedViewModel::class.java)
+            ViewModelProvider(requireActivity(), mViewModelFactory)[SharedViewModel::class.java]
         mBinding = FragmentFoodItemsBinding.inflate(inflater, container, false)
         setupObservers()
         return mBinding.root

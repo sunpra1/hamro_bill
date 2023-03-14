@@ -1,97 +1,97 @@
 <resources>
-    <string name="app_name">Hamrobill</string>
-    <string name="email">Email</string>
-    <string name="password">Password</string>
-    <string name="login">LOGIN</string>
-    <string name="processing">Processing…</string>
+    <string name="app_name" formatted="false">Hamrobill</string>
+    <string name="email" formatted="false">Email</string>
+    <string name="password" formatted="false">Password</string>
+    <string name="login" formatted="false">LOGIN</string>
+    <string name="processing" formatted="false">Processing…</string>
 
-    <string name="no_internet">NO INTERNET CONNECTION</string>
-    <string name="connected">CONNECTED</string>
-    <string name="unable_to_verify_credential">Unable to verify the credentials.</string>
-    <string name="something_went_wrong">Something went wrong.\nPlease try again later.
+    <string name="no_internet" formatted="false">NO INTERNET CONNECTION</string>
+    <string name="connected" formatted="false">CONNECTED</string>
+    <string name="unable_to_verify_credential" formatted="false">Unable to verify the credentials.</string>
+    <string name="something_went_wrong" formatted="false">Something went wrong.\nPlease try again later.
     </string>
-    <string name="unable_fetch_tables_and_food_items">Unable to fetch tables and food items.\nPlease try again later.</string>
-    <string name="unable_fetch_food_sub_items">Unable to fetch food sub items.\nPlease try again later.</string>
-    <string name="unable_search_sub_items">Unable to search for food sub items.\nPlease try again later.</string>
-    <string name="unable_change_table_number">Unable to change table number.\nPlease try again later.</string>
-    <string name="unable_merge_tables">Unable to merge tables.\nPlease try again later.</string>
-    <string name="dummy_food_item">Chicken Sekuwa</string>
-    <string name="dummy_price">Rs.250</string>
-    <string name="quantity">QUANTITY</string>
-    <string name="priority">PRIORITY</string>
-    <string name="dummy_food_category">Sekuwa Item</string>
-    <string name="price_format">%s%s</string>
-    <string name="currency">Rs.</string>
-    <string name="remarks">REMARKS</string>
-    <string name="one">1</string>
-    <string name="no_table_selected">No table selected</string>
-    <string name="unable_fetch_table_details">Unable to fetch table details.\nPlease try again later.</string>
-    <string name="unable_place_table_order">Unable to place table order.\nPlease try again.</string>
-    <string name="unable_save_table_order">Unable to save table order.\nPlease try again.</string>
-    <string name="unable_cancel_table_order">Unable to cancel table order.\nPlease try again.</string>
-    <string name="format_capacity_or_occupied">[%s]</string>
-    <string name="no_table_selected_format">%S [No table selected]</string>
-    <string name="selected_table_format">%S [Table-%s]</string>
-    <string name="bn_food_sub_item_title_format">"For Table [%s] :  [%s] "</string>
-    <string name="save">SAVE</string>
-    <string name="orders">ORDERS</string>
-    <string name="sekuwa">SEKUWA</string>
-    <string name="coffee">COFFEE</string>
-    <string name="bot">BOT</string>
-    <string name="kot">KOT</string>
-    <string name="search_food_item">SEARCH FOOD ITEM</string>
-    <string name="search_result">SEARCH RESULT</string>
-    <string name="change_table">CHANGE TABLE</string>
-    <string name="current_table">CURRENT TABLE</string>
-    <string name="destination_table">DESTINATION TABLE</string>
-    <string name="cancel">CANCEL</string>
-    <string name="ok">OK</string>
-    <string name="change">CHANGE</string>
-    <string name="merge">MERGE</string>
-    <string name="merge_table">MERGE TABLE</string>
-    <string name="order_status">Food sub item order status</string>
-    <string name="sn">SN</string>
-    <string name="name">NAME</string>
-    <string name="qty">QTY</string>
-    <string name="price">PRICE</string>
-    <string name="total">TOTAL</string>
-    <string name="dummy_table_name">TABLE C-10 [ORDERS]</string>
-    <string name="isNew">IS NEW</string>
-    <string name="table_order_title_format">TABLE [%s] ORDERS: [BILL NO: %s]</string>
-    <string name="splash_screen_image">Splash screen image</string>
-    <string name="app_slogan">For Managing Table Orders</string>
-    <string name="provide_base_urls">PROVIDE BASE URLS</string>
-    <string name="remote_base_url">REMOTE BASE URL</string>
-    <string name="local_print_base_url">LOCAL PRINT BASE URL</string>
-    <string name="print_server_error">Print request was unsuccessful.</string>
-    <string name="cancel_order_format">Do you want to cancel item %s?</string>
-    <string name="estimated_bill">ESTIMATED BILL</string>
-    <string name="bill_number_format">Bill No: %s</string>
-    <string name="cashier_format">Cashier: %s</string>
-    <string name="date_format">Date: %s</string>
-    <string name="table_number_format">Table No: %s</string>
-    <string name="time_format">Time: %s:%s</string>
-    <string name="item">Item</string>
-    <string name="rate">Rate</string>
-    <string name="bar">Bar</string>
-    <string name="coffee_small">Coffee</string>
-    <string name="sekuwa_small">Sekuwa</string>
-    <string name="dummy_amount">Rs. 2050</string>
-    <string name="amount_format">Rs. %s</string>
-    <string name="estimated_bill_title_format">ESTIMATED BILL OF TABLE %s [BILL NO: %s]</string>
-    <string name="back">BACK</string>
-    <string name="order_has_cancelled">Order has been cancelled.</string>
-    <string name="food_sub_items_empty">Food sub-items is empty.</string>
-    <string name="button_close_desc">Button close.</string>
-    <string name="logout">LOGOUT</string>
-    <string name="service_charge_format">SERVICE CHARGE [%s]</string>
-    <string name="update_service_charge">UPDATE SERVICE CHARGE</string>
-    <string name="provide_service_charge">PROVIDE SERVICE CHARGE</string>
-    <string name="service_charge">SERVICE CHARGE</string>
-    <string name="grand_total">GRAND TOTAL</string>
-    <string name="old_password">OLD PASSWORD</string>
-    <string name="new_password">NEW PASSWORD</string>
-    <string name="confirm_new_password">CONFIRM NEW PASSWORD</string>
-    <string name="change_password">CHANGE PASSWORD</string>
-    <string name="unable_change_password">Unable to change password, please verify your old password and try again.</string>
+    <string name="unable_fetch_tables_and_food_items" formatted="false">Unable to fetch tables and food items.\nPlease try again later.</string>
+    <string name="unable_fetch_food_sub_items" formatted="false">Unable to fetch food sub items.\nPlease try again later.</string>
+    <string name="unable_search_sub_items" formatted="false">Unable to search for food sub items.\nPlease try again later.</string>
+    <string name="unable_change_table_number" formatted="false">Unable to change table number.\nPlease try again later.</string>
+    <string name="unable_merge_tables" formatted="false">Unable to merge tables.\nPlease try again later.</string>
+    <string name="dummy_food_item" formatted="false">Chicken Sekuwa</string>
+    <string name="dummy_price" formatted="false">Rs.250</string>
+    <string name="quantity" formatted="false">QUANTITY</string>
+    <string name="priority" formatted="false">PRIORITY</string>
+    <string name="dummy_food_category" formatted="false">Sekuwa Item</string>
+    <string name="price_format" formatted="false">%s%s</string>
+    <string name="currency" formatted="false">Rs.</string>
+    <string name="remarks" formatted="false">REMARKS</string>
+    <string name="one" formatted="false">1</string>
+    <string name="no_table_selected" formatted="false">No table selected</string>
+    <string name="unable_fetch_table_details" formatted="false">Unable to fetch table details.\nPlease try again later.</string>
+    <string name="unable_place_table_order" formatted="false">Unable to place table order.\nPlease try again.</string>
+    <string name="unable_save_table_order" formatted="false">Unable to save table order.\nPlease try again.</string>
+    <string name="unable_cancel_table_order" formatted="false">Unable to cancel table order.\nPlease try again.</string>
+    <string name="format_capacity_or_occupied" formatted="false">[%s]</string>
+    <string name="no_table_selected_format" formatted="false">%S [No table selected]</string>
+    <string name="selected_table_format" formatted="false">%S [Table-%s]</string>
+    <string name="bn_food_sub_item_title_format" formatted="false">"For Table [%s] :  [%s] "</string>
+    <string name="save" formatted="false">SAVE</string>
+    <string name="orders" formatted="false">ORDERS</string>
+    <string name="sekuwa" formatted="false">SEKUWA</string>
+    <string name="coffee" formatted="false">COFFEE</string>
+    <string name="bot" formatted="false">BOT</string>
+    <string name="kot" formatted="false">KOT</string>
+    <string name="search_food_item" formatted="false">SEARCH FOOD ITEM</string>
+    <string name="search_result" formatted="false">SEARCH RESULT</string>
+    <string name="change_table" formatted="false">CHANGE TABLE</string>
+    <string name="current_table" formatted="false">CURRENT TABLE</string>
+    <string name="destination_table" formatted="false">DESTINATION TABLE</string>
+    <string name="cancel" formatted="false">CANCEL</string>
+    <string name="ok" formatted="false">OK</string>
+    <string name="change" formatted="false">CHANGE</string>
+    <string name="merge" formatted="false">MERGE</string>
+    <string name="merge_table" formatted="false">MERGE TABLE</string>
+    <string name="order_status" formatted="false">Food sub item order status</string>
+    <string name="sn" formatted="false">SN</string>
+    <string name="name" formatted="false">NAME</string>
+    <string name="qty" formatted="false">QTY</string>
+    <string name="price" formatted="false">PRICE</string>
+    <string name="total" formatted="false">TOTAL</string>
+    <string name="dummy_table_name" formatted="false">TABLE C-10 [ORDERS]</string>
+    <string name="isNew" formatted="false">IS NEW</string>
+    <string name="table_order_title_format" formatted="false">TABLE [%s] ORDERS: [BILL NO: %s]</string>
+    <string name="splash_screen_image" formatted="false">Splash screen image</string>
+    <string name="app_slogan" formatted="false">For Managing Table Orders</string>
+    <string name="provide_base_urls" formatted="false">PROVIDE BASE URLS</string>
+    <string name="remote_base_url" formatted="false">REMOTE BASE URL</string>
+    <string name="local_print_base_url" formatted="false">LOCAL PRINT BASE URL</string>
+    <string name="print_server_error" formatted="false">Print request was unsuccessful.</string>
+    <string name="cancel_order_format" formatted="false">Do you want to cancel item %s?</string>
+    <string name="estimated_bill" formatted="false">ESTIMATED BILL</string>
+    <string name="bill_number_format" formatted="false">Bill No: %s</string>
+    <string name="cashier_format" formatted="false">Cashier: %s</string>
+    <string name="date_format" formatted="false">Date: %s</string>
+    <string name="table_number_format" formatted="false">Table No: %s</string>
+    <string name="time_format" formatted="false">Time: %s:%s</string>
+    <string name="item" formatted="false">Item</string>
+    <string name="rate" formatted="false">Rate</string>
+    <string name="bar" formatted="false">Bar</string>
+    <string name="coffee_small" formatted="false">Coffee</string>
+    <string name="sekuwa_small" formatted="false">Sekuwa</string>
+    <string name="dummy_amount" formatted="false">Rs. 2050</string>
+    <string name="amount_format" formatted="false">Rs. %s</string>
+    <string name="estimated_bill_title_format" formatted="false">ESTIMATED BILL OF TABLE %s [BILL NO: %s]</string>
+    <string name="back" formatted="false">BACK</string>
+    <string name="order_has_cancelled" formatted="false">Order has been cancelled.</string>
+    <string name="food_sub_items_empty" formatted="false">Food sub-items is empty.</string>
+    <string name="button_close_desc" formatted="false">Button close.</string>
+    <string name="logout" formatted="false">LOGOUT</string>
+    <string name="service_charge_format" formatted="false">SERVICE CHARGE [%s]</string>
+    <string name="update_service_charge" formatted="false">UPDATE SERVICE CHARGE</string>
+    <string name="provide_service_charge" formatted="false">PROVIDE SERVICE CHARGE</string>
+    <string name="service_charge" formatted="false">SERVICE CHARGE</string>
+    <string name="grand_total" formatted="false">GRAND TOTAL</string>
+    <string name="old_password" formatted="false">OLD PASSWORD</string>
+    <string name="new_password" formatted="false">NEW PASSWORD</string>
+    <string name="confirm_new_password" formatted="false">CONFIRM NEW PASSWORD</string>
+    <string name="change_password" formatted="false">CHANGE PASSWORD</string>
+    <string name="unable_change_password" formatted="false">Unable to change password, please verify your old password and try again.</string>
 </resources>
