@@ -5,6 +5,15 @@ plugins {
 }
 
 android {
+    signingConfigs {
+        ReleaseSigning {
+            keyAlias 'hamro_bill'
+            keyPassword 'hamro_bill'
+            storeFile file('../hamro_bill.jks')
+            storePassword 'hamro_bill'
+        }
+    }
+
     compileSdk 33
 
     defaultConfig {
@@ -12,8 +21,8 @@ android {
         minSdk 24
         targetSdk 33
         multiDexEnabled true
-        versionCode 3
-        versionName "2021.12.26"
+        versionCode 1
+        versionName "2023.03.15"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -24,6 +33,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
         release {
+            signingConfig signingConfigs.ReleaseSigning
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }

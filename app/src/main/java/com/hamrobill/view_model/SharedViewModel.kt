@@ -13,7 +13,6 @@ import com.hamrobill.utility.NetworkConnectivity
 import com.hamrobill.utility.RequestStatus
 import com.hamrobill.utility.SharedPreferenceStorage
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -45,24 +44,24 @@ class SharedViewModel @Inject constructor(
     private val _isInitialDataLoaded: MutableLiveData<Event<Boolean>> = MutableLiveData()
     val isInitialDataLoaded: LiveData<Event<Boolean>> = _isInitialDataLoaded
 
-    private val _selectedTable: MutableLiveData<Table> = MutableLiveData()
-    val selectedTable: LiveData<Table> = _selectedTable
+    private val _selectedTable: MutableLiveData<Table?> = MutableLiveData()
+    val selectedTable: LiveData<Table?> = _selectedTable
 
-    private val _tableOrders: MutableLiveData<ArrayList<OrderItem>> = MutableLiveData()
-    val tableOrders: LiveData<ArrayList<OrderItem>> = _tableOrders
+    private val _tableOrders: MutableLiveData<ArrayList<OrderItem>?> = MutableLiveData()
+    val tableOrders: LiveData<ArrayList<OrderItem>?> = _tableOrders
 
-    private val _activeTableOrders: MutableLiveData<ArrayList<ActiveOrderItem>> = MutableLiveData()
-    val activeTableOrders: LiveData<ArrayList<ActiveOrderItem>> = _activeTableOrders
+    private val _activeTableOrders: MutableLiveData<ArrayList<ActiveOrderItem>?> = MutableLiveData()
+    val activeTableOrders: LiveData<ArrayList<ActiveOrderItem>?> = _activeTableOrders
 
-    private val _cancellableTableOrders: MutableLiveData<ArrayList<CancellableOrderItem>> =
+    private val _cancellableTableOrders: MutableLiveData<ArrayList<CancellableOrderItem>?> =
         MutableLiveData()
-    val cancellableTableOrders: LiveData<ArrayList<CancellableOrderItem>> = _cancellableTableOrders
+    val cancellableTableOrders: LiveData<ArrayList<CancellableOrderItem>?> = _cancellableTableOrders
 
-    private val _selectedFoodItem: MutableLiveData<FoodItem> = MutableLiveData()
-    val selectedFoodItem: LiveData<FoodItem> = _selectedFoodItem
+    private val _selectedFoodItem: MutableLiveData<FoodItem?> = MutableLiveData()
+    val selectedFoodItem: LiveData<FoodItem?> = _selectedFoodItem
 
-    private val _foodSubItems: MutableLiveData<ArrayList<FoodSubItem>> = MutableLiveData()
-    val foodSubItems: LiveData<ArrayList<FoodSubItem>> = _foodSubItems
+    private val _foodSubItems: MutableLiveData<ArrayList<FoodSubItem>?> = MutableLiveData()
+    val foodSubItems: LiveData<ArrayList<FoodSubItem>?> = _foodSubItems
 
     private val _tableItemChanged: MutableLiveData<TableItemChanged> = MutableLiveData()
     val tableItemChanged: LiveData<TableItemChanged> = _tableItemChanged
@@ -73,8 +72,8 @@ class SharedViewModel @Inject constructor(
     private val _searchResult: MutableLiveData<ArrayList<FoodSubItem>> = MutableLiveData()
     val searchResult: LiveData<ArrayList<FoodSubItem>> = _searchResult
 
-    private val _cancelOrderItem: MutableLiveData<CancellableOrderItem> = MutableLiveData()
-    private val cancelOrderItem: LiveData<CancellableOrderItem> = _cancelOrderItem
+    private val _cancelOrderItem: MutableLiveData<CancellableOrderItem?> = MutableLiveData()
+    private val cancelOrderItem: LiveData<CancellableOrderItem?> = _cancelOrderItem
 
     private val _isPasswordChanged: MutableLiveData<Event<Boolean>> = MutableLiveData()
     val isPasswordChanged: LiveData<Event<Boolean>> = _isPasswordChanged
