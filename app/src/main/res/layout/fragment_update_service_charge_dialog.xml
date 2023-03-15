@@ -27,7 +27,7 @@
                 android:layout_marginTop="12dp"
                 android:layout_marginEnd="12dp"
                 android:layout_marginBottom="12dp"
-                android:text="@string/provide_service_charge"
+                android:text="@string/provide_vat_or_service_charge"
                 android:textColor="@color/black"
                 android:textSize="@dimen/medium_text_size"
                 android:textStyle="bold" />
@@ -75,10 +75,44 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
+                android:id="@+id/vatTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/serviceChargeTil"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginEnd="12dp"
+                android:text="@string/vat"
+                android:textColor="@color/dark_700"
+                android:textSize="@dimen/medium_text_size" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/vatTil"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/vatTitle"
+                android:layout_margin="12dp"
+                app:boxCornerRadiusBottomEnd="0dp"
+                app:boxCornerRadiusBottomStart="0dp"
+                app:boxCornerRadiusTopEnd="0dp"
+                app:boxCornerRadiusTopStart="0dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/vatEt"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/vat"
+                    android:inputType="numberDecimal"
+                    android:padding="12dp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
                 android:id="@+id/cancelButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/serviceChargeTil"
+                android:layout_below="@+id/vatTil"
                 android:layout_marginVertical="6dp"
                 android:layout_toStartOf="@+id/okButton"
                 android:background="?attr/selectableItemBackground"
@@ -97,7 +131,7 @@
                 android:id="@+id/okButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/serviceChargeTil"
+                android:layout_below="@+id/vatTil"
                 android:layout_alignParentEnd="true"
                 android:layout_marginVertical="6dp"
                 android:background="?attr/selectableItemBackground"

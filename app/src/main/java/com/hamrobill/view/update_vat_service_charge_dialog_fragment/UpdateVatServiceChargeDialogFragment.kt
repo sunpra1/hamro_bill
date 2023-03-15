@@ -1,8 +1,7 @@
-package com.hamrobill.view.update_service_charge_dialog_fragment
+package com.hamrobill.view.update_vat_service_charge_dialog_fragment
 
 import android.app.Dialog
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,7 +10,7 @@ import androidx.appcompat.app.AppCompatDialogFragment
 import com.hamrobill.databinding.FragmentUpdateServiceChargeDialogBinding
 import com.hamrobill.utility.SharedPreferenceStorage
 
-class UpdateServiceChargeDialogFragment private constructor() : AppCompatDialogFragment(),
+class UpdateVatServiceChargeDialogFragment : AppCompatDialogFragment(),
     View.OnClickListener,
     View.OnFocusChangeListener {
     private lateinit var mSharedPreferenceStorage: SharedPreferenceStorage
@@ -35,13 +34,14 @@ class UpdateServiceChargeDialogFragment private constructor() : AppCompatDialogF
         if (view != null) {
             when (view.id) {
                 mBinding.okButton.id -> {
-                    if (validateServiceCharge()) {
-                        Log.d("SERVICE CHARGE", "${mBinding.serviceChargeEt.text}")
+                    if (validate()) {
                         mSharedPreferenceStorage.serviceChargePercentage =
                             mBinding.serviceChargeEt.text.toString().toFloat()
+                        mSharedPreferenceStorage.vatPercentage =
+                            mBinding.vatEt.text.toString().toFloat()
                         Toast.makeText(
                             context,
-                            "Service charge updated successfully.",
+                            "Charges updated successfully.",
                             Toast.LENGTH_SHORT
                         ).show()
                         dismiss()
@@ -68,13 +68,31 @@ class UpdateServiceChargeDialogFragment private constructor() : AppCompatDialogF
         else -> true
     }
 
+    private fun validateTax() = when {
+        mBinding.vatEt.text.isNullOrEmpty() -> {
+            mBinding.vatTil.apply {
+                isErrorEnabled = true
+                error = "VAT percentage is required."
+            }
+            false
+        }
+        else -> true
+    }
+
+    private fun validate(): Boolean {
+        var isValid = true
+        if (!validateServiceCharge()) isValid = false
+        if (!validateTax()) isValid = false
+        return isValid
+    }
+
     private fun initializeViews() {
         mBinding.apply {
-            okButton.setOnClickListener(this@UpdateServiceChargeDialogFragment)
-            cancelButton.setOnClickListener(this@UpdateServiceChargeDialogFragment)
-            serviceChargeEt.onFocusChangeListener = this@UpdateServiceChargeDialogFragment
-            if (mSharedPreferenceStorage.serviceChargePercentage > 0)
-                serviceChargeEt.setText(mSharedPreferenceStorage.serviceChargePercentage.toString())
+            okButton.setOnClickListener(this@UpdateVatServiceChargeDialogFragment)
+            cancelButton.setOnClickListener(this@UpdateVatServiceChargeDialogFragment)
+            serviceChargeEt.onFocusChangeListener = this@UpdateVatServiceChargeDialogFragment
+            serviceChargeEt.setText(mSharedPreferenceStorage.serviceChargePercentage.toString())
+            vatEt.setText(mSharedPreferenceStorage.vatPercentage.toString())
         }
     }
 
@@ -97,8 +115,8 @@ class UpdateServiceChargeDialogFragment private constructor() : AppCompatDialogF
         @JvmStatic
         fun getInstance(
             sharedPreferenceStorage: SharedPreferenceStorage
-        ): UpdateServiceChargeDialogFragment {
-            return UpdateServiceChargeDialogFragment().apply {
+        ): UpdateVatServiceChargeDialogFragment {
+            return UpdateVatServiceChargeDialogFragment().apply {
                 mSharedPreferenceStorage = sharedPreferenceStorage
             }
         }

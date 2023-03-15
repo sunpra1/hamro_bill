@@ -17,6 +17,7 @@ class SharedPreferenceStorage @Inject constructor(@Named("Application") context:
         private const val REMOTE_BASE_URL: String = "REMOTE_BASE_URL"
         private const val LOCAL_BASE_URL: String = "LOCAL_BASE_URL"
         private const val SERVICE_CHARGE_PERCENTAGE: String = "SERVICE_CHARGE_PERCENTAGE"
+        private const val VAT_PERCENTAGE: String = "VAT_PERCENTAGE"
     }
 
     private val sharedPreferences: SharedPreferences by lazy {
@@ -66,6 +67,11 @@ class SharedPreferenceStorage @Inject constructor(@Named("Application") context:
     var serviceChargePercentage: Float = 0f
         get() = sharedPreferences.getFloat(SERVICE_CHARGE_PERCENTAGE, 0f)
         set(value) = sharedPreferences.edit().putFloat(SERVICE_CHARGE_PERCENTAGE, value).apply()
+            .also { field = value }
+
+    var vatPercentage: Float = 0f
+        get() = sharedPreferences.getFloat(VAT_PERCENTAGE, 0f)
+        set(value) = sharedPreferences.edit().putFloat(VAT_PERCENTAGE, value).apply()
             .also { field = value }
 
 }

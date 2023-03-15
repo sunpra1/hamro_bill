@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatDialogFragment
 import com.hamrobill.databinding.FragmentChangePasswordDialogBinding
 
-class ChangePasswordDialogFragment private constructor() : AppCompatDialogFragment(),
+class ChangePasswordDialogFragment : AppCompatDialogFragment(),
     View.OnClickListener,
     View.OnFocusChangeListener {
     private lateinit var mBinding: FragmentChangePasswordDialogBinding

@@ -58,16 +58,23 @@ class EstimatedBillFragment : DICompactBottomSheetDialogFragment(), View.OnClick
     private fun calculateBillTotal(orderItems: ArrayList<ActiveOrderItem>) {
         var total = 0.0f
         var serviceCharge = 0.0f
+        var vat = 0.0f
         val serviceChargePercentage = mSharedPreferenceStorage.serviceChargePercentage
+        val vatPercentage = mSharedPreferenceStorage.vatPercentage
         orderItems.forEach { total += it.quantity * it.subItemPrice }
         if (serviceChargePercentage > 0) {
             serviceCharge = (total * serviceChargePercentage) / 100
         }
+        if (vatPercentage > 0) {
+            vat = (total * vatPercentage) / 100
+        }
         mBinding.serviceChargeAmount.text =
             getString(R.string.amount_format, serviceCharge.toString())
+        mBinding.vatAmount.text =
+            getString(R.string.amount_format, vat.toString())
         mBinding.totalAmount.text = getString(R.string.amount_format, total.toString())
         mBinding.grandTotalAmount.text =
-            getString(R.string.amount_format, (total + serviceCharge).toString())
+            getString(R.string.amount_format, (total + serviceCharge + vat).toString())
     }
 
     private fun initializeViews() {
@@ -115,16 +122,30 @@ class EstimatedBillFragment : DICompactBottomSheetDialogFragment(), View.OnClick
         }, delay, (60 * 100).toLong())
         mBinding.estimatedBillItemsRV.layoutManager = LinearLayoutManager(requireContext())
         val serviceChargePercentage = mSharedPreferenceStorage.serviceChargePercentage
+        val vatPercentage = mSharedPreferenceStorage.vatPercentage
         if (serviceChargePercentage > 0) {
             mBinding.serviceChargeWrapper.visibility = View.VISIBLE
-            mBinding.grandTotalWrapper.visibility = View.VISIBLE
             mBinding.serviceChargeLbl.text = getString(
                 R.string.service_charge_format,
-                "${mSharedPreferenceStorage.serviceChargePercentage}%"
+                "${serviceChargePercentage}%"
             )
         } else {
             mBinding.grandTotalWrapper.visibility = View.GONE
             mBinding.serviceChargeWrapper.visibility = View.GONE
+        }
+        if (vatPercentage > 0) {
+            mBinding.vatWrapper.visibility = View.VISIBLE
+            mBinding.vatLbl.text = getString(
+                R.string.vat_format,
+                "${vatPercentage}%"
+            )
+        } else {
+            mBinding.vatWrapper.visibility = View.GONE
+        }
+        if(serviceChargePercentage > 0 || vatPercentage > 0){
+            mBinding.grandTotalWrapper.visibility = View.VISIBLE
+        }else{
+            mBinding.grandTotalWrapper.visibility = View.GONE
         }
         mBinding.btnClose.setOnClickListener(this)
     }

@@ -17,7 +17,7 @@ import com.hamrobill.utility.DIALOG_WIDTH_RATIO_BIG
 import com.hamrobill.utility.DIALOG_WIDTH_RATIO_SMALL
 import com.hamrobill.utility.windowWidth
 
-class ChangeTableDialogFragment private constructor() : AppCompatDialogFragment(),
+class ChangeTableDialogFragment : AppCompatDialogFragment(),
     AdapterView.OnItemSelectedListener, View.OnClickListener {
 
     private lateinit var mBinding: FragmentChangeTableDialogBinding

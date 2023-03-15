@@ -85,8 +85,8 @@
     <string name="button_close_desc" formatted="false">Button close.</string>
     <string name="logout" formatted="false">LOGOUT</string>
     <string name="service_charge_format" formatted="false">SERVICE CHARGE [%s]</string>
-    <string name="update_service_charge" formatted="false">UPDATE SERVICE CHARGE</string>
-    <string name="provide_service_charge" formatted="false">PROVIDE SERVICE CHARGE</string>
+    <string name="update_vat_or_service_charge" formatted="false">UPDATE VAT / SERVICE CHARGE</string>
+    <string name="provide_vat_or_service_charge" formatted="false">PROVIDE VAT / SERVICE CHARGE</string>s
     <string name="service_charge" formatted="false">SERVICE CHARGE</string>
     <string name="grand_total" formatted="false">GRAND TOTAL</string>
     <string name="old_password" formatted="false">OLD PASSWORD</string>
@@ -94,4 +94,6 @@
     <string name="confirm_new_password" formatted="false">CONFIRM NEW PASSWORD</string>
     <string name="change_password" formatted="false">CHANGE PASSWORD</string>
     <string name="unable_change_password" formatted="false">Unable to change password, please verify your old password and try again.</string>
+    <string name="vat">VAT</string>
+    <string name="vat_format">VAT [%s]</string>
 </resources>

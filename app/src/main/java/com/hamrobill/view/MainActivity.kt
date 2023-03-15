@@ -28,7 +28,7 @@ import com.hamrobill.view.food_items_fragment.FoodItemsFragment
 import com.hamrobill.view.food_sub_items_fragment.FoodSubItemsFragment
 import com.hamrobill.view.merge_table_dialog_fragment.MergeTableDialogFragment
 import com.hamrobill.view.tables_fragment.TablesFragment
-import com.hamrobill.view.update_service_charge_dialog_fragment.UpdateServiceChargeDialogFragment
+import com.hamrobill.view.update_vat_service_charge_dialog_fragment.UpdateVatServiceChargeDialogFragment
 import com.hamrobill.view_model.SharedViewModel
 import javax.inject.Inject
 
@@ -134,10 +134,10 @@ class MainActivity : DICompactActivity(), View.OnClickListener, SearchView.OnQue
                 true
             }
             R.id.updateServiceChargeMenuItem -> {
-                UpdateServiceChargeDialogFragment.getInstance(mSharedPreferenceStorage)
+                UpdateVatServiceChargeDialogFragment.getInstance(mSharedPreferenceStorage)
                     .showNow(
                         supportFragmentManager,
-                        UpdateServiceChargeDialogFragment::class.java.simpleName
+                        UpdateVatServiceChargeDialogFragment::class.java.simpleName
                     )
                 true
             }

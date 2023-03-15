@@ -17,7 +17,7 @@ import com.hamrobill.utility.*
 import com.hamrobill.view_model.SharedViewModel
 import javax.inject.Inject
 
-class FoodSubItemsFragment private constructor() : DICompactBottomSheetDialogFragment(),
+class FoodSubItemsFragment : DICompactBottomSheetDialogFragment(),
     View.OnClickListener,
     FoodSubItemListRecyclerViewAdapter.FoodSubItemOnClickListener {
     private lateinit var mSubItemType: SubItemType

@@ -15,7 +15,7 @@ import com.hamrobill.utility.DIALOG_WIDTH_RATIO_BIG
 import com.hamrobill.utility.DIALOG_WIDTH_RATIO_SMALL
 import com.hamrobill.utility.windowWidth
 
-class CancelOrderDialogFragment private constructor() : AppCompatDialogFragment(),
+class CancelOrderDialogFragment : AppCompatDialogFragment(),
     View.OnClickListener, View.OnFocusChangeListener {
 
     private lateinit var mBinding: FragmentCancelOrderDialogBinding

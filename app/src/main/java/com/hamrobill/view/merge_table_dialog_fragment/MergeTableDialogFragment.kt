@@ -17,7 +17,7 @@ import com.hamrobill.utility.DIALOG_WIDTH_RATIO_BIG
 import com.hamrobill.utility.DIALOG_WIDTH_RATIO_SMALL
 import com.hamrobill.utility.windowWidth
 
-class MergeTableDialogFragment private constructor() : AppCompatDialogFragment(),
+class MergeTableDialogFragment : AppCompatDialogFragment(),
     AdapterView.OnItemSelectedListener, View.OnClickListener {
 
     private lateinit var mBinding: FragmentMergeTableDialogBinding

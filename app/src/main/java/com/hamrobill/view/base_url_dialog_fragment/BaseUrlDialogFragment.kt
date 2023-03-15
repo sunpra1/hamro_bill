@@ -11,7 +11,7 @@ import com.hamrobill.R
 import com.hamrobill.databinding.FragmentBaseUrlDialogBinding
 import com.hamrobill.utility.SharedPreferenceStorage
 
-class BaseUrlDialogFragment private constructor() : AppCompatDialogFragment(), View.OnClickListener,
+class BaseUrlDialogFragment : AppCompatDialogFragment(), View.OnClickListener,
     View.OnFocusChangeListener {
     private lateinit var mSharedPreferenceStorage: SharedPreferenceStorage
     private lateinit var mBinding: FragmentBaseUrlDialogBinding
