@@ -4,11 +4,11 @@ import android.content.Context
 import android.content.res.Configuration
 import android.graphics.Rect
 import android.os.Build
+import android.os.CombinedVibration
 import android.os.VibrationEffect
-import android.os.Vibrator
+import android.os.VibratorManager
 import android.view.Gravity
 import android.view.View
-import android.view.animation.AnimationUtils
 import android.view.inputmethod.InputMethodManager
 import android.widget.LinearLayout
 import android.widget.Toast
@@ -30,18 +30,17 @@ fun FragmentActivity.hideKeyboard() {
 }
 
 fun View.vibrate() {
-    val vibrator = context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+        val vibrator = context.getSystemService(Context.VIBRATOR_MANAGER_SERVICE) as VibratorManager
         vibrator.vibrate(
-            VibrationEffect.createOneShot(
-                350,
-                VibrationEffect.DEFAULT_AMPLITUDE
+            CombinedVibration.createParallel(
+                VibrationEffect.createOneShot(
+                    350,
+                    VibrationEffect.DEFAULT_AMPLITUDE
+                )
             )
         )
     }
-
-    val animation = AnimationUtils.loadAnimation(context, R.anim.vibrate)
-    startAnimation(animation)
 }
 
 fun FragmentActivity.showToast(message: String, length: Int = Toast.LENGTH_LONG) {
@@ -110,9 +109,9 @@ fun String.getUserName(): String {
 fun String.getOrderQuantity(): String {
     return try {
         val lastUnderscoreIndex = lastIndexOf(".")
-        if(substring(lastUnderscoreIndex + 1, length).toInt() > 0){
+        if (substring(lastUnderscoreIndex + 1, length).toInt() > 0) {
             this
-        }else{
+        } else {
             substring(0, lastUnderscoreIndex)
         }
     } catch (e: Exception) {

@@ -14,6 +14,8 @@ android {
         }
     }
 
+    namespace "com.hamrobill"
+
     compileSdk 33
 
     defaultConfig {
