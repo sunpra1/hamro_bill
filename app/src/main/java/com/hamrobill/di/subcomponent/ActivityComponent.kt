@@ -8,7 +8,7 @@ import com.hamrobill.utility.broadcast_receiver.LogoutServiceBroadcastReceiver
 import com.hamrobill.view.LoginActivity
 import com.hamrobill.view.MainActivity
 import com.hamrobill.view.SplashActivity
-import com.velocity.lsc.shelfdepartment.di.module.ViewModelsModule
+import com.hamrobill.di.module.ViewModelsModule
 import dagger.BindsInstance
 import dagger.Subcomponent
 import javax.inject.Named

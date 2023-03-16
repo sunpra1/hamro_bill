@@ -1,4 +1,4 @@
-package com.velocity.lsc.shelfdepartment.di.module
+package com.hamrobill.di.module
 
 import androidx.lifecycle.ViewModel
 import com.hamrobill.di.anotation.ViewModelKey
