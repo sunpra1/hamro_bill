@@ -6,6 +6,9 @@ buildscript {
         coroutineVersion = "1.6.4"
         retrofitVersion = "2.9.0"
         interceptorVersion = "4.10.0"
+        googleServicesGradleVersion = '4.3.10'
+        firebaseCrashlyticsGradleVersion = '2.9.4'
+        firebaseBomVersion = '31.2.3'
     }
     repositories {
         google()
@@ -14,6 +17,8 @@ buildscript {
     dependencies {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.8.0"
         classpath "com.android.tools.build:gradle:7.4.2"
+        classpath("com.google.gms:google-services:$googleServicesGradleVersion")
+        classpath("com.google.firebase:firebase-crashlytics-gradle:$firebaseCrashlyticsGradleVersion")
     }
 }
 

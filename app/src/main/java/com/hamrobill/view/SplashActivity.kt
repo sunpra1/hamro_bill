@@ -20,7 +20,6 @@ class SplashActivity : DICompactActivity(), BaseUrlDialogFragment.UrlUpdateListe
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
         determineRouting()
-
     }
 
     override fun configureDependencyInjection(activityComponent: ActivityComponent) {

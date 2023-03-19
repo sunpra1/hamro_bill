@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "87599629908",
+    "project_id": "hamro-bill",
+    "storage_bucket": "hamro-bill.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:87599629908:android:ac511073a8e5fe1e038fc1",
+        "android_client_info": {
+          "package_name": "com.hamrobill"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "87599629908-3290kfc7afq23tp79emqb3mfd26e4mdu.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.hamrobill",
+            "certificate_hash": "f4333e1b74b764f90cccacea3a2206c1ddd2c0a5"
+          }
+        },
+        {
+          "client_id": "87599629908-tsrijbg1mblt74f2qhueugj6vvckgj7r.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCMUuxUda0YEBVr9IYCBI0r57hHkRJ55sM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "87599629908-tsrijbg1mblt74f2qhueugj6vvckgj7r.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

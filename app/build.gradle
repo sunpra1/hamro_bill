@@ -2,6 +2,8 @@ plugins {
     id 'com.android.application'
     id 'kotlin-android'
     id 'kotlin-kapt'
+    id 'com.google.gms.google-services'
+    id 'com.google.firebase.crashlytics'
 }
 
 android {
@@ -69,7 +71,7 @@ dependencies {
     implementation "com.google.dagger:dagger:$daggerVersion"
     kapt "com.google.dagger:dagger-compiler:$daggerVersion"
 
-    // Coroutines, view model and livedata
+    //Coroutines, view model and livedata
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutineVersion"
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:$lifeCycleVersion"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifeCycleVersion"
@@ -79,6 +81,11 @@ dependencies {
     implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
     implementation "com.squareup.retrofit2:converter-gson:$retrofitVersion"
 
-    //logger
+    //Logger
     implementation "com.squareup.okhttp3:logging-interceptor:$interceptorVersion"
+
+    //Firebase
+    implementation platform("com.google.firebase:firebase-bom:$firebaseBomVersion")
+    implementation 'com.google.firebase:firebase-crashlytics-ktx'
+    implementation 'com.google.firebase:firebase-analytics-ktx'
 }
